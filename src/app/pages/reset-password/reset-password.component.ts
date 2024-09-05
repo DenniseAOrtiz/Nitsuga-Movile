@@ -13,11 +13,10 @@ export class ResetPasswordComponent {
 
   onResetPassword() {
     if (this.email) {
-      // Aquí iría la lógica para enviar el correo con el enlace de restablecimiento
-      alert(`Se ha enviado un enlace de restablecimiento a ${this.email}`);
+      alert(`Revisa tu bandeja en ${this.email} para recuperar tu contraseña.`);
       this.router.navigate(['/login']);
     } else {
-      alert('Por favor, ingrese un correo electrónico válido.');
+      alert('Correo electrónico inexistente.');
     }
   }
 }
