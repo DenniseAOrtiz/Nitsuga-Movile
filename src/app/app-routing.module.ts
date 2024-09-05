@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   {
@@ -23,8 +24,12 @@ const routes: Routes = [
     component: SearchResultsComponent
   },
   {
-    path: 'reset-password',  // Añade esta ruta
+    path: 'reset-password',
     component: ResetPasswordComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
 ];
 

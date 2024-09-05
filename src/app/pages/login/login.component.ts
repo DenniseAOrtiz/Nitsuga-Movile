@@ -13,17 +13,19 @@ export class LoginComponent {
   constructor(private router: Router) {}
 
   onLogin() {
-    // Aquí iría la lógica de autenticación real
-    if (this.username === 'bnicovani' && this.password === '12345') {
-      // Credenciales válidas, redirige a la página de inicio
-      this.router.navigate(['/home']);
+    if (this.username === 'admin' && this.password === '1234asD') {
+      this.router.navigate(['/folder/home']);
     } else {
-      // Muestra un mensaje de error si las credenciales no son correctas
       alert('Contraseña o usuario incorrecto');
     }
   }
 
   onResetPassword() {
     this.router.navigate(['/reset-password']);
+  }  
+
+  goToRegister() {
+    console.log('Navigating to register');
+    this.router.navigate(['/register']);
   }  
 }

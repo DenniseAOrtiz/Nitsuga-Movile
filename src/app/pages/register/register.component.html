@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Registrarme</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+    <ion-item>
+      <ion-label position="floating">Nombre de usuario</ion-label>
+      <ion-input type="text" [(ngModel)]="username" name="username" required #usernameInput="ngModel"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="usernameInput.invalid && usernameInput.touched">
+      El nombre de usuario es obligatorio.
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" required #emailInput="ngModel"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="emailInput.invalid && emailInput.touched">
+      El correo electrónico es obligatorio.
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="password" name="password" required #passwordInput="ngModel"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="passwordInput.invalid && passwordInput.touched">
+      La contraseña es obligatoria.
+    </ion-note>
+
+    <ion-button expand="block" type="submit" [disabled]="registerForm.invalid">
+      Registrarme
+    </ion-button>
+    <ion-button expand="block" color="light" (click)="goToLogin()">
+      Ir a Inicio de Sesión
+    </ion-button>
+  </form>
+</ion-content>
