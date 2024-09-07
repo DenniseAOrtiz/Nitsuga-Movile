@@ -1,0 +1,12 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+.button-container {
+    display: flex;
+  justify-content: center;
+  width: 100%; 
+}
+
+.button-container a {
+    width: 100%;
+  }
