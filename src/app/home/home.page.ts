@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
+import { Component, ElementRef, ViewChildren, ViewChild } from '@angular/core';
+import type { QueryList } from '@angular/core';
+import type { Animation } from '@ionic/angular';
+import { AnimationController, IonCard } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -10,27 +12,21 @@ export class HomePage {
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
   }
+  @ViewChild(IonCard, { read: ElementRef }) card: ElementRef<HTMLIonCardElement>;
+
+  private animation: Animation;
+
   constructor(private animationCtrl: AnimationController) {}
 
-  enterAnimation = (baseEl: HTMLElement) => {
-    const backdropAnimation = this.animationCtrl
-    .create()
-    .addElement(baseEl.querySelector('ion-backdrop')!)
-    .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
-
-  const wrapperAnimation = this.animationCtrl
-    .create()
-    .addElement(baseEl.querySelector('.modal-wrapper')!)
-    .keyframes([
-      { offset: 0, opacity: '0', transform: 'scale(0)' },
-      { offset: 1, opacity: '0.99', transform: 'scale(1)' },
-    ]);
-
-  return this.animationCtrl
-    .create()
-    .addElement(baseEl)
-    .easing('ease-out')
-    .duration(500)
-    .addAnimation([backdropAnimation, wrapperAnimation]);
+  ngAfterViewInit() {
+    this.animation = this.animationCtrl
+      .create()
+      .addElement(this.card.nativeElement)
+      .duration(1500)
+      .iterations(Infinity)
+      .direction('alternate')
+      .fromTo('background', 'blue', 'var(--background)');
+    
+    this.animation.play();
   }
 }

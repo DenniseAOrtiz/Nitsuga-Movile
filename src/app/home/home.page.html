@@ -8,7 +8,9 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <p>Bienvenido a Nitsuga!</p>
+    <ion-card #card>
+      <ion-card-content>Bievenido a Nitsuga!</ion-card-content>
+    </ion-card>
     <ion-button id="open-modal" expand="block">Nosotros</ion-button>
     <ion-modal #modal trigger="open-modal" [canDismiss]="canDismiss" [presentingElement]="page">
       <ng-template>
@@ -27,7 +29,6 @@
           <p>Contamos con formularios de comunicación online y también otros canales de soporte para mejorar la experiencia del cliente.</p><br>
           <h2>Seguridad  <ion-icon name="lock-closed"></ion-icon></h2><br>
           <p>Tus compras y datos personales siempre estarán protegidos por un sistema de seguridad seguro y confiable.</p>
-
         </ion-content>
       </ng-template>
     </ion-modal>
