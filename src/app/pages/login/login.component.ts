@@ -14,7 +14,7 @@ export class LoginComponent {
 
   onLogin() {
     if (this.username === 'admin' && this.password === '1234asD') {
-      this.router.navigate(['/folder/home']);
+      this.router.navigate(['/home']);
     } else {
       alert('Contraseña o usuario incorrecto');
     }

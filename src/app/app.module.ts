@@ -9,15 +9,14 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { LoginComponent } from './pages/login/login.component';
-import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { RegisterComponent } from './pages/register/register.component';
+
 
 
 @NgModule({
   declarations: [AppComponent, 
     LoginComponent,
-    SearchResultsComponent,
     ResetPasswordComponent,
     RegisterComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule],
