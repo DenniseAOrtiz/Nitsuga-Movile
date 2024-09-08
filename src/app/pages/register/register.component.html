@@ -8,36 +8,34 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+  <form id="registerForm">
     <ion-item>
-      <ion-label position="floating">Nombre de usuario</ion-label>
-      <ion-input type="text" [(ngModel)]="username" name="username" required #usernameInput="ngModel"></ion-input>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input type="text" id="username" name="username" required></ion-input>
     </ion-item>
-    <ion-note color="danger" *ngIf="usernameInput.invalid && usernameInput.touched">
-      El nombre de usuario es obligatorio.
-    </ion-note>
+    <div id="usernameError" class="error-message"></div>
 
     <ion-item>
       <ion-label position="floating">Correo Electrónico</ion-label>
-      <ion-input type="email" [(ngModel)]="email" name="email" required #emailInput="ngModel"></ion-input>
+      <ion-input type="email" id="email" name="email" required></ion-input>
     </ion-item>
-    <ion-note color="danger" *ngIf="emailInput.invalid && emailInput.touched">
-      El correo electrónico es obligatorio.
-    </ion-note>
+    <div id="emailError" class="error-message"></div>
 
     <ion-item>
       <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="password" name="password" required #passwordInput="ngModel"></ion-input>
+      <ion-input type="password" id="password" name="password" required></ion-input>
     </ion-item>
-    <ion-note color="danger" *ngIf="passwordInput.invalid && passwordInput.touched">
-      La contraseña es obligatoria.
-    </ion-note>
+    <div id="passwordError" class="error-message"></div>
 
-    <ion-button expand="block" type="submit" [disabled]="registerForm.invalid">
-      Registrarme
-    </ion-button>
-    <ion-button expand="block" color="light" (click)="goToLogin()">
-      Ir a Inicio de Sesión
-    </ion-button>
+    <ion-item>
+      <ion-label position="floating">Confirmar Contraseña</ion-label>
+      <ion-input type="password" id="confirmPassword" name="confirmPassword" required></ion-input>
+    </ion-item>
+    <div id="confirmPasswordError" class="error-message"></div>
+
+    <ion-button expand="block" type="submit">Registrarse</ion-button>
   </form>
+  <ion-button expand="block" color="light" (click)="goToLogin()">
+    Ir a Inicio de Sesión
+  </ion-button>
 </ion-content>
