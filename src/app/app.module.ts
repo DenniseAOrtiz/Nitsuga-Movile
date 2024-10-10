@@ -7,13 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MatButtonModule } from '@angular/material/button';
-import { LoginComponent } from './pages/login/login.component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { RegisterComponent } from './pages/register/register.component';
+import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
+import { RegisterComponent } from './login/register/register.component';
 
 @NgModule({
   declarations: [AppComponent, 
-    LoginComponent,
     ResetPasswordComponent,
     RegisterComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule],

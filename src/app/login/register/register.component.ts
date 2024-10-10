@@ -64,12 +64,13 @@ export class RegisterComponent implements OnInit {
   }
 
   isValidEmail(email: string): boolean {
+    //expresion regular de validacion de correo
     const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   }
 
   isValidPassword(password: string): boolean {
-    // Expresión regular para validar la contraseña
+    //expresion regular de validacion de contrasena
     const passwordRegex = /^(?=.*\d{4})(?=.*[a-zA-Z]{3})(?=.*[A-Z]).{7,}$/; 
     return passwordRegex.test(password);
   }
