@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 
 @Component({
@@ -8,6 +9,8 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
+  isLoggedIn: boolean = false;
+
   public appPages = [
     { title: 'Inicio', url: 'home', icon: 'home' },
     { title: 'Categorias', url: '/folder/categorias', icon: 'grid' },
@@ -18,6 +21,10 @@ export class AppComponent {
   ];
 
   public labels = ['Familia', 'Notas', 'Amigos'];
-  constructor() {}
+  constructor(private authService: AuthService) {
+    this.authService.isLoggedIn$.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
 }
 
