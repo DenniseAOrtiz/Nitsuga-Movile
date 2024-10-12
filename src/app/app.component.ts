@@ -21,10 +21,5 @@ export class AppComponent {
   ];
 
   public labels = ['Familia', 'Notas', 'Amigos'];
-  constructor(private authService: AuthService) {
-    this.authService.isLoggedIn$.subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
-    });
-  }
 }
 
