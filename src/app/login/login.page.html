@@ -1,4 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Campo para el nombre de usuario -->
+  <ion-item>
+    <ion-label position="floating">Username</ion-label>
+    <ion-input type="text" [(ngModel)]="username"></ion-input>
+  </ion-item>
+
+  <!-- Campo para la contraseña -->
+  <ion-item>
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+
+  <!-- Mensaje de error si las credenciales no son válidas -->
+  <ion-text color="danger" *ngIf="errorMessage">Credenciales inválidas</ion-text>
+
+  <!-- Botón para iniciar sesión -->
+  <ion-button expand="block" (click)="login()">Login</ion-button>
+
+  <!-- Link opcional para navegar a la página de registro -->
+  <ion-item lines="none">
+    <ion-label>Don't have an account?</ion-label>
+    <ion-button fill="clear" routerLink="/register">Register</ion-button>
+  </ion-item>
+</ion-content>
+
+
+
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Iniciar sesión</ion-title>
   </ion-toolbar>
@@ -45,4 +79,4 @@
     </ion-button>
     
   </form>
-</ion-content>
+</ion-content> -->
