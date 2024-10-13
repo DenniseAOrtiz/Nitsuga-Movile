@@ -1,4 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Campo para el nombre de usuario -->
+  <ion-item>
+    <ion-label position="floating">Username</ion-label>
+    <ion-input type="text" [(ngModel)]="username"></ion-input>
+  </ion-item>
+
+  <!-- Campo para la contraseña -->
+  <ion-item>
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+
+  <!-- Confirmación de la contraseña -->
+  <ion-item>
+    <ion-label position="floating">Confirm Password</ion-label>
+    <ion-input type="password" [(ngModel)]="confirmPassword"></ion-input>
+  </ion-item>
+
+  <!-- Mostrar mensajes de error -->
+  <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+
+  <!-- Botón para registrar -->
+  <ion-button expand="block" (click)="register()">Register</ion-button>
+</ion-content>
+
+
+
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -38,4 +72,4 @@
   <ion-button expand="block" color="light" (click)="goToLogin()">
     Ir a Inicio de Sesión
   </ion-button>
-</ion-content>
+</ion-content> -->

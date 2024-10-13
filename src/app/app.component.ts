@@ -13,7 +13,7 @@ export class AppComponent {
 
   public appPages = [
     { title: 'Inicio', url: 'home', icon: 'home' },
-    { title: 'Categorias', url: '/folder/categorias', icon: 'grid' },
+    { title: 'Categorias', url: '/categorias', icon: 'grid' },
     { title: 'Lista de deseos', url: '/folder/favoritos', icon: 'heart-circle' },
     { title: 'Mis compras', url: '/folder/compras', icon: 'bag-handle' },
     { title: 'Mis direcciones', url: '/folder/direcciones', icon: 'paper-plane' },
@@ -21,10 +21,5 @@ export class AppComponent {
   ];
 
   public labels = ['Familia', 'Notas', 'Amigos'];
-  constructor(private authService: AuthService) {
-    this.authService.isLoggedIn$.subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
-    });
-  }
 }
 
