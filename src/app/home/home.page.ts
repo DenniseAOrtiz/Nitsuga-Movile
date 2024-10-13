@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChildren, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChildren, ViewChild, AfterViewInit } from '@angular/core';
 import type { QueryList } from '@angular/core';
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
@@ -11,7 +11,7 @@ import { LoadingController } from '@ionic/angular';
 })
 
 
-export class HomePage {
+export class HomePage implements AfterViewInit {
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
   }
