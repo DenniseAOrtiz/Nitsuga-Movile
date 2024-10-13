@@ -1,7 +1,0 @@
-{
-  "name": "NitsugaMovile",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
