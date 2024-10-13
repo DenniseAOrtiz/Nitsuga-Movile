@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChildren, ViewChild } from '@angular/core';
 import type { QueryList } from '@angular/core';
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,7 @@ export class HomePage {
 
   private animation: Animation;
 
-  constructor(private animationCtrl: AnimationController) {}
+  constructor(private animationCtrl: AnimationController, private loadingCtrl: LoadingController) {}
 
   ngAfterViewInit() {
     this.animation = this.animationCtrl
@@ -28,5 +29,13 @@ export class HomePage {
       .fromTo('background', 'blue', 'var(--background)');
     
     this.animation.play();
+  }
+
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      duration: 500,
+    });
+
+    loading.present();
   }
 }

@@ -1,9 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Categorías</ion-title>
+    <div style="display:flex;">
+      <img src="../assets/img/Logo/logonitsuga.png" alt="logo" style="height: 50px; margin-right: 10px;" [routerLink]="['/home']" (click)="showLoading()">
+      <ion-buttons slot="start">
+        <ion-title>Categorías</ion-title>
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
