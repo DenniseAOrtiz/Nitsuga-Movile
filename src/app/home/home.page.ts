@@ -1,5 +1,4 @@
-import { Component, ElementRef, ViewChildren, ViewChild, AfterViewInit } from '@angular/core';
-import type { QueryList } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -10,7 +9,7 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 
-export class HomePage implements AfterViewInit {
+export class HomePage {
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
   }
@@ -20,17 +19,6 @@ export class HomePage implements AfterViewInit {
 
   constructor(private animationCtrl: AnimationController, private loadingCtrl: LoadingController) { }
 
-  ngAfterViewInit() {
-    this.animation = this.animationCtrl
-      .create()
-      .addElement(this.card!.nativeElement)
-      .duration(1500)
-      .iterations(Infinity)
-      .direction('alternate')
-      .fromTo('background', 'blue', 'var(--background)');
-
-    this.animation.play();
-  }
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({
