@@ -15,7 +15,11 @@ describe('CategoriasPage', () => {
     expect(component).toBeTruthy();
   });
 <<<<<<< HEAD
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> bc4898767ced711e9e71540fa657a24a1b9279cc
 =======
 });
 >>>>>>> bc4898767ced711e9e71540fa657a24a1b9279cc
