@@ -1,15 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <div style="display:flex;">
-      <img src="../assets/img/Logo/logonitsuga.png" alt="logo" style="height: 50px; margin-right: 10px;" [routerLink]="['/home']" (click)="showLoading()">
-      <ion-buttons slot="start">
-        <ion-title>Categorías</ion-title>
-        <ion-menu-button></ion-menu-button>
+    <div style="display: flex; background-color: rgb(114, 114, 114);">
+      <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
+        (click)="showLoading()">
+      <ion-title style="color:white;">Inicio</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button style="color:white;"></ion-menu-button>
       </ion-buttons>
     </div>
   </ion-toolbar>
 </ion-header>
-
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -26,17 +26,6 @@
   
     <ion-card-content>
       HOLAAAAAAAAAAAAAAAAAAAAAAA
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/art_varios.JPEG" />
-    <ion-card-header>
-      <ion-card-title>Artículos Varios</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Here's a small text description for the card content. Nothing more, nothing less.
     </ion-card-content>
   </ion-card>
 
@@ -77,6 +66,17 @@
     <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/peluches.JPEG" />
     <ion-card-header>
       <ion-card-title>Peluches</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Here's a small text description for the card content. Nothing more, nothing less.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/art_varios.JPEG" />
+    <ion-card-header>
+      <ion-card-title>Zona Random</ion-card-title>
     </ion-card-header>
   
     <ion-card-content>

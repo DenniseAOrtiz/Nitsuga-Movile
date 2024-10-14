@@ -28,7 +28,6 @@ export class DbService {
         `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
-          email TEXT UNIQUE,
           password TEXT
         )`,
         []
@@ -40,7 +39,7 @@ export class DbService {
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string, email: string): Promise<boolean> {
+  public async register(username: string, password: string): Promise<boolean> {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial.');
@@ -49,9 +48,9 @@ export class DbService {
     }
 
     try {
-      const data = [username, password, email];
+      const data = [username, password];
       await this.dbInstance.executeSql(
-        `INSERT INTO users (username, password, email) VALUES (?, ?, ?)`,
+        `INSERT INTO users (username, password) VALUES (?, ?)`,
         data
       );
       alert('Usuario registrado correctamente');
@@ -63,11 +62,11 @@ export class DbService {
   }
 
   // Iniciar sesión de usuario
-  public async login(username: string, password: string, email: string): Promise<boolean> {
+  public async login(username: string, password: string): Promise<boolean> {
     try {
       const result = await this.dbInstance.executeSql(
         `SELECT * FROM users WHERE username = ? AND password = ?`,
-        [username, password, email]
+        [username, password]
       );
 
       if (result.rows.length > 0) {

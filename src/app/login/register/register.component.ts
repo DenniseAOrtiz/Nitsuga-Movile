@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   username: string = '';
-  email: string = '';
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string = '';
@@ -24,7 +23,7 @@ export class RegisterComponent {
     }
 
     // Llama al servicio de autenticación para registrar al usuario
-    const success = await this.dbService.register(this.username, this.password, this.email);
+    const success = await this.dbService.register(this.username, this.password);
     
     console.log(success);
 

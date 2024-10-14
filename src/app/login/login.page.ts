@@ -10,22 +10,22 @@ import { DbService } from '../services/db.service';
 export class LoginPage {
   username: string = '';
   password: string = '';
-  email: string = '';
   errorMessage: string = ''; 
 
   constructor(private router: Router, private DbService: DbService) {}
 
   async register() {
-    const success = await this.DbService.register(this.username, this.password, this.email);
+    const success = await this.DbService.register(this.username, this.password);
     if (success) {
       console.log('Usuario registrado');
     } else {
       console.log('Registro fallido');
     }
   }
+  
 
   async login() {
-    const success = await this.DbService.login(this.username, this.password, this.email);
+    const success = await this.DbService.login(this.username, this.password);
     
     if (success) {
       console.log('Inicio de sesión exitoso');

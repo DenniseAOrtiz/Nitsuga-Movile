@@ -10,7 +10,6 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 
-
 export class HomePage implements AfterViewInit {
   async canDismiss(data?: any, role?: string) {
     return role !== 'gesture';
@@ -19,7 +18,7 @@ export class HomePage implements AfterViewInit {
 
   private animation: Animation | undefined;
 
-  constructor(private animationCtrl: AnimationController, private loadingCtrl: LoadingController) {}
+  constructor(private animationCtrl: AnimationController, private loadingCtrl: LoadingController) { }
 
   ngAfterViewInit() {
     this.animation = this.animationCtrl
@@ -29,7 +28,7 @@ export class HomePage implements AfterViewInit {
       .iterations(Infinity)
       .direction('alternate')
       .fromTo('background', 'blue', 'var(--background)');
-    
+
     this.animation.play();
   }
 

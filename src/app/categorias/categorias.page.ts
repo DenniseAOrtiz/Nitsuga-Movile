@@ -6,7 +6,7 @@ import { LoadingController } from '@ionic/angular';
   templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
 })
-export class CategoriasPage implements OnInit {
+export class CategoriasPage {
 
   constructor(private loadingCtrl: LoadingController) { }
 
@@ -18,7 +18,5 @@ export class CategoriasPage implements OnInit {
     loading.present();
   }
 
-  ngOnInit() {
-  }
 
 }
