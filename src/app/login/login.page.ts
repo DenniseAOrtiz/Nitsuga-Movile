@@ -22,6 +22,7 @@ export class LoginPage {
       console.log('Registro fallido');
     }
   }
+  
 
   async login() {
     const success = await this.DbService.login(this.username, this.password);
