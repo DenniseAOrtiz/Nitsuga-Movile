@@ -23,20 +23,20 @@ export class AppComponent {
   ];
 
   public labels = ['Familia', 'Notas', 'Amigos'];
-  constructor(private authService: AuthService, private loadingCtrl: LoadingController, private menu: MenuController) {
-    this.authService.isLoggedIn$.subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
-    });
-  }
+  // constructor(private authService: AuthService, private loadingCtrl: LoadingController, private menu: MenuController) {
+  //   this.authService.isLoggedIn$.subscribe(loggedIn => {
+  //     this.isLoggedIn = loggedIn;
+  //   });
+  // }
 
-  closeMenu() {
-    this.menu.close();
-  }
-  async showLoading() {
-    const loading = await this.loadingCtrl.create({
-      duration: 500,
-    });
+  // closeMenu() {
+  //   this.menu.close();
+  // }
+  // async showLoading() {
+  //   const loading = await this.loadingCtrl.create({
+  //     duration: 500,
+  //   });
 
-    loading.present();
-  }
+  //   loading.present();
+  // }
 }
