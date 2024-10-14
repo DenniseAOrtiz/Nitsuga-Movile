@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   username: string = '';
+  email: string = '';
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string = '';
@@ -16,20 +17,20 @@ export class RegisterComponent {
   constructor(@Inject(DbService) private dbService: DbService, private router: Router) {}
 
   async register() {
-    // Validar que las contraseñas coincidan
+    // Valida que las contraseñas coincidan
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden';
       return;
     }
 
-    // Llamar al servicio de autenticación para registrar al usuario
-    const success = await this.dbService.register(this.username, this.password);
+    // Llama al servicio de autenticación para registrar al usuario
+    const success = await this.dbService.register(this.username, this.password, this.email);
     
     console.log(success);
 
     if (success) {
       console.log('Usuario registrado correctamente');
-      this.router.navigate(['/login']);  // Navegar a la página de login después del registro exitoso
+      this.router.navigate(['/login']); 
     } else {
       this.errorMessage = 'Registro fallido.';
     }

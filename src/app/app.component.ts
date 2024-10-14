@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { DbService } from './services/db.service';
+import { LoadingController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 
 
 @Component({
@@ -21,4 +23,20 @@ export class AppComponent {
   ];
 
   public labels = ['Familia', 'Notas', 'Amigos'];
+  // constructor(private authService: AuthService, private loadingCtrl: LoadingController, private menu: MenuController) {
+  //   this.authService.isLoggedIn$.subscribe(loggedIn => {
+  //     this.isLoggedIn = loggedIn;
+  //   });
+  // }
+
+  // closeMenu() {
+  //   this.menu.close();
+  // }
+  // async showLoading() {
+  //   const loading = await this.loadingCtrl.create({
+  //     duration: 500,
+  //   });
+
+  //   loading.present();
+  // }
 }

@@ -10,27 +10,28 @@ import { DbService } from '../services/db.service';
 export class LoginPage {
   username: string = '';
   password: string = '';
-  errorMessage: string = ''; // Definimos la propiedad errorMessage
+  email: string = '';
+  errorMessage: string = ''; 
 
   constructor(private router: Router, private DbService: DbService) {}
 
   async register() {
-    const success = await this.DbService.register(this.username, this.password);
+    const success = await this.DbService.register(this.username, this.password, this.email);
     if (success) {
-      console.log('User registered');
+      console.log('Usuario registrado');
     } else {
-      console.log('Registration failed');
+      console.log('Registro fallido');
     }
   }
 
   async login() {
-    const success = await this.DbService.login(this.username, this.password);
+    const success = await this.DbService.login(this.username, this.password, this.email);
     
     if (success) {
-      console.log('Login successful');
-      this.router.navigate(['/home']);  // Navegar a la página principal si el login es exitoso
+      console.log('Inicio de sesión exitoso');
+      this.router.navigate(['/home']); 
     } else {
-      this.errorMessage = 'Invalid username or password';  // Mostrar mensaje de error
+      this.errorMessage = 'Invalid username or password'; 
     }
   }
 
@@ -38,7 +39,7 @@ export class LoginPage {
     this.router.navigate(['/reset-password']);
   } 
   public goToRegister() {
-    console.log('Navigating to register');
+    console.log('Navegando a registro');
     this.router.navigate(['/register']);
   } 
 }
