@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() { }
+  constructor(private loadingCtrl: LoadingController) { }
+
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      duration: 500,
+    });
+
+    loading.present();
+  }
+  async canDismiss(data?: any, role?: string) {
+    return role !== 'gesture';
+  }
+
 
   
 
