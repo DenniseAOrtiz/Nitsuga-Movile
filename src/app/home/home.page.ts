@@ -1,5 +1,4 @@
-import { Component, ElementRef, ViewChildren, ViewChild, AfterViewInit } from '@angular/core';
-import type { QueryList } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
@@ -11,7 +10,7 @@ import { DbService } from '../services/db.service';
   styleUrls: ['./home.page.scss'],
 })
 
-export class HomePage implements AfterViewInit {
+export class HomePage {
   username: string | null = '';
 
   @ViewChild(IonCard, { read: ElementRef }) card: ElementRef<HTMLIonCardElement> | undefined;
@@ -22,18 +21,6 @@ export class HomePage implements AfterViewInit {
     private loadingCtrl: LoadingController,
     private dbService: DbService) {
     this.username = this.dbService.getUsername(); // Recuperamos el nombre de usuario
-  }
-
-  ngAfterViewInit() {
-    this.animation = this.animationCtrl
-      .create()
-      .addElement(this.card!.nativeElement)
-      .duration(1500)
-      .iterations(Infinity)
-      .direction('alternate')
-      .fromTo('background', 'blue', 'var(--background)');
-
-    this.animation.play();
   }
 
   async showLoading() {
