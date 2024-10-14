@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,34 +11,25 @@ import { DbService } from '../services/db.service';
 export class LoginPage {
   username: string = '';
   password: string = '';
-  errorMessage: string = ''; 
+  errorMessage: string = '';
 
-  constructor(private router: Router, private DbService: DbService) {}
-
-  async register() {
-    const success = await this.DbService.register(this.username, this.password);
-    if (success) {
-      console.log('Usuario registrado');
-    } else {
-      console.log('Registro fallido');
-    }
-  }
-  
+  constructor(private router: Router, private dbService: DbService, private authService: AuthService) {}
 
   async login() {
-    const success = await this.DbService.login(this.username, this.password);
+    const result = await this.dbService.login(this.username, this.password);
     
-    if (success) {
-      console.log('Inicio de sesión exitoso');
+    if (result.success) {
+      this.authService.setAuth(true, result.isAdmin);
       this.router.navigate(['/home']); 
     } else {
-      this.errorMessage = 'Invalid username or password'; 
+      this.errorMessage = 'Credenciales inválidas';
     }
   }
 
   public onResetPassword() {
     this.router.navigate(['/reset-password']);
   } 
+  
   public goToRegister() {
     console.log('Navegando a registro');
     this.router.navigate(['/register']);

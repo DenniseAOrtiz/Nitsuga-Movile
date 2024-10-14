@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { DbService } from '../../services/db.service'; // Asegúrate de que la ruta es correcta
+import { DbService } from '../../services/db.service'; 
 import { Router } from '@angular/router';
 
 @Component({

@@ -1,13 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <div style="display: flex; background-color: rgb(114, 114, 114);">
-      <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
-        (click)="showLoading()">
-      <ion-title style="color:white;">Inicio</ion-title>
-      <ion-buttons slot="end">
-        <ion-menu-button style="color:white;"></ion-menu-button>
-      </ion-buttons>
-    </div>
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -23,5 +16,7 @@
       </div>
     </ion-toolbar>
   </ion-header>
+
+  <h2 *ngIf="username">Hola, {{ username }}</h2> <!-- Mensaje de bienvenida -->
 </ion-content>
 
