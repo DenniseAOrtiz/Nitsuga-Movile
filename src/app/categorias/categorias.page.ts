@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
 })
-export class CategoriasPage implements OnInit {
+export class CategoriasPage {
 
-  constructor() { }
+  constructor(private loadingCtrl: LoadingController) { }
 
-  ngOnInit() {
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      duration: 500,
+    });
+
+    loading.present();
   }
+
 
 }

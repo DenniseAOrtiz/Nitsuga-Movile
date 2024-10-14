@@ -9,7 +9,6 @@ import { LoadingController } from '@ionic/angular';
 export class HomePage {
 
   constructor(private loadingCtrl: LoadingController) { }
-
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       duration: 500,
@@ -17,10 +16,6 @@ export class HomePage {
 
     loading.present();
   }
-  async canDismiss(data?: any, role?: string) {
-    return role !== 'gesture';
-  }
-
 
   
 

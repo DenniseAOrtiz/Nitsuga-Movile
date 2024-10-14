@@ -14,4 +14,8 @@ describe('CategoriasPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> bc4898767ced711e9e71540fa657a24a1b9279cc

@@ -15,7 +15,12 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">home</ion-title>
+      <div style="display:flex;">
+        <img src="../assets/img/Logo/logonitsuga.png" alt="logo" style="height: 50px; margin-right: 10px;" [routerLink]="['/home']" (click)="showLoading()">
+        <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+      </div>
     </ion-toolbar>
   </ion-header>
 </ion-content>
