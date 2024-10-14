@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,4 +15,6 @@
       </div>
     </ion-toolbar>
   </ion-header>
+
+  <h2 *ngIf="username">Hola, {{ username }}</h2> <!-- Mensaje de bienvenida -->
 </ion-content>

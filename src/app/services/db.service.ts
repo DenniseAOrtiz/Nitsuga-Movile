@@ -7,6 +7,8 @@ import { Platform } from '@ionic/angular';
 })
 export class DbService {
   private dbInstance!: SQLiteObject;
+  private currentUsername: string | null = null;
+  private currentIsAdmin: boolean = false;
 
   constructor(private sqlite: SQLite, private platform: Platform) {
     this.platform.ready().then(() => {
@@ -28,8 +30,8 @@ export class DbService {
         `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
-          email TEXT UNIQUE,
-          password TEXT
+          password TEXT,
+          isAdmin INTEGER DEFAULT 0
         )`,
         []
       );
@@ -40,18 +42,18 @@ export class DbService {
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string, email: string): Promise<boolean> {
+  public async register(username: string, password: string, isAdmin: boolean = false): Promise<boolean> {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
-      alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial.');
+      alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
       return false;
     } else {
     }
 
     try {
-      const data = [username, password, email];
+      const data = [username, password, isAdmin ? 1 : 0];
       await this.dbInstance.executeSql(
-        `INSERT INTO users (username, password, email) VALUES (?, ?, ?)`,
+        `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
         data
       );
       alert('Usuario registrado correctamente');
@@ -63,24 +65,35 @@ export class DbService {
   }
 
   // Iniciar sesión de usuario
-  public async login(username: string, password: string, email: string): Promise<boolean> {
+  public async login(username: string, password: string, isAdmin: boolean = false): Promise<{ success: boolean; isAdmin: boolean }> {
     try {
       const result = await this.dbInstance.executeSql(
-        `SELECT * FROM users WHERE username = ? AND password = ?`,
-        [username, password, email]
+        `SELECT * FROM users WHERE username = ? AND password = ? AND isAdmin = ?`,
+        [username, password, isAdmin]
       );
 
       if (result.rows.length > 0) {
+        const user = result.rows.item(0);
+        this.currentUsername = username;
+        this.currentIsAdmin = user.isAdmin === 1; // 1 es admin
         alert('Inicio de sesión exitoso');
-        return true;
+        return { success: true, isAdmin: this.currentIsAdmin };
       } else {
         alert('Credenciales inválidas');
-        return false;
+        return { success: false, isAdmin: false };
       }
     } catch (error) {
       alert('Error al iniciar sesión');
-      return false;
+      return { success: false, isAdmin: false };
     }
+  }
+
+  public getUsername(): string | null {
+    return this.currentUsername;
+  }
+
+  public isUserAdmin(): boolean {
+    return this.currentIsAdmin; // Método para verificar si el usuario es admin
   }
 
   public async getAllUsers() {

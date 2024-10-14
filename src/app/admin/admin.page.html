@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Administración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let categoria of categorias">
+      {{ categoria.nombre }}
+      <ion-button (click)="categoriaEdicion = { id: categoria.id, nombre: categoria.nombre }">Editar</ion-button>
+      <ion-button (click)="eliminarCategoria(categoria.id)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-input [(ngModel)]="nuevaCategoria" placeholder="Nueva categoría"></ion-input>
+  <ion-button (click)="agregarCategoria()">Agregar Categoría</ion-button>
+
+  <ion-list>
+    <ion-item *ngFor="let producto of productos">
+      <img [src]="producto.imagen" alt="{{ producto.nombre }}" style="width: 50px; height: 50px;">
+      {{ producto.nombre }} - {{ producto.precio | currency }}
+      <ion-button (click)="productoEdicion = { id: producto.id, nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen }">Editar</ion-button>
+      <ion-button (click)="eliminarProducto(producto.id)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-input [(ngModel)]="nuevoProductoNombre" placeholder="Nombre del producto"></ion-input>
+  <ion-input [(ngModel)]="nuevoProductoPrecio" placeholder="Precio del producto" type="number"></ion-input>
+  <ion-input [(ngModel)]="nuevoProductoImagen" placeholder="URL de la imagen"></ion-input>
+  <ion-select [(ngModel)]="categoriaSeleccionada" placeholder="Seleccionar categoría">
+    <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</ion-select-option>
+  </ion-select>
+  <ion-button (click)="agregarProducto()">Agregar Producto</ion-button>
+</ion-content>
