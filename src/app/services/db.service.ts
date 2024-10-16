@@ -41,7 +41,7 @@ export class DbService {
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string): Promise<boolean> {
+  public async register(username: string, password: string) {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
@@ -64,7 +64,7 @@ export class DbService {
   }
 
   // Iniciar sesión de usuario
-  public async login(username: string, password: string){
+  public async login(username: string, password: string) {
     try {
       const result = await this.dbInstance.executeSql(
         `SELECT * FROM users WHERE username = ? AND password = ?`,
@@ -74,6 +74,7 @@ export class DbService {
       if (result.rows.length > 0) {
         const username = result.rows.item(0);
         this.currentUsername = username;
+       // this.currentIsAdmin = user.isAdmin === 1; // 1 es admin
         alert('Inicio de sesión exitoso');
         this.router.navigate(['/home']);
         return {success: true};
@@ -91,6 +92,9 @@ export class DbService {
     return this.currentUsername;
   }
 
+  // public isUserAdmin(): boolean {
+  //   return this.currentIsAdmin; // Método para verificar si el usuario es admin
+  // }
 
   public async getAllUsers() {
     try {
