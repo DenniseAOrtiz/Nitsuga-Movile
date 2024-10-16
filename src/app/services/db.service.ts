@@ -22,7 +22,7 @@ export class DbService {
   private async createDB() {
     try {
       const db = await this.sqlite.create({
-        name: 'users.db',
+        name: 'ecommerce.db',
         location: 'default'
       });
       this.dbInstance = db;
@@ -41,6 +41,28 @@ export class DbService {
     } catch (error) {
       alert('No se pudo crear la base de datos ' + error);
     }
+
+    await this.dbInstance.executeSql(
+      `CREATE TABLE IF NOT EXISTS categorias (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        descripcion TEXT
+      )`, []
+    );
+
+    // Crear tabla de productos
+    await this.dbInstance.executeSql(
+      `CREATE TABLE IF NOT EXISTS productos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        descripcion TEXT,
+        precio REAL NOT NULL,
+        imagen TEXT,
+        categoriaId INTEGER,
+        FOREIGN KEY (categoriaId) REFERENCES categorias (id) ON DELETE CASCADE
+      )`, []
+    );
+
   }
 
   // Registro de un nuevo usuario
@@ -65,6 +87,8 @@ export class DbService {
       return false;
     }
   }
+
+  
 
   // Iniciar sesión de usuario
   public async login(username: string, password: string) {
@@ -119,4 +143,47 @@ export class DbService {
       return [];
     }
   }
+
+  // Métodos para gestionar categorías
+  public async addCategoria(nombre: string, descripcion: string) {
+    const sql = 'INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)';
+    await this.dbInstance.executeSql(sql, [nombre, descripcion]);
+  }
+
+  public async getCategorias() {
+    const sql = 'SELECT * FROM categorias';
+    const data = await this.dbInstance.executeSql(sql, []);
+    const categorias = [];
+    for (let i = 0; i < data.rows.length; i++) {
+      categorias.push(data.rows.item(i));
+    }
+    return categorias;
+  }
+
+  public async deleteCategoria(id: number) {
+    const sql = 'DELETE FROM categorias WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [id]);
+  }
+
+  // Métodos para gestionar productos
+  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
+    await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId]);
+  }
+
+  public async getProductos() {
+    const sql = 'SELECT * FROM productos';
+    const data = await this.dbInstance.executeSql(sql, []);
+    const productos = [];
+    for (let i = 0; i < data.rows.length; i++) {
+      productos.push(data.rows.item(i));
+    }
+    return productos;
+  }
+
+  public async deleteProducto(id: number) {
+    const sql = 'DELETE FROM productos WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [id]);
+  }
 }
+

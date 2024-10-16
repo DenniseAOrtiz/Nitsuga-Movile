@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProdService } from '../services/prod.service';
+import { DbService } from '../services/db.service';
 import { ModalController, AlertController } from '@ionic/angular';
 import { AddCategoryModalComponent } from '../modals/add-category-modal/add-category-modal.component';
 import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
@@ -13,10 +13,11 @@ export class AdminPage implements OnInit {
   categorias: any[] = [];
   productos: any[] = [];
 
-  constructor(private prodService: ProdService, private modalController: ModalController, private alertController: AlertController) {}
+  constructor(private dbService: DbService, private modalController: ModalController, private alertController: AlertController) {}
 
   async ngOnInit() {
-    this.categorias = await this.prodService.getCategorias();
+    this.categorias = await this.dbService.getCategorias();
+    this.productos = await this.dbService.getProductos();
   }
 
   async agregarCategoria() {
@@ -26,8 +27,8 @@ export class AdminPage implements OnInit {
 
     modal.onDidDismiss().then(async (result) => {
       if (result.data) {
-        await this.prodService.addCategoria(result.data.nombre, result.data.descripcion);
-        this.categorias = await this.prodService.getCategorias();
+        await this.dbService.addCategoria(result.data.nombre, result.data.descripcion);
+        this.categorias = await this.dbService.getCategorias();
       }
     });
 
@@ -46,8 +47,8 @@ export class AdminPage implements OnInit {
         {
           text: 'Sí, eliminar',
           handler: async () => {
-            await this.prodService.deleteCategoria(id);
-            this.categorias = await this.prodService.getCategorias();
+            await this.dbService.deleteCategoria(id);
+            this.categorias = await this.dbService.getCategorias();
           },
         },
       ],
@@ -68,7 +69,7 @@ export class AdminPage implements OnInit {
     });
 
     modal.onDidDismiss().then(async () => {
-      this.productos = await this.prodService.getProductos();
+      this.productos = await this.dbService.getProductos();
     });
 
     return await modal.present();
