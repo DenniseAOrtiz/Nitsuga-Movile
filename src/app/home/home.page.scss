@@ -1,0 +1,20 @@
+ion-col {
+    text-align: center;
+    border-radius: 20px;
+}
+
+.card-image{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+}
+
+ion-card-title{
+    font-size: 13px;
+}
+
+ion-card-subtitle{
+    font-size: 20px;
+    color: rgb(153, 46, 46);
+}

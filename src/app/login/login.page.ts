@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
-//import { AuthService } from '../services/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -24,6 +24,7 @@ export class LoginPage {
       this.errorMessage = 'Credenciales inválidas';
     }
   }
+  
 
   public onResetPassword() {
     this.router.navigate(['/reset-password']);

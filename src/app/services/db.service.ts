@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DbService {
+export class DbService { 
   private dbInstance!: SQLiteObject;
   private currentUsername: string | null = null;
- // private currentIsAdmin: boolean = false;
 
-  constructor(private sqlite: SQLite, private platform: Platform) {
+  constructor(private sqlite: SQLite, private platform: Platform, private router: Router) {
     this.platform.ready().then(() => {
       this.createDB();
     });
@@ -34,7 +34,7 @@ export class DbService {
         )`,
         []
       );
-      alert('Base de datos creada y tabla de usuarios lista');
+      console.log('Base de datos creada y tabla de usuarios lista');
     } catch (error) {
       console.error('No se pudo crear la base de datos', error);
     }
@@ -72,7 +72,7 @@ export class DbService {
       );
 
       if (result.rows.length > 0) {
-        const user = result.rows.item(0);
+        const username = result.rows.item(0);
         this.currentUsername = username;
        // this.currentIsAdmin = user.isAdmin === 1; // 1 es admin
         alert('Inicio de sesión exitoso');
