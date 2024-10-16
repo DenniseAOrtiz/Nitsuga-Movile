@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { ModalController } from '@ionic/angular';
+import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
+import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class DbService {
   private currentUsername: string | null = null;
   private currentIsAdmin: boolean = false;
 
-  constructor(private sqlite: SQLite, private platform: Platform, private router: Router) {
+  constructor(private sqlite: SQLite, private platform: Platform, private router: Router, private modalController: ModalController) {
     this.platform.ready().then(() => {
       this.createDB();
     });
@@ -160,12 +162,35 @@ export class DbService {
     return categorias;
   }
 
+  public async editarCategoria(id: number, nombre: string, descripcion: string) {
+    const sql = 'UPDATE categorias SET nombre = ?, descripcion = ? WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [nombre, descripcion, id]);
+  }
+  
+
   public async deleteCategoria(id: number) {
     const sql = 'DELETE FROM categorias WHERE id = ?';
     await this.dbInstance.executeSql(sql, [id]);
   }
 
-  // Métodos para gestionar productos
+
+    // Métodos para gestionar productos
+  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string) {
+    const modal = await this.modalController.create({
+      component: EditProductModalComponent,
+      componentProps: { id, nombre, descripcion, precio, imagen } 
+    });
+  
+    modal.onDidDismiss().then(async (result) => {
+      if (result.data && result.data.updated) {
+        await this.getProductos(); 
+      }
+    });
+  
+    return await modal.present();
+  }
+
+
   public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
     const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
     await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId]);
@@ -185,5 +210,7 @@ export class DbService {
     const sql = 'DELETE FROM productos WHERE id = ?';
     await this.dbInstance.executeSql(sql, [id]);
   }
+
+  
 }
 

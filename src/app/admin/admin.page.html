@@ -8,11 +8,11 @@
   <ion-list>
     <ion-item *ngFor="let categoria of categorias">
       {{ categoria.nombre }}
-      <ion-button (click)="verProductos(categoria.id)">Ver Productos</ion-button>
+      <ion-button (click)="editarCategoria(categoria)">Editar</ion-button>
       <ion-button (click)="eliminarCategoria(categoria.id)">Eliminar</ion-button>
-      <ion-button (click)="agregarProducto(categoria.id)">Agregar Producto</ion-button>
+      <ion-button [routerLink]="['/productos', categoria.id]">Ver Productos</ion-button>
     </ion-item>
-  </ion-list>
+  </ion-list>  
 
   <ion-button (click)="agregarCategoria()">Agregar Categoría</ion-button>
 </ion-content>

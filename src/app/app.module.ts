@@ -14,13 +14,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { DbService } from './services/db.service';
 import { AddCategoryModalComponent } from './modals/add-category-modal/add-category-modal.component';
 import { AddProductModalComponent } from './modals/add-product-modal/add-product-modal.component';
+import { EditProductModalComponent } from './modals/edit-product-modal/edit-product-modal.component';
+import { EditarCategoryModalComponent } from './modals/editar-category-modal/editar-category-modal.component';
 
 @NgModule({
   declarations: [AppComponent, 
     ResetPasswordComponent,
     RegisterComponent,
     AddCategoryModalComponent,
-    AddProductModalComponent],
+    AddProductModalComponent,
+    EditProductModalComponent,
+    EditarCategoryModalComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService], 
