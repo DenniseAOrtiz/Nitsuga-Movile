@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 export class DbService { 
   private dbInstance!: SQLiteObject;
   private currentUsername: string | null = null;
+  private currentIsAdmin: boolean = false;
 
   constructor(private sqlite: SQLite, private platform: Platform, private router: Router) {
     this.platform.ready().then(() => {
@@ -31,17 +33,18 @@ export class DbService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
+          isAdmin INTEGER DEFAULT 0
         )`,
         []
       );
-      console.log('Base de datos creada y tabla de usuarios lista');
+      // alert('Base de datos creada y tabla de usuarios lista');
     } catch (error) {
-      console.error('No se pudo crear la base de datos', error);
+      alert('No se pudo crear la base de datos ' + error);
     }
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string) {
+  public async register(username: string, password: string, isAdmin: boolean) {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
@@ -50,9 +53,9 @@ export class DbService {
     }
 
     try {
-      const data = [username, password];
+      const data = [username, password, 0];
       await this.dbInstance.executeSql(
-        `INSERT INTO users (username, password) VALUES (?, ?)`,
+        `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
         data
       );
       alert('Usuario registrado correctamente');
@@ -72,11 +75,18 @@ export class DbService {
       );
 
       if (result.rows.length > 0) {
-        const username = result.rows.item(0);
-        this.currentUsername = username;
-       // this.currentIsAdmin = user.isAdmin === 1; // 1 es admin
-        alert('Inicio de sesión exitoso');
-        this.router.navigate(['/home']);
+        const user = result.rows.item(0);
+        // alert(JSON.stringify(user));
+        // alert(user.isAdmin);
+        this.currentUsername = user.username;
+        this.currentIsAdmin = user.isAdmin === 1 ? true : false; // 1 es admin
+        // alert('Inicio de sesión exitoso');
+        // alert(this.currentIsAdmin);
+        if (this.currentIsAdmin) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/home']);
+        }
         return {success: true};
       } else {
         alert('Credenciales inválidas');
