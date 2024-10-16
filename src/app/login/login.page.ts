@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
-import { AuthService } from '../services/auth.service';
+//import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +13,12 @@ export class LoginPage {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private router: Router, private dbService: DbService, private authService: AuthService) {}
+  constructor(private router: Router, private dbService: DbService) {}
 
   async login() {
     const result = await this.dbService.login(this.username, this.password);
     
     if (result.success) {
-      this.authService.setAuth(true, result.isAdmin);
       this.router.navigate(['/home']); 
     } else {
       this.errorMessage = 'Credenciales inválidas';
