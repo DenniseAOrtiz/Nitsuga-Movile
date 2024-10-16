@@ -19,7 +19,7 @@ export class LoginPage {
     const result = await this.dbService.login(this.username, this.password);
     
     if (result.success) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home']); 
     } else {
       this.errorMessage = 'Credenciales inválidas';
     }
