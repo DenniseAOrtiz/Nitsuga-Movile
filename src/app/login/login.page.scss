@@ -104,3 +104,63 @@ ion-button {
         /* Regresa al color inicial */
     }
 }
+
+
+.transparent-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    /* Ajusta la altura según sea necesario */
+    background-color: transparent;
+    /* Fondo del footer transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.pikachu-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.pikachu {
+    position: absolute;
+    left: -100px;
+    height: 60px;
+    animation: catWalk 5s linear infinite;
+    /* Animación continua */
+    animation-delay: 10s;
+    /* Se ejecutará cada 7 segundos */
+    visibility: hidden;
+}
+
+@keyframes catWalk {
+    0% {
+        left: -100px;
+        /* Inicio fuera de la pantalla */
+        visibility: visible;
+        /* El gato es visible */
+    }
+
+    30% {
+        left: 100vw;
+        /* Termina fuera de la pantalla por la derecha */
+        visibility: visible;
+        /* Sigue visible mientras camina */
+    }
+
+    31% {
+        visibility: hidden;
+        /* Se oculta inmediatamente después de salir */
+    }
+
+    100% {
+        left: -100px;
+        /* Regresa al inicio */
+        visibility: hidden;
+        /* Permanece oculto hasta la próxima animación */
+    }
+}

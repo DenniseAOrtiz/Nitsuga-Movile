@@ -15,26 +15,12 @@ export class LoginPage {
   password: string = '';
   errorMessage: string = '';
   isAdmin: boolean = false;
+  isLoading = false;
 
-  constructor(private router: Router, private dbService: DbService, private authService: AuthService, private loadingCtrl: LoadingController) {}
 
-  async login() {
-    const result = await this.dbService.login(this.username, this.password);
-    
-    if (!result.success) {
-      this.errorMessage = 'Credenciales inválidas';
-    } 
-  }
-  
 
-  public onResetPassword() {
-    this.router.navigate(['/reset-password']);
-  } 
-  
-  public goToRegister() {
-    console.log('Navegando a registro');
-    this.router.navigate(['/register']);
-  } 
+  constructor(private router: Router, private dbService: DbService, private authService: AuthService, private loadingCtrl: LoadingController) { }
+
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       duration: 500,
@@ -42,4 +28,29 @@ export class LoginPage {
 
     loading.present();
   }
+
+
+
+  async login() {
+    this.showLoading();
+    const result = await this.dbService.login(this.username, this.password);
+
+    if (!result.success) {
+      this.errorMessage = 'Credenciales inválidas';
+    }
+    this.isLoading = false;
+  }
+
+
+  public onResetPassword() {
+    this.router.navigate(['/reset-password']);
+  }
+
+  public goToRegister() {
+    console.log('Navegando a registro');
+    this.router.navigate(['/register']);
+  }
 }
+
+
+
