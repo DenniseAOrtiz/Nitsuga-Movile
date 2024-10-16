@@ -13,6 +13,7 @@ import { LoadingController } from '@ionic/angular';
 
 export class AppComponent {
   dropdownOpen = false; 
+  isLoading = false;
 
 
   constructor(private menu: MenuController, private loadingCtrl: LoadingController) { }
@@ -20,6 +21,7 @@ export class AppComponent {
   closeMenu() {
     this.menu.close();
   }
+
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       duration: 500,

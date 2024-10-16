@@ -1,5 +1,3 @@
-
-
 <ion-content class="ion-padding centered-page">
   <!-- Campo para el nombre de usuario -->
 
@@ -15,30 +13,35 @@
           <ion-label position="floating">Nombre de Usuario</ion-label>
           <ion-input type="text" [(ngModel)]="username"></ion-input>
         </ion-item>
-  
+
         <!-- Campo para la contraseña -->
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
           <ion-input type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
-  
+
         <!-- Mensaje de error si las credenciales no son válidas -->
         <ion-text color="danger" *ngIf="errorMessage">Credenciales inválidas</ion-text>
-  
+
         <!-- Botón para iniciar sesión -->
-        <ion-button expand="block" (click)="login()">Iniciar Sesión</ion-button>
-  
+        <ion-button expand="block" (click)="login()" (click)="showLoading()">Iniciar Sesión</ion-button>
+
         <!-- Link opcional para navegar a la página de registro -->
-  
-        <ion-button expand="block" color="light" routerLink="/register">¡Registrate aquí!</ion-button>
+
+        <ion-button expand="block" color="light" routerLink="/register" (click)="showLoading()">¡Registrate
+          aquí!</ion-button>
         <ion-item lines="none">
-          <ion-button expand="full" fill="clear" color="dark" routerLink="/reset-password">¿Olvidaste tu
+          <ion-button expand="full" fill="clear" color="dark" routerLink="/reset-password"
+            (click)="showLoading()">¿Olvidaste tu
             contraseña?</ion-button>
         </ion-item>
       </form>
     </ion-card-content>
-
-    
-
   </ion-card>
 </ion-content>
+<footer class="transparent-footer">
+  <div class="pikachu-container">
+    <img src="../assets/gif/pikachucorre.gif" alt="pikachu" class="pikachu">
+  </div>
+</footer>
+

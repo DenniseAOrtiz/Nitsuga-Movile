@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { DbService } from '../../services/db.service'; 
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class RegisterComponent {
   isAdmin: boolean = false;
   errorMessage: string = '';
 
-  constructor(@Inject(DbService) private dbService: DbService, private router: Router) {}
+  constructor(@Inject(DbService) private dbService: DbService, private router: Router, private loadingCtrl: LoadingController) {}
 
   async register() {
     // Valida que las contraseñas coincidan
@@ -35,5 +36,13 @@ export class RegisterComponent {
     } else {
       this.errorMessage = 'Registro fallido.';
     }
+  }
+
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      duration: 500,
+    });
+
+    loading.present();
   }
 }
