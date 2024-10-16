@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { DbService } from './services/db.service';
 import { MenuController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 
 
@@ -16,7 +18,7 @@ export class AppComponent {
   isLoading = false;
 
 
-  constructor(private menu: MenuController, private loadingCtrl: LoadingController) { }
+  constructor(private menu: MenuController, private loadingCtrl: LoadingController, private authService: AuthService, private router: Router) { }
 
   closeMenu() {
     this.menu.close();
@@ -32,6 +34,11 @@ export class AppComponent {
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  logout() {
+    this.authService.logout(); // Ejecuta la lógica de cierre de sesión
+    this.router.navigate(['/login']); // Redirige al usuario a la página de login
   }
 }
 
