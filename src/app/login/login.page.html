@@ -26,13 +26,13 @@
         <ion-text color="danger" *ngIf="errorMessage">Credenciales inválidas</ion-text>
   
         <!-- Botón para iniciar sesión -->
-        <ion-button expand="block" (click)="login()">Iniciar Sesión</ion-button>
+        <ion-button expand="block" (click)="login()" (click)="showLoading()">Iniciar Sesión</ion-button>
   
         <!-- Link opcional para navegar a la página de registro -->
   
-        <ion-button expand="block" color="light" routerLink="/register">¡Registrate aquí!</ion-button>
+        <ion-button expand="block" color="light" routerLink="/register" (click)="showLoading()">¡Registrate aquí!</ion-button>
         <ion-item lines="none">
-          <ion-button expand="full" fill="clear" color="dark" routerLink="/reset-password">¿Olvidaste tu
+          <ion-button expand="full" fill="clear" color="dark" routerLink="/reset-password" (click)="showLoading()">¿Olvidaste tu
             contraseña?</ion-button>
         </ion-item>
       </form>
