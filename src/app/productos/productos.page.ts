@@ -1,40 +1,40 @@
-import { Component } from '@angular/core';
-import { ProdService } from '../services/prod.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DbService } from '../services/db.service';
+import { ModalController } from '@ionic/angular';
+import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
+
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.page.html',
   styleUrls: ['./productos.page.scss'],
 })
-export class ProductosPage {
-  constructor(private prodService: ProdService) {}
+export class ProductosPage implements OnInit {
+  productos: any[] = [];
+  categoriaId: number | null = null;
 
-  async agregarCategoria() {
-    const nombreCategoria = 'Electrónica'; // Cambia según sea necesario
-    const result = await this.prodService.addCategoria(nombreCategoria);
-    if (result) {
-      console.log('Categoría agregada');
-    }
+  constructor(private route: ActivatedRoute, private dbService: DbService, private modalController: ModalController) {}
+
+  async ngOnInit() {
+    this.categoriaId = Number(this.route.snapshot.paramMap.get('id'));
+    await this.loadProductos();
   }
 
-  async agregarProducto() {
-    const nombreProducto = 'Teléfono'; // Cambia según sea necesario
-    const precioProducto = 299.99; // Cambia según sea necesario
-    const categoriaId = 1; // ID de la categoría a la que pertenece el producto
-    const imagen = 'ruta/a/la/imagen'; // Cambia según sea necesario
-    const result = await this.prodService.addProducto(nombreProducto, precioProducto, categoriaId, imagen);
-    if (result) {
-      console.log('Producto agregado');
-    }
+  async loadProductos() {
+    this.productos = await this.dbService.getProductos();
+    this.productos = this.productos.filter(producto => producto.categoriaId === this.categoriaId);
   }
 
-  async obtenerCategorias() {
-    const categorias = await this.prodService.getCategorias();
-    console.log(categorias);
+  async editarProducto(producto: any) {
+    const modal = await this.modalController.create({
+      component: EditProductModalComponent,
+      componentProps: { producto }
+    });
   }
 
-  async obtenerProductos() {
-    const productos = await this.prodService.getProductos();
-    console.log(productos);
+  async eliminarProducto(productoId: number) {
+    await this.dbService.deleteProducto(productoId);
+    await this.loadProductos();
   }
 }
