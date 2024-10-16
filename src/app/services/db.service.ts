@@ -75,7 +75,7 @@ export class DbService {
         const username = result.rows.item(0);
         this.currentUsername = username;
         alert('Inicio de sesión exitoso');
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/home']);
         return {success: true};
       } else {
         alert('Credenciales inválidas');
