@@ -11,7 +11,8 @@ export class ProductosPage {
 
   async agregarCategoria() {
     const nombreCategoria = 'Electrónica'; // Cambia según sea necesario
-    const result = await this.prodService.addCategoria(nombreCategoria);
+    const descripcion = 'Productos electrónicos'; // Cambia según sea necesario
+    const result = await this.prodService.addCategoria(nombreCategoria, descripcion);
     if (result) {
       console.log('Categoría agregada');
     }

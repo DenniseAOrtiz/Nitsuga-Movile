@@ -52,11 +52,11 @@ export class ProdService {
   }
 
   // Método para agregar una categoría
-  public async addCategoria(nombre: string): Promise<boolean> {
+  public async addCategoria(nombre: string, descripcion: string): Promise<boolean> {
     try {
       await this.dbInstance.executeSql(
-        `INSERT INTO categorias (nombre) VALUES (?)`,
-        [nombre]
+        `INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)`,
+        [nombre, descripcion]
       );
       return true;
     } catch (error) {

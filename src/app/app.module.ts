@@ -12,11 +12,15 @@ import { RegisterComponent } from './login/register/register.component';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { DbService } from './services/db.service';
+import { AddCategoryModalComponent } from './modals/add-category-modal/add-category-modal.component';
+import { AddProductModalComponent } from './modals/add-product-modal/add-product-modal.component';
 
 @NgModule({
   declarations: [AppComponent, 
     ResetPasswordComponent,
-    RegisterComponent],
+    RegisterComponent,
+    AddCategoryModalComponent,
+    AddProductModalComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService], 
