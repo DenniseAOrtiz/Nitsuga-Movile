@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../services/db.service';
 import { ModalController } from '@ionic/angular';
+import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
 import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
 
 
@@ -13,6 +14,7 @@ import { EditProductModalComponent } from '../modals/edit-product-modal/edit-pro
 export class ProductosPage implements OnInit {
   productos: any[] = [];
   categoriaId: number | null = null;
+  edicionProducto: { id: number; nombre: string; descripcion: string; precio: number; imagen: string } | null = null;
 
   constructor(private route: ActivatedRoute, private dbService: DbService, private modalController: ModalController) {}
 
@@ -24,6 +26,14 @@ export class ProductosPage implements OnInit {
   async loadProductos() {
     this.productos = await this.dbService.getProductos();
     this.productos = this.productos.filter(producto => producto.categoriaId === this.categoriaId);
+  }
+
+  async agregarProducto() {
+    const modal = await this.modalController.create({
+      component: AddProductModalComponent,
+      componentProps: { categoriaId: this.categoriaId }
+    });
+    await modal.present();
   }
 
   async editarProducto(producto: any) {
