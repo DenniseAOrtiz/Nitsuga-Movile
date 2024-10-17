@@ -47,7 +47,7 @@ export class AdminPage implements OnInit {
 
     modal.onDidDismiss().then(async (result) => {
       if (result.data) {
-        await this.dbService.addCategoria(result.data.nombre, result.data.descripcion);
+        await this.dbService.addCategoria(result.data.nombre, result.data.descripcion, result.data.imagen);
         this.categorias = await this.dbService.getCategorias();
       }
     });

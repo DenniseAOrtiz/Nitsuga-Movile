@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
-import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
+//import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +48,7 @@ export class DbService {
       `CREATE TABLE IF NOT EXISTS categorias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
+        imagen TEXT,
         descripcion TEXT
       )`, []
     );
@@ -147,9 +148,9 @@ export class DbService {
   }
 
   // Métodos para gestionar categorías
-  public async addCategoria(nombre: string, descripcion: string) {
-    const sql = 'INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)';
-    await this.dbInstance.executeSql(sql, [nombre, descripcion]);
+  public async addCategoria(nombre: string, descripcion: string, imagen: string) {
+    const sql = 'INSERT INTO categorias (nombre, descripcion, imagen) VALUES (?, ?, ?)';
+    await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen]);
   }
 
   public async getCategorias() {
