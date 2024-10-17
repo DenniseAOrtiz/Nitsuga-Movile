@@ -10,7 +10,7 @@ import { LoadingController } from '@ionic/angular';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage{
   username: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -29,6 +29,14 @@ export class LoginPage {
     loading.present();
   }
 
+  ionViewWillEnter() {
+    this.clearInputs(); // Limpia los inputs antes de mostrar la página
+  }
+
+  clearInputs() {
+    this.username = '';
+    this.password = '';
+  }
 
 
   async login() {
@@ -50,6 +58,7 @@ export class LoginPage {
     console.log('Navegando a registro');
     this.router.navigate(['/register']);
   }
+
 }
 
 
