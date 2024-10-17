@@ -7,10 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class CategoryService {
   private apiUrl = 'https://Nitsuga-Movile/api'; 
-  
+
   constructor(private http: HttpClient) {}
 
   getCategories(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/categorias`);
-  }
+  }  
+  //agregar categoria
 }
+

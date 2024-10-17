@@ -174,7 +174,7 @@ export class DbService {
     await this.dbInstance.executeSql(sql, [id]);
   }
 
-
+ 
     // Métodos para gestionar productos
   async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string) {
     const modal = await this.modalController.create({
