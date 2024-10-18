@@ -1,19 +1,23 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Productos</ion-title>
+    <div style="display: flex;">
+      <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
+        (click)="showLoading()">
+      <ion-title>Productos</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let producto of productos">
-      <img [src]="producto.imagen" alt="{{ producto.nombre }}" style="width: 50px; height: 50px;">
-      <h2>{{ producto.nombre }}</h2>
-      <p>{{ producto.descripcion }}</p>
-      <p>{{ producto.precio | currency }}</p>
-      <ion-button (click)="agregarProducto()">Agregar</ion-button>
-      <ion-button (click)="editarProducto(producto)">Editar</ion-button>
-      <ion-button (click)="eliminarProducto(producto.id)">Eliminar</ion-button>
+      {{ producto.nombre }} 
+      {{ producto.descripcion }}
+      {{ producto.precio | currency }}
+      <ion-img [src]="producto.imagen" alt="Imagen del producto"></ion-img>
     </ion-item>
   </ion-list>
 </ion-content>
