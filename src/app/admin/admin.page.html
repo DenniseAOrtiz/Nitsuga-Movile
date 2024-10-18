@@ -6,13 +6,11 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let categoria of categorias">
-      {{ categoria.nombre }}
-      <ion-button (click)="editarCategoria(categoria)">Editar</ion-button>
-      <ion-button (click)="eliminarCategoria(categoria.id)">Eliminar</ion-button>
-      <ion-button [routerLink]="['/productos', categoria.id]">Ver Productos</ion-button>
+    <ion-item>
+      <ion-button [routerLink]="['/admin/admin-cat']">Gestión de Categorías</ion-button>
+      <ion-button [routerLink]="['/admin/admin-prod']">Gestión de Productos</ion-button>
+      <ion-button [routerLink]="['/admin/admin-users']">Gestión de Usuarios</ion-button>
     </ion-item>
   </ion-list>  
 
-  <ion-button (click)="addCategory()">Agregar Categoría</ion-button>
 </ion-content>
