@@ -16,6 +16,8 @@ import { AddCategoryModalComponent } from './modals/add-category-modal/add-categ
 import { AddProductModalComponent } from './modals/add-product-modal/add-product-modal.component';
 import { EditProductModalComponent } from './modals/edit-product-modal/edit-product-modal.component';
 import { EditarCategoryModalComponent } from './modals/editar-category-modal/editar-category-modal.component';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -24,10 +26,11 @@ import { EditarCategoryModalComponent } from './modals/editar-category-modal/edi
     AddCategoryModalComponent,
     AddProductModalComponent,
     EditProductModalComponent,
-    EditarCategoryModalComponent],
+    EditarCategoryModalComponent,
+  ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService], 
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}

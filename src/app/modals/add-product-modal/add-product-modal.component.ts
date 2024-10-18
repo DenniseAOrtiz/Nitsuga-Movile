@@ -8,11 +8,12 @@ import { DbService } from '../../services/db.service';
   styleUrls: ['./add-product-modal.component.scss'],
 })
 export class AddProductModalComponent {
+  categorias: any[] = [];
   nombre: string = '';
   descripcion: string = '';
-  precio: number | null = null;
+  precio: number = 0;
+  categoriaId: number | null = null; 
   imagen: string = '';
-  categoriaId: number;
 
   constructor(private modalController: ModalController, private navParams: NavParams, private dbService: DbService) {
     this.categoriaId = this.navParams.get('categoriaId');
@@ -22,9 +23,14 @@ export class AddProductModalComponent {
     this.modalController.dismiss();
   }
 
-  addProduct() {
-    const nuevoPrecio = this.precio ?? 0; 
-    this.dbService.addProducto(this.nombre, this.descripcion, nuevoPrecio, this.imagen, this.categoriaId);
-    this.modalController.dismiss();
+  async addProduct() {
+    if (this.nombre && this.descripcion && this.precio && this.categoriaId) {
+      const result = await this.dbService.addProducto(this.nombre, this.descripcion, this.precio, this.imagen, this.categoriaId);
+      if (result.success) {
+        this.modalController.dismiss();
+      }
+    } else {
+      alert('Por favor, complete todos los campos.');
+    }
   }
 }

@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DbService } from '../services/db.service';
-import { ModalController } from '@ionic/angular';
-import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
-import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
-
+import { ProductService } from '../services/product.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-productos',
@@ -13,38 +9,31 @@ import { EditProductModalComponent } from '../modals/edit-product-modal/edit-pro
 })
 export class ProductosPage implements OnInit {
   productos: any[] = [];
-  categoriaId: number | null = null;
-  edicionProducto: { id: number; nombre: string; descripcion: string; precio: number; imagen: string } | null = null;
 
-  constructor(private route: ActivatedRoute, private dbService: DbService, private modalController: ModalController) {}
+  constructor(private loadingCtrl: LoadingController, private productService: ProductService) { }
 
-  async ngOnInit() {
-    this.categoriaId = Number(this.route.snapshot.paramMap.get('id'));
-    await this.loadProductos();
-  }
-
-  async loadProductos() {
-    this.productos = await this.dbService.getProductos();
-    this.productos = this.productos.filter(producto => producto.categoriaId === this.categoriaId);
-  }
-
-  async agregarProducto() {
-    const modal = await this.modalController.create({
-      component: AddProductModalComponent,
-      componentProps: { categoriaId: this.categoriaId }
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      duration: 500,
     });
-    await modal.present();
+
+    loading.present();
   }
 
-  async editarProducto(producto: any) {
-    const modal = await this.modalController.create({
-      component: EditProductModalComponent,
-      componentProps: { producto }
+  ngOnInit() {
+    this.showLoading();
+    this.loadProductos();
+  }
+
+  loadProductos() {
+    this.productService.getProductos().subscribe((data) => {
+      this.productos = data;
+    }, 
+    (error) => {
+      console.error('Error al cargar los productos', error);
     });
   }
 
-  async eliminarProducto(productoId: number) {
-    await this.dbService.deleteProducto(productoId);
-    await this.loadProductos();
-  }
+
+
 }

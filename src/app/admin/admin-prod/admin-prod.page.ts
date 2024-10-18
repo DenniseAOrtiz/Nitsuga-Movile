@@ -28,7 +28,7 @@ export class AdminProdPage implements OnInit {
     this.productos = this.productos.filter(producto => producto.categoriaId === this.categoriaId);
   }
 
-  async agregarProducto() {
+  async addProduct() {
     const modal = await this.modalController.create({
       component: AddProductModalComponent,
       componentProps: { categoriaId: this.categoriaId }

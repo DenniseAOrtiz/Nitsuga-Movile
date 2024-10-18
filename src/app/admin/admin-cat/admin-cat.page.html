@@ -10,7 +10,7 @@
       {{ categoria.nombre }}
       <ion-button (click)="editarCategoria(categoria)">Editar</ion-button>
       <ion-button (click)="eliminarCategoria(categoria.id)">Eliminar</ion-button>
-      <ion-button [routerLink]="['/productos', categoria.id]">Ver Productos</ion-button>
+      <ion-button [routerLink]="['admin-prod', categoria.id]">Ver Productos</ion-button>
     </ion-item>
   </ion-list>  
 
