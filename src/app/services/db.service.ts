@@ -9,7 +9,7 @@ import { EditProductModalComponent } from '../modals/edit-product-modal/edit-pro
 @Injectable({
   providedIn: 'root'
 })
-export class DbService { 
+export class DbService {
   private dbInstance!: SQLiteObject;
   private currentUsername: string | null = null;
   private currentIsAdmin: boolean = false;
@@ -29,13 +29,13 @@ export class DbService {
       });
       this.dbInstance = db;
 
-    // tabla de usuarios
+      // tabla de usuarios
       await this.dbInstance.executeSql(
         `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 0
+          isAdmin INTEGER DEFAULT 1
         )`,
         []
       );
@@ -70,8 +70,8 @@ export class DbService {
           imagen TEXT,
           categoriaId INTEGER,
       )`, []
-    );
-    //alert('Base de datos creada y tabla de productos lista');
+      );
+      //alert('Base de datos creada y tabla de productos lista');
     } catch (error) {
       alert('No se pudo crear la base de datos productos ' + error);
     }
@@ -88,7 +88,7 @@ export class DbService {
     }
 
     try {
-      const data = [username, password, 0];
+      const data = [username, password, 1];
       await this.dbInstance.executeSql(
         `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
         data
@@ -101,7 +101,7 @@ export class DbService {
     }
   }
 
-  
+
 
   // Iniciar sesión 
   public async login(username: string, password: string) {
@@ -124,7 +124,7 @@ export class DbService {
         } else {
           this.router.navigate(['/home']);
         }
-        return {success: true};
+        return { success: true };
       } else {
         alert('Credenciales inválidas');
         return { success: false };
@@ -159,6 +159,7 @@ export class DbService {
     try {
       await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen]);
       alert('Categoría agregada correctamente');
+      alert('Favor recargue la página');
       return { success: true };
     } catch (error) {
       alert('Error al agregar la categoría: ' + JSON.stringify(error));
@@ -172,8 +173,8 @@ export class DbService {
       const data = await this.dbInstance.executeSql(sql, []);
       const categorias = [];
       for (let i = 0; i < data.rows.length; i++) {
-      categorias.push(data.rows.item(i));
-    }
+        categorias.push(data.rows.item(i));
+      }
       return categorias;
     } catch (error) {
       alert('Error al obtener las categorías');
@@ -192,7 +193,7 @@ export class DbService {
       return { success: false };
     }
   }
-  
+
 
   public async deleteCategoria(id: number) {
     const sql = 'DELETE FROM categorias WHERE id = ?';
@@ -207,19 +208,19 @@ export class DbService {
   }
 
 
-    // Gestionar productos
-  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+  // Gestionar productos
+  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
     const modal = await this.modalController.create({
       component: EditProductModalComponent,
-      componentProps: { id, nombre, descripcion, precio, imagen, categoriaId } 
+      componentProps: { id, nombre, descripcion, precio, imagen, categoriaId }
     });
-  
+
     modal.onDidDismiss().then(async (result) => {
       if (result.data && result.data.updated) {
-        await this.getProductos(); 
+        await this.getProductos();
       }
     });
-  
+
     return await modal.present();
   }
 
@@ -244,6 +245,7 @@ export class DbService {
     await this.dbInstance.executeSql(sql, [id]);
   }
 
-  
+
+
 }
 
