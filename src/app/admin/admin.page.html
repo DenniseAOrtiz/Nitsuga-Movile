@@ -1,14 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Administración</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="addCategory()" (click)="showLoading()">
-        <ion-icon color="secondary" name="add-circle-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="recargarCategorias()" (click)="showLoading()">
-        <ion-icon color="secondary" slot="icon-only" name="refresh-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title> <!-- Muestra el nombre de usuario -->
@@ -16,23 +8,25 @@
       <ion-button (click)="logout()" (click)="showLoading()">
         <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
       </ion-button>
-    </ion-buttons >
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let categoria of categorias">
-      {{ categoria.nombre }}
-      <ion-buttons slot="end">
-        <ion-button color="warning" (click)="editarCategoria(categoria)"><ion-icon slot="start"
-            name="create-outline"></ion-icon></ion-button>
-        <ion-button color="danger" (click)="eliminarCategoria(categoria.id)"><ion-icon slot="start"
-            name="close-circle-outline"></ion-icon></ion-button>
-        <ion-button color="dark" [routerLink]="['/productos', categoria.id]"><ion-icon slot="start"
-            name="search-circle-outline"></ion-icon></ion-button>
-      </ion-buttons>
-    </ion-item>
-  </ion-list>
+<ion-content class="full-screen">
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size="12" class="button-col">
+      <ion-button [routerLink]="['/admin/admin-cat']" expand="block" >Gestión de Categorías</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size="12" class="button-col">
+      <ion-button [routerLink]="['/admin/admin-prod']" expand="block">Gestión de Productos</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size="12" class="button-col">
+      <ion-button [routerLink]="['/admin/admin-users']" expand="block">Gestión de Usuarios</ion-button>
+    </ion-col>
+  </ion-row>
 </ion-content>

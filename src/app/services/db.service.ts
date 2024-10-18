@@ -13,6 +13,7 @@ export class DbService {
   private dbInstance!: SQLiteObject;
   private currentUsername: string | null = null;
   private currentIsAdmin: boolean = false;
+  
 
   constructor(private sqlite: SQLite, private platform: Platform, private router: Router, private modalController: ModalController) {
     this.platform.ready().then(() => {
@@ -69,11 +70,12 @@ export class DbService {
           precio REAL NOT NULL,
           imagen TEXT,
           categoriaId INTEGER,
+          FOREIGN KEY (categoriaId) REFERENCES categorias(id)
       )`, []
       );
       //alert('Base de datos creada y tabla de productos lista');
     } catch (error) {
-      alert('No se pudo crear la base de datos productos ' + error);
+      alert('No se pudo crear la tabla de productos: ' + JSON.stringify(error));
     }
 
   }
@@ -208,8 +210,30 @@ export class DbService {
   }
 
 
-  // Gestionar productos
-  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+    // Gestionar productos
+  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
+    try {
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId]);
+      alert('Producto agregado correctamente');
+      return { success: true };
+    } catch (error) {
+      alert('Error al agregar el producto: ' + JSON.stringify(error));
+      return { success: false };
+    }
+  }
+
+  public async getProductos() {
+    const sql = 'SELECT * FROM productos';
+    const data = await this.dbInstance.executeSql(sql, []);
+    const productos = [];
+    for (let i = 0; i < data.rows.length; i++) {
+      productos.push(data.rows.item(i));
+    }
+    return productos;
+  }
+
+  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
     const modal = await this.modalController.create({
       component: EditProductModalComponent,
       componentProps: { id, nombre, descripcion, precio, imagen, categoriaId }
@@ -222,22 +246,6 @@ export class DbService {
     });
 
     return await modal.present();
-  }
-
-
-  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
-    await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId]);
-  }
-
-  public async getProductos() {
-    const sql = 'SELECT * FROM productos';
-    const data = await this.dbInstance.executeSql(sql, []);
-    const productos = [];
-    for (let i = 0; i < data.rows.length; i++) {
-      productos.push(data.rows.item(i));
-    }
-    return productos;
   }
 
   public async deleteProducto(id: number) {

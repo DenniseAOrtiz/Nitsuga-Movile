@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volverAdmin()">
+        <ion-icon color="secondary" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Gestión de Usuarios</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title> <!-- Muestra el nombre de usuario -->
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" (click)="showLoading()">
+        <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<!-- AQUI QUIERO CONSUMIR UNA API EXTERNA, PARA MOSTRAR UNA LISTA DE USUARIOS -->
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">admin-users</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>
