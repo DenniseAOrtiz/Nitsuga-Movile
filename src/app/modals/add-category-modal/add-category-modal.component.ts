@@ -15,12 +15,12 @@ export class AddCategoryModalComponent {
 
   constructor(private modalController: ModalController, private dbService: DbService) {}
 
-  dismiss() {
-    this.modalController.dismiss();
-  }
-
   addCategory() {
     this.dbService.addCategoria(this.nombre, this.descripcion, this.imagen);
+    this.modalController.dismiss({ data: { nombre: this.nombre, descripcion: this.descripcion, imagen: this.imagen } });
+  }
+  dismiss() {
     this.modalController.dismiss();
+    this.dbService.getCategorias();
   }
 }

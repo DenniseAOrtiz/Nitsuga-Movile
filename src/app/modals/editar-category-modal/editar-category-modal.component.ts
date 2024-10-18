@@ -11,7 +11,7 @@ export class EditarCategoryModalComponent implements OnInit {
   categoria: any; 
   nuevoNombre: string = '';
   nuevaDescripcion: string = '';
-
+  nuevaImagen: string = '';
   constructor(
     private modalController: ModalController,
     private navParams: NavParams,
@@ -25,7 +25,7 @@ export class EditarCategoryModalComponent implements OnInit {
   }
 
   async guardarCambios() {
-    await this.dbService.editarCategoria(this.categoria.id, this.nuevoNombre, this.nuevaDescripcion);
+    await this.dbService.editarCategoria(this.categoria.id, this.nuevoNombre, this.nuevaDescripcion, this.categoria.imagen);
     this.modalController.dismiss({ updated: true });
     
   }

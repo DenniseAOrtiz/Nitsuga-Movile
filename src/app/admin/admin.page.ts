@@ -5,6 +5,8 @@ import { AddCategoryModalComponent } from '../modals/add-category-modal/add-cate
 import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
 import { Router } from '@angular/router';
 import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
+import { CategoriasPage } from '../categorias/categorias.page';
+import { async } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -14,7 +16,7 @@ import { EditarCategoryModalComponent } from '../modals/editar-category-modal/ed
 export class AdminPage implements OnInit {
   categorias: any[] = [];
   productos: any[] = [];
-  categoriaEdicion: { id: number; nombre: string } | null = null;
+  categoriaEdicion: { id: number; nombre: string; descripcion: string; imagen: string } | null = null;
 
 
   constructor(private dbService: DbService, private modalController: ModalController, private alertController: AlertController, private router: Router) {}
@@ -40,20 +42,29 @@ export class AdminPage implements OnInit {
   }
   
 
-  async agregarCategoria() {
+  async addCategory() {
     const modal = await this.modalController.create({
-      component: AddCategoryModalComponent,
+        component: AddCategoryModalComponent,
     });
 
     modal.onDidDismiss().then(async (result) => {
-      if (result.data) {
-        await this.dbService.addCategoria(result.data.nombre, result.data.descripcion, result.data.imagen);
-        this.categorias = await this.dbService.getCategorias();
-      }
+        if (result.data && result.data.nombre) {
+            this.categorias = await this.dbService.getCategorias();
+        }
     });
 
     return await modal.present();
   }
+
+  //   modal.onDidDismiss().then(async (result) => {
+  //     if (result.data) {
+  //       await this.dbService.addCategoria(result.data.nombre, result.data.descripcion, result.data.imagen);
+  //       this.categorias = await this.dbService.getCategorias();
+  //     }
+
+  //   });
+  //   return await modal.present();
+  // }
 
   async eliminarCategoria(id: number) {
     const alert = await this.alertController.create({

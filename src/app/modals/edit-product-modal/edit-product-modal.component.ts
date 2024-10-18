@@ -13,7 +13,7 @@ export class EditProductModalComponent implements OnInit {
   nuevaDescripcion: string = '';
   nuevoPrecio: number | null = null;
   nuevaImagen: string = '';
-
+  categoriaId: number | null = null;
   constructor(
     private modalController: ModalController,
     private navParams: NavParams,
@@ -27,13 +27,14 @@ export class EditProductModalComponent implements OnInit {
     this.nuevaDescripcion = this.producto.descripcion;
     this.nuevoPrecio = this.producto.precio;
     this.nuevaImagen = this.producto.imagen;
+    this.categoriaId = this.producto.categoriaId;
   }
 
   async guardarCambios() {
     const precio = this.nuevoPrecio ?? 0;
-    await this.dbService.editarProducto(this.producto.id, this.nuevoNombre, this.nuevaDescripcion, precio, this.nuevaImagen);
+    await this.dbService.editarProducto(this.producto.id, this.nuevoNombre, this.nuevaDescripcion, precio, this.nuevaImagen, this.producto.categoriaId);
     this.modalController.dismiss({ updated: true });  
-    
+
   }
 
   cerrarModal() {
