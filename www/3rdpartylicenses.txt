@@ -176,6 +176,9 @@ THE SOFTWARE.
 @awesome-cordova-plugins/core
 MIT
 
+@awesome-cordova-plugins/native-storage
+MIT
+
 @awesome-cordova-plugins/sqlite
 MIT
 

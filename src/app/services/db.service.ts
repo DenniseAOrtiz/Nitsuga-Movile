@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
-import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
+// import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class DbService {
     });
   }
 
-  // Creación de la base de datos y tabla de usuarios
+  // Creación de la base de datos y tablas 
   private async createDB() {
     try {
       const db = await this.sqlite.create({
@@ -29,7 +29,7 @@ export class DbService {
       });
       this.dbInstance = db;
 
-
+    // tabla de usuarios
       await this.dbInstance.executeSql(
         `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,26 +44,37 @@ export class DbService {
       alert('No se pudo crear la base de datos ' + error);
     }
 
-    await this.dbInstance.executeSql(
-      `CREATE TABLE IF NOT EXISTS categorias (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        descripcion TEXT
-      )`, []
-    );
+    // tabla de categorias
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS categorias (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT NOT NULL,
+          descripcion TEXT,
+          imagen TEXT
+        )`, []
+      );
+      // alert('Base de datos creada y tabla de categorías lista');
+    } catch (error) {
+      alert('No se pudo crear la base de datos categorias ' + error);
+    }
 
-    // Crear tabla de productos
-    await this.dbInstance.executeSql(
-      `CREATE TABLE IF NOT EXISTS productos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        descripcion TEXT,
-        precio REAL NOT NULL,
-        imagen TEXT,
-        categoriaId INTEGER,
-        FOREIGN KEY (categoriaId) REFERENCES categorias (id) ON DELETE CASCADE
+    // tabla de productos
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS productos (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT NOT NULL,
+          descripcion TEXT,
+          precio REAL NOT NULL,
+          imagen TEXT,
+          categoriaId INTEGER,
       )`, []
     );
+    //alert('Base de datos creada y tabla de productos lista');
+    } catch (error) {
+      alert('No se pudo crear la base de datos productos ' + error);
+    }
 
   }
 
@@ -92,7 +103,7 @@ export class DbService {
 
   
 
-  // Iniciar sesión de usuario
+  // Iniciar sesión 
   public async login(username: string, password: string) {
     try {
       const result = await this.dbInstance.executeSql(
@@ -128,10 +139,6 @@ export class DbService {
     return this.currentUsername;
   }
 
-  // public isUserAdmin(): boolean {
-  //   return this.currentIsAdmin; // Método para verificar si el usuario es admin
-  // }
-
   public async getAllUsers() {
     try {
       const result = await this.dbInstance.executeSql(`SELECT * FROM users`, []);
@@ -146,39 +153,65 @@ export class DbService {
     }
   }
 
-  // Métodos para gestionar categorías
-  public async addCategoria(nombre: string, descripcion: string) {
-    const sql = 'INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)';
-    await this.dbInstance.executeSql(sql, [nombre, descripcion]);
+  // Gestionar categorías
+  public async addCategoria(nombre: string, descripcion: string, imagen: string) {
+    const sql = 'INSERT INTO categorias (nombre, descripcion, imagen) VALUES (?, ?, ?)';
+    try {
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen]);
+      alert('Categoría agregada correctamente');
+      return { success: true };
+    } catch (error) {
+      alert('Error al agregar la categoría: ' + JSON.stringify(error));
+      return { success: false };
+    }
   }
 
   public async getCategorias() {
     const sql = 'SELECT * FROM categorias';
-    const data = await this.dbInstance.executeSql(sql, []);
-    const categorias = [];
-    for (let i = 0; i < data.rows.length; i++) {
+    try {
+      const data = await this.dbInstance.executeSql(sql, []);
+      const categorias = [];
+      for (let i = 0; i < data.rows.length; i++) {
       categorias.push(data.rows.item(i));
     }
-    return categorias;
+      return categorias;
+    } catch (error) {
+      alert('Error al obtener las categorías');
+      return [];
+    }
   }
 
-  public async editarCategoria(id: number, nombre: string, descripcion: string) {
-    const sql = 'UPDATE categorias SET nombre = ?, descripcion = ? WHERE id = ?';
-    await this.dbInstance.executeSql(sql, [nombre, descripcion, id]);
+  public async editarCategoria(id: number, nombre: string, descripcion: string, imagen: string) {
+    const sql = 'UPDATE categorias SET nombre = ?, descripcion = ?, imagen = ? WHERE id = ?';
+    try {
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen, id]);
+      alert('Categoría editada correctamente');
+      return { success: true };
+    } catch (error) {
+      alert('Error al editar la categoría');
+      return { success: false };
+    }
   }
   
 
   public async deleteCategoria(id: number) {
     const sql = 'DELETE FROM categorias WHERE id = ?';
-    await this.dbInstance.executeSql(sql, [id]);
+    try {
+      await this.dbInstance.executeSql(sql, [id]);
+      alert('Categoría eliminada correctamente');
+      return { success: true };
+    } catch (error) {
+      alert('Error al eliminar la categoría');
+      return { success: false };
+    }
   }
 
 
-    // Métodos para gestionar productos
-  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string) {
+    // Gestionar productos
+  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
     const modal = await this.modalController.create({
       component: EditProductModalComponent,
-      componentProps: { id, nombre, descripcion, precio, imagen } 
+      componentProps: { id, nombre, descripcion, precio, imagen, categoriaId } 
     });
   
     modal.onDidDismiss().then(async (result) => {

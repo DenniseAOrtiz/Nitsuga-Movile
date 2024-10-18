@@ -3,7 +3,7 @@
     <div style="display: flex;">
       <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
         (click)="showLoading()">
-      <ion-title>Categorías</ion-title>
+      <ion-title>Categorías </ion-title>
       <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -11,7 +11,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let categoria of categorias">
+      {{ categoria.nombre }} 
+      {{ categoria.descripcion }}
+      <ion-img [src]="categoria.imagen" alt="Imagen de la categoría"></ion-img>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Categorias</ion-title>
@@ -87,4 +97,4 @@
   
 
 
-</ion-content>
+</ion-content> -->

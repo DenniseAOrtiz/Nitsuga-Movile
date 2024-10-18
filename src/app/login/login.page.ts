@@ -30,7 +30,7 @@ export class LoginPage{
   }
 
   ionViewWillEnter() {
-    this.clearInputs(); // Limpia los inputs antes de mostrar la página
+    this.clearInputs(); 
   }
 
   clearInputs() {

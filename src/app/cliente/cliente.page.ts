@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProdService } from '../services/prod.service';
+import { DbService } from '../services/db.service';
 
 @Component({
   selector: 'app-cliente',
@@ -10,11 +10,11 @@ export class ClientePage implements OnInit {
   categorias: any[] = [];
   productos: any[] = [];
 
-  constructor(private prodService: ProdService) {}
+  constructor(private dbService: DbService) {}
 
   async ngOnInit() {
-    this.categorias = await this.prodService.getCategorias();
-    this.productos = await this.prodService.getProductos();
+    this.categorias = await this.dbService.getCategorias();
+    this.productos = await this.dbService.getProductos();
   }
 
   // Método para realizar una compra
