@@ -26,7 +26,7 @@ export class CategoriasPage implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService.getCategories().subscribe((data) => {
+    this.categoryService.getCategorias().subscribe((data) => {
       this.categorias = data;
     }, 
     (error) => {

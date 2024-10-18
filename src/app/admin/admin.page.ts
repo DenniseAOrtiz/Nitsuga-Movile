@@ -5,7 +5,6 @@ import { AddCategoryModalComponent } from '../modals/add-category-modal/add-cate
 import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
 import { Router } from '@angular/router';
 import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
-import { CategoriasPage } from '../categorias/categorias.page';
 import { async } from 'rxjs';
 
 @Component({
@@ -49,22 +48,12 @@ export class AdminPage implements OnInit {
 
     modal.onDidDismiss().then(async (result) => {
         if (result.data && result.data.nombre) {
-            this.categorias = await this.dbService.getCategorias();
+          this.categorias = await this.dbService.getCategorias();
         }
     });
 
     return await modal.present();
   }
-
-  //   modal.onDidDismiss().then(async (result) => {
-  //     if (result.data) {
-  //       await this.dbService.addCategoria(result.data.nombre, result.data.descripcion, result.data.imagen);
-  //       this.categorias = await this.dbService.getCategorias();
-  //     }
-
-  //   });
-  //   return await modal.present();
-  // }
 
   async eliminarCategoria(id: number) {
     const alert = await this.alertController.create({
@@ -92,8 +81,6 @@ export class AdminPage implements OnInit {
     console.log(categoriaId);
     this.router.navigate(['/productos', categoriaId]);
 
-    // Aquí podrías redirigir a la página de productos por categoría
-    // Por ejemplo, usando un router
   }
 
   async agregarProducto(categoriaId: number) {
