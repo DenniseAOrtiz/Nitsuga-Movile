@@ -56,7 +56,7 @@ export class AdminProdPage implements OnInit {
     modal.onDidDismiss().then(async (result) => {
       if (result.data && result.data.success) {
         const { nombre, descripcion, precio, imagen, categoriaId } = result.data;
-        alert('Añadiendo producto: ' + nombre + ' ' + descripcion + ' ' + precio + ' ' + imagen + ' ' + categoriaId);
+        // alert('Añadiendo producto: ' + nombre + ' ' + descripcion + ' ' + precio + ' ' + imagen + ' ' + categoriaId);
 
         await this.loadProductos(); 
       }
@@ -81,6 +81,14 @@ export class AdminProdPage implements OnInit {
       component: EditProductModalComponent,
       componentProps: { producto }
     });
+
+    modal.onDidDismiss().then(async (result) => {
+      if (result.data && result.data.updated) {
+        this.productos = await this.dbService.getProductos();
+      }
+    });
+
+    return await modal.present();
   }
 
   async eliminarProducto(productoId: number) {

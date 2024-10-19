@@ -243,19 +243,33 @@ export class DbService {
     return productos.filter(producto => producto.categoriaId === categoriaId); // Filtra los productos por categoriaId
   }
 
-  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const modal = await this.modalController.create({
-      component: EditProductModalComponent,
-      componentProps: { id, nombre, descripcion, precio, imagen, categoriaId }
-    });
+  // async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+  //   const modal = await this.modalController.create({
+  //     component: EditProductModalComponent,
+  //     componentProps: { id, nombre, descripcion, precio, imagen, categoriaId }
+  //   });
 
-    modal.onDidDismiss().then(async (result) => {
-      if (result.data && result.data.updated) {
-        await this.getProductos();
-      }
-    });
+  //   modal.onDidDismiss().then(async (result) => {
+  //     if (result.data && result.data.updated) {
+  //       await this.getProductos();
+  //       alert('Producto editado correctamente');
+  //     } else {
+  //       alert('No se pudo editar el producto');
+  //     }
+  //   });
+  //   return await modal.present();
+  // }
 
-    return await modal.present();
+  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+    const sql = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, categoriaId = ? WHERE id = ?';
+    try {
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId, id]);
+      alert('Producto editado correctamente');
+      return { success: true };
+    } catch (error) {
+      alert('Error al editar el producto');
+      return { success: false };
+    }
   }
 
   public async deleteProducto(id: number) {

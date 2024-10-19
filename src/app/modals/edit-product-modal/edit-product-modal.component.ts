@@ -9,27 +9,35 @@ import { DbService } from '../../services/db.service';
 })
 export class EditProductModalComponent implements OnInit {
   producto: any; 
+  categorias: any[] = [];
   nuevoNombre: string = '';
   nuevaDescripcion: string = '';
   nuevoPrecio: number | null = null;
   nuevaImagen: string = '';
   categoriaId: number | null = null;
+
   constructor(
     private modalController: ModalController,
     private navParams: NavParams,
-    private dbService: DbService
+    private dbService: DbService, 
+  ) {
+    this.categoriaId = this.navParams.get('categoriaId');
+  }
 
-  ) {}
-
-  ngOnInit() {
+  async ngOnInit() {
     this.producto = this.navParams.get('producto');
     this.nuevoNombre = this.producto.nombre;
     this.nuevaDescripcion = this.producto.descripcion;
     this.nuevoPrecio = this.producto.precio;
     this.nuevaImagen = this.producto.imagen;
-    this.categoriaId = this.producto.categoriaId;
+    this.categorias = await this.dbService.getCategorias();
   }
 
+  dismiss() {
+    this.modalController.dismiss();
+  }
+
+  
   async guardarCambios() {
     const precio = this.nuevoPrecio ?? 0;
     await this.dbService.editarProducto(this.producto.id, this.nuevoNombre, this.nuevaDescripcion, precio, this.nuevaImagen, this.producto.categoriaId);
@@ -37,7 +45,5 @@ export class EditProductModalComponent implements OnInit {
 
   }
 
-  cerrarModal() {
-    this.modalController.dismiss();
-  }
+  
 }
