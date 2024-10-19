@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { DbService } from '../../services/db.service';
 
@@ -7,7 +7,7 @@ import { DbService } from '../../services/db.service';
   templateUrl: './add-product-modal.component.html',
   styleUrls: ['./add-product-modal.component.scss'],
 })
-export class AddProductModalComponent {
+export class AddProductModalComponent implements OnInit {
   categorias: any[] = [];
   nombre: string = '';
   descripcion: string = '';
@@ -19,6 +19,10 @@ export class AddProductModalComponent {
     this.categoriaId = this.navParams.get('categoriaId');
   }
 
+  async ngOnInit() {
+    this.categorias = await this.dbService.getCategorias();
+  }
+
   dismiss() {
     this.modalController.dismiss();
   }
@@ -27,7 +31,7 @@ export class AddProductModalComponent {
     if (this.nombre && this.descripcion && this.precio && this.categoriaId) {
       const result = await this.dbService.addProducto(this.nombre, this.descripcion, this.precio, this.imagen, this.categoriaId);
       if (result.success) {
-        this.modalController.dismiss();
+        this.modalController.dismiss({ success: true });
       }
     } else {
       alert('Por favor, complete todos los campos.');

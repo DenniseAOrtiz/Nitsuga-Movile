@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DbService } from '../../services/db.service';
+import { DbService } from '../services/db.service';
 import { ModalController } from '@ionic/angular';
-import { AddProductModalComponent } from '../../modals/add-product-modal/add-product-modal.component';
-import { EditProductModalComponent } from '../../modals/edit-product-modal/edit-product-modal.component';
+import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
+import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
 import { LoadingController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 
@@ -30,12 +30,16 @@ export class AdminProdPage implements OnInit {
 
   async ngOnInit() {
     this.categoriaId = Number(this.route.snapshot.paramMap.get('id'));
-    await this.loadProductos();
+    this.showLoading();
+    this.loadProductos();
   }
 
   async loadProductos() {
-    this.productos = await this.dbService.getProductos();
-    this.productos = this.productos.filter(producto => producto.categoriaId === this.categoriaId);
+    try {
+      this.productos = await this.dbService.getProductos();
+    } catch (error) {
+      console.error('Error al cargar los productos', error);
+    }
   }
 
   async addProduct() {
@@ -43,8 +47,29 @@ export class AdminProdPage implements OnInit {
       component: AddProductModalComponent,
       componentProps: { categoriaId: this.categoriaId }
     });
+    
+    modal.onDidDismiss().then(async (result) => {
+      if (result.data && result.data.success) {
+        const { nombre, descripcion, precio, imagen, categoriaId } = result.data;
+        alert('Añadiendo producto: ' + nombre + ' ' + descripcion + ' ' + precio + ' ' + imagen + ' ' + categoriaId);
+
+        await this.loadProductos(); 
+      }
+    });
+  
     await modal.present();
   }
+
+  // async addProduct() {
+  //   const modal = await this.modalController.create({
+  //     component: AddProductModalComponent,
+  //     componentProps: { categoriaId: this.categoriaId }
+  //   });
+  //   modal.onDidDismiss().then(async () => {
+  //     await this.loadProductos();
+  //   });
+  //   await modal.present();
+  // }
 
   async editarProducto(producto: any) {
     const modal = await this.modalController.create({
@@ -68,10 +93,10 @@ export class AdminProdPage implements OnInit {
 
   logout() {
     this.authService.logout(); // Ejecuta la lógica de cierre de sesión
-    this.router.navigate(['/login']); // Redirige al usuario a la página de login
+    this.router.navigate(['/login']); 
   }
 
   volverAdmin() {
-    this.router.navigate(['/admin']); // Asegúrate de que esta sea la ruta correcta
+    this.router.navigate(['/admin']);
   }
 }
