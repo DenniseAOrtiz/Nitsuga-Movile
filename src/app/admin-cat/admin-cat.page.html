@@ -34,8 +34,9 @@
             name="create-outline"></ion-icon></ion-button>
         <ion-button color="danger" (click)="eliminarCategoria(categoria.id)"><ion-icon slot="start"
             name="close-circle-outline"></ion-icon></ion-button>
-        <ion-button color="dark" [routerLink]="['/productos', categoria.id]"><ion-icon slot="start"
-            name="search-circle-outline"></ion-icon></ion-button>
+        <ion-button color="dark" *ngIf="categoria.id" (click)="verProductos(categoria.id)">
+          <ion-icon slot="start" name="search-circle-outline"></ion-icon>
+        </ion-button>            
       </ion-buttons>
     </ion-item>
   </ion-list>

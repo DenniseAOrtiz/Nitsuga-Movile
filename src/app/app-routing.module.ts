@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 import { RegisterComponent } from './login/register/register.component';
+import { AdminProdPage } from './admin-prod/admin-prod.page';
 import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
@@ -42,13 +43,17 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
   },
-
+  {
+    path: 'admin-prod/:id',
+    loadChildren: () => import('./admin-prod/admin-prod.module').then( m => m.AdminProdPageModule)
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  declarations: [],
 })
 export class AppRoutingModule {}

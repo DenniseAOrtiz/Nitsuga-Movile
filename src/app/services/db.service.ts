@@ -36,7 +36,8 @@ export class DbService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 1
+          isAdmin INTEGER DEFAULT 1,
+          rol TEXT
         )`,
         []
       );
@@ -235,6 +236,11 @@ export class DbService {
       console.error('Error al obtener productos', error);
       return [];
     }
+  }
+
+  async getProductosPorCategoria(categoriaId: number): Promise<any[]> {
+    const productos = await this.getProductos(); // Supongamos que este método trae todos los productos
+    return productos.filter(producto => producto.categoriaId === categoriaId); // Filtra los productos por categoriaId
   }
 
   async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {

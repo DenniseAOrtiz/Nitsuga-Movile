@@ -30,13 +30,18 @@ export class AdminProdPage implements OnInit {
 
   async ngOnInit() {
     this.categoriaId = Number(this.route.snapshot.paramMap.get('id'));
+    this.nombreUsuario = this.dbService.getUsername();
     this.showLoading();
     this.loadProductos();
   }
 
   async loadProductos() {
     try {
-      this.productos = await this.dbService.getProductos();
+      if (this.categoriaId) {
+        this.productos = await this.dbService.getProductosPorCategoria(this.categoriaId);
+      } else {
+        this.productos = await this.dbService.getProductos(); // O maneja esto de otra forma si categoríaId no está definido
+      }
     } catch (error) {
       console.error('Error al cargar los productos', error);
     }

@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AdminCatPage
+  },
+  {
+    path: 'admin-prod/:id',
+    loadChildren: () => import('../admin-prod/admin-prod.module').then( m => m.AdminProdPageModule)
   }
 ];
 

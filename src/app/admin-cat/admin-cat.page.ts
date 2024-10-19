@@ -114,7 +114,7 @@ export class AdminCatPage implements OnInit {
 
   async verProductos(categoriaId: number) {
     console.log(categoriaId);
-    this.router.navigate(['/productos', categoriaId]);
+    this.router.navigate(['/admin-prod', categoriaId]);
 
   }
 
@@ -141,10 +141,10 @@ export class AdminCatPage implements OnInit {
 
   logout() {
     this.authService.logout(); // Ejecuta la lógica de cierre de sesión
-    this.router.navigate(['/login']); // Redirige al usuario a la página de login
+    this.router.navigate(['/login']); 
   }
 
   volverAdmin() {
-    this.router.navigate(['/admin']); // Asegúrate de que esta sea la ruta correcta
+    this.router.navigate(['/admin']);
   }
 }
