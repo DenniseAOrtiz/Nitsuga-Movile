@@ -37,7 +37,6 @@ export class DbService {
           username TEXT UNIQUE,
           password TEXT,
           isAdmin INTEGER DEFAULT 1,
-          rol TEXT
         )`,
         []
       );

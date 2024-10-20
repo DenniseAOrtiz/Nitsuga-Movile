@@ -18,3 +18,15 @@ ion-card-subtitle{
     font-size: 20px;
     color: rgb(153, 46, 46);
 }
+
+.indicators-toolbar {
+    display: flex;
+    justify-content: flex-end; /* Ajustar los indicadores a la derecha */
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  ion-label {
+    margin: 0 5px; /* Espacio entre los indicadores y el separador "|" */
+  }
+  
