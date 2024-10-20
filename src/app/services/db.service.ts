@@ -89,7 +89,7 @@ export class DbService {
     }
 
     try {
-      const data = [username, password, 0];
+      const data = [username, password, isAdmin ? 1 : 0];
       await this.dbInstance.executeSql(
         `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
         data
@@ -136,7 +136,7 @@ export class DbService {
     }
   }
 
-  public getUsername(): string | null {
+  public getUsername() : string | null {
     return this.currentUsername;
   }
 
@@ -152,6 +152,16 @@ export class DbService {
       alert('Error al obtener los usuarios');
       return [];
     }
+  }
+
+  public async updateUser(id: number, username: string, password: string, isAdmin: number) {
+    const sql = 'UPDATE users SET username = ?, password = ?, isAdmin = ? WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [username, password, isAdmin ? 1 : 0, id]);
+  }
+
+  public async deleteUser(id: number) {
+    const sql = 'DELETE FROM users WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [id]);
   }
 
   // Gestionar categorías

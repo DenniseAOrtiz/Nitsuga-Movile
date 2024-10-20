@@ -1,3 +1,27 @@
-<p>
-  edit-user-modal works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Usuario</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Nombre de usuario</ion-label>
+    <ion-input [(ngModel)]="username"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Contraseña</ion-label>
+    <ion-input [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Tipo de usuario</ion-label>
+    <ion-select [(ngModel)]="isAdmin">
+      <ion-select-option value="0">Usuario</ion-select-option>
+      <ion-select-option value="1">Administrador</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button expand="full" (click)="editUser()">Guardar</ion-button>
+</ion-content>

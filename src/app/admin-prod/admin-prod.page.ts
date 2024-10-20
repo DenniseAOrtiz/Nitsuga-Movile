@@ -104,6 +104,7 @@ export class AdminProdPage implements OnInit {
     loading.present();
   }
 
+
   logout() {
     this.authService.logout(); // Ejecuta la lógica de cierre de sesión
     this.router.navigate(['/login']); 
