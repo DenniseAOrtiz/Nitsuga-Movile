@@ -3,8 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
-// import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
+
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +35,13 @@ export class DbService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 1,
-          rol TEXT
+          isAdmin INTEGER DEFAULT 0
         )`,
         []
       );
       // alert('Base de datos creada y tabla de usuarios lista');
     } catch (error) {
-      alert('No se pudo crear la base de datos ' + error);
+      alert('No se pudo crear la base de datos ' + JSON.stringify(error));
     }
 
     // tabla de categorias
@@ -91,7 +89,7 @@ export class DbService {
     }
 
     try {
-      const data = [username, password, 1];
+      const data = [username, password, 0];
       await this.dbInstance.executeSql(
         `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
         data

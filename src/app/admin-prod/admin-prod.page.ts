@@ -40,7 +40,7 @@ export class AdminProdPage implements OnInit {
       if (this.categoriaId) {
         this.productos = await this.dbService.getProductosPorCategoria(this.categoriaId);
       } else {
-        this.productos = await this.dbService.getProductos(); // O maneja esto de otra forma si categoríaId no está definido
+        this.productos = await this.dbService.getProductos(); 
       }
     } catch (error) {
       console.error('Error al cargar los productos', error);
