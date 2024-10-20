@@ -16,7 +16,7 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title> <!-- Muestra el nombre de usuario -->
+    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title> 
     <ion-buttons slot="end">
       <ion-button (click)="logout()" (click)="showLoading()">
         <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
@@ -29,6 +29,7 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let producto of productos">
+
       <img [src]="producto.imagen" alt="{{ producto.nombre }}" style="width: 50px; height: 50px;">
       <h2>{{ producto.nombre }}</h2>
       <p>{{ producto.descripcion }}</p>

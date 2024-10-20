@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: AdminProdPage
-  }
+  },
+  { 
+    path: 'admin-prod/:id', 
+    component: AdminProdPage 
+  },
 ];
 
 @NgModule({

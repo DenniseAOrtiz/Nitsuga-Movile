@@ -1,13 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <div style="display: flex;">
-      <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
-        (click)="showLoading()">
-      <ion-title style="color:white;">Inicio</ion-title>
+      <img src="../assets/img/Logo/logonitsuga.png" alt="Logo"
+        style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']" (click)="showLoading()">
+      <ion-title>Bienvenido, {{ nombreUsuario }}</ion-title>
       <ion-buttons slot="end">
-        <ion-menu-button ></ion-menu-button>
+        <ion-menu-button></ion-menu-button>
       </ion-buttons>
     </div>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>Valores de hoy</ion-title>
+    <ion-buttons slot="end">
+      <div class="indicators-toolbar">
+        <ion-label *ngIf="indicators" class="labelMenu">Dólar: ${{ indicators.dolar.valor }} CLP</ion-label>
+        <ion-label>|</ion-label>
+        <ion-label *ngIf="indicators" class="labelMenu">Euro: ${{ indicators.euro.valor }}CLP</ion-label>
+      </div>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -110,4 +120,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-

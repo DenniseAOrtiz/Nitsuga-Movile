@@ -173,6 +173,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@awesome-cordova-plugins/camera
+MIT
+
 @awesome-cordova-plugins/core
 MIT
 

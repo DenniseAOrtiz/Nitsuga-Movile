@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { DbService } from '../../services/db.service';
+import { DbService } from '../services/db.service';
 import { ModalController, AlertController } from '@ionic/angular';
-import { AddCategoryModalComponent } from '../../modals/add-category-modal/add-category-modal.component';
-import { AddProductModalComponent } from '../../modals/add-product-modal/add-product-modal.component';
+import { AddCategoryModalComponent } from '../modals/add-category-modal/add-category-modal.component';
+import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
 import { Router } from '@angular/router';
-import { EditarCategoryModalComponent } from '../../modals/editar-category-modal/editar-category-modal.component';
+import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
 import { async } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
@@ -114,7 +114,7 @@ export class AdminCatPage implements OnInit {
 
   async verProductos(categoriaId: number) {
     console.log(categoriaId);
-    this.router.navigate(['/productos', categoriaId]);
+    this.router.navigate(['/admin-prod', categoriaId]);
 
   }
 
@@ -141,10 +141,10 @@ export class AdminCatPage implements OnInit {
 
   logout() {
     this.authService.logout(); // Ejecuta la lógica de cierre de sesión
-    this.router.navigate(['/login']); // Redirige al usuario a la página de login
+    this.router.navigate(['/login']); 
   }
 
   volverAdmin() {
-    this.router.navigate(['/admin']); // Asegúrate de que esta sea la ruta correcta
+    this.router.navigate(['/admin']);
   }
 }

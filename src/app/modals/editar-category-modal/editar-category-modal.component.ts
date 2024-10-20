@@ -22,6 +22,7 @@ export class EditarCategoryModalComponent implements OnInit {
     this.categoria = this.navParams.get('categoria');
     this.nuevoNombre = this.categoria.nombre;
     this.nuevaDescripcion = this.categoria.descripcion;
+    this.nuevaImagen = this.categoria.imagen; 
   }
 
   async guardarCambios() {

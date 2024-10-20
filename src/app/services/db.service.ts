@@ -3,8 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { EditProductModalComponent } from '../modals/edit-product-modal/edit-product-modal.component';
-// import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
+
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +35,13 @@ export class DbService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 1,
-          rol TEXT
+          isAdmin INTEGER DEFAULT 1
         )`,
         []
       );
       // alert('Base de datos creada y tabla de usuarios lista');
     } catch (error) {
-      alert('No se pudo crear la base de datos ' + error);
+      alert('No se pudo crear la base de datos ' + JSON.stringify(error));
     }
 
     // tabla de categorias
@@ -224,29 +222,36 @@ export class DbService {
     }
   }
 
-  public async getProductos() {
-    const sql = 'SELECT * FROM productos';
-    const data = await this.dbInstance.executeSql(sql, []);
-    const productos = [];
-    for (let i = 0; i < data.rows.length; i++) {
-      productos.push(data.rows.item(i));
+  public async getProductos(): Promise<any[]> {
+    try {
+      const result = await this.dbInstance.executeSql(`SELECT * FROM productos`, []);
+      const productos = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        productos.push(result.rows.item(i));
+      }
+      return productos;
+    } catch (error) {
+      console.error('Error al obtener productos', error);
+      return [];
     }
-    return productos;
   }
 
-  async editarProducto( id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const modal = await this.modalController.create({
-      component: EditProductModalComponent,
-      componentProps: { id, nombre, descripcion, precio, imagen, categoriaId }
-    });
+  async getProductosPorCategoria(categoriaId: number): Promise<any[]> {
+    const productos = await this.getProductos(); // Supongamos que este método trae todos los productos
+    return productos.filter(producto => producto.categoriaId === categoriaId); // Filtra los productos por categoriaId
+  }
 
-    modal.onDidDismiss().then(async (result) => {
-      if (result.data && result.data.updated) {
-        await this.getProductos();
-      }
-    });
 
-    return await modal.present();
+  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
+    const sql = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, categoriaId = ? WHERE id = ?';
+    try {
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId, id]);
+      alert('Producto editado correctamente');
+      return { success: true };
+    } catch (error) {
+      alert('Error al editar el producto');
+      return { success: false };
+    }
   }
 
   public async deleteProducto(id: number) {

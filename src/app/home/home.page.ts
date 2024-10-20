@@ -1,8 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import type { Animation } from '@ionic/angular';
 import { AnimationController, IonCard } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
+import { APIService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +13,9 @@ import { DbService } from '../services/db.service';
   styleUrls: ['./home.page.scss'],
 })
 
-export class HomePage {
-  username: string | null = '';
+export class HomePage implements OnInit {
+  indicators: any;
+  nombreUsuario: string | null = null;
 
   @ViewChild(IonCard, { read: ElementRef }) card: ElementRef<HTMLIonCardElement> | undefined;
 
@@ -19,8 +23,19 @@ export class HomePage {
 
   constructor(private animationCtrl: AnimationController,
     private loadingCtrl: LoadingController,
-    private dbService: DbService) {
-    this.username = this.dbService.getUsername(); // Recuperamos el nombre de usuario
+    private dbService: DbService,
+    private APIService: APIService,
+    private authService: AuthService,
+    private router: Router) {
+    this.nombreUsuario = this.dbService.getUsername(); // Recuperamos el nombre de usuario
+  }
+  ngOnInit() {
+    this.nombreUsuario = this.dbService.getUsername();
+
+    this.APIService.getIndicators().subscribe(data => {
+      this.indicators = data;
+      console.log(this.indicators);
+    });
   }
 
   async showLoading() {
@@ -29,5 +44,10 @@ export class HomePage {
     });
 
     loading.present();
+  }
+
+  logout() {
+    this.authService.logout(); // Ejecuta la lógica de cierre de sesión
+    this.router.navigate(['/login']); // Redirige al usuario a la página de login
   }
 }

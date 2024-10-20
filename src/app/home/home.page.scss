@@ -18,3 +18,16 @@ ion-card-subtitle{
     font-size: 20px;
     color: rgb(153, 46, 46);
 }
+
+.indicators-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  .labelMenu {
+    margin: 0 3px; 
+    color: white;
+  }
+  
