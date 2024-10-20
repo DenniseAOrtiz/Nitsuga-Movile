@@ -21,12 +21,13 @@ ion-card-subtitle{
 
 .indicators-toolbar {
     display: flex;
-    justify-content: flex-end; /* Ajustar los indicadores a la derecha */
+    justify-content: flex-end;
     align-items: center;
-    font-size: 16px;
+    font-size: 12px;
   }
   
-  ion-label {
-    margin: 0 5px; /* Espacio entre los indicadores y el separador "|" */
+  .labelMenu {
+    margin: 0 3px; 
+    color: white;
   }
   
