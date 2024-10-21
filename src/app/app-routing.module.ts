@@ -53,7 +53,11 @@ const routes: Routes = [
   {
     path: 'admin-prod/:id',
     loadChildren: () => import('./admin-prod/admin-prod.module').then( m => m.AdminProdPageModule)
+  },  {
+    path: 'carrito',
+    loadChildren: () => import('./carrito/carrito.module').then( m => m.CarritoPageModule)
   },
+
 ];
 
 @NgModule({

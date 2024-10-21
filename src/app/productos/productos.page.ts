@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DbService } from '../services/db.service';
 import { LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router'; 
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-productos',
@@ -15,6 +16,7 @@ export class ProductosPage implements OnInit {
   constructor(
     private loadingCtrl: LoadingController, 
     private dbService: DbService, 
+    private cartService: CartService,
     private route: ActivatedRoute) { }
 
   async showLoading() {
@@ -43,6 +45,13 @@ export class ProductosPage implements OnInit {
     }
   }
 
-
-
+  agregarAlCarrito(producto: any) {
+    this.cartService.addToCart(producto).then(response => {
+      if (response.success) {
+        alert('Producto agregado al carrito');
+      } else {
+        alert('Error al agregar producto al carrito');
+      }
+    });
+  }
 }

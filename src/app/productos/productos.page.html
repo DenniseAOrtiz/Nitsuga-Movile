@@ -5,6 +5,9 @@
         (click)="showLoading()">
       <ion-title>Productos</ion-title>
       <ion-buttons slot="end">
+        <ion-button [routerLink]="['/carrito']">
+          <ion-icon name="cart-outline" color="light"></ion-icon>
+        </ion-button>
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
     </div>
@@ -22,6 +25,7 @@
         <p>{{ producto.descripcion }}</p>
         <p><strong>{{ producto.precio | currency }}</strong></p>
       </ion-card-content>
+      <ion-button expand="block" (click)="agregarAlCarrito(producto)">Agregar al carrito</ion-button>
     </ion-card>
   </div>
 </ion-content>

@@ -77,8 +77,32 @@ export class DbService {
       alert('No se pudo crear la tabla de productos: ' + JSON.stringify(error));
     }
 
+    // tabla de carrito de compras
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS cart (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          productoId INTEGER,
+          nombre TEXT,
+          descripcion TEXT,
+          precio REAL,
+          cantidad INTEGER,
+          imagen TEXT,
+          FOREIGN KEY (productoId) REFERENCES productos(id)
+        )`, 
+        []
+      );
+      //alert('Tabla de carrito de compras creada');
+    } catch (error) {
+      alert('No se pudo crear la tabla de carrito: ' + JSON.stringify(error));
+    }
+
   }
 
+  public getDBInstance(): Promise<SQLiteObject> {
+    return Promise.resolve(this.dbInstance);
+  }
+  
   // Registro de un nuevo usuario
   public async register(username: string, password: string, isAdmin: number) {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
@@ -282,7 +306,59 @@ export class DbService {
     await this.dbInstance.executeSql(sql, [id]);
   }
 
-
-
+  // Gestionar carrito de compras
+  public async addToCart(producto: any) {
+    try {
+      // Verificar si el producto ya está en el carrito
+      const result = await this.dbInstance.executeSql(
+        `SELECT * FROM cart WHERE productoId = ?`,
+        [producto.id]
+      );
+  
+      if (result.rows.length > 0) {
+        // Si el producto ya está en el carrito, incrementar la cantidad
+        const currentItem = result.rows.item(0);
+        const nuevaCantidad = currentItem.cantidad + 1;
+        await this.dbInstance.executeSql(
+          `UPDATE cart SET cantidad = ? WHERE productoId = ?`,
+          [nuevaCantidad, producto.id]
+        );
+      } else {
+        // Si el producto no está en el carrito, agregarlo
+        await this.dbInstance.executeSql(
+          `INSERT INTO cart (productoId, nombre, descripcion, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?, ?)`,
+          [producto.id, producto.nombre, producto.descripcion, producto.precio, 1, producto.imagen]
+        );
+      }
+  
+      alert('Producto agregado al carrito');
+    } catch (error) {
+      alert('Error al agregar producto al carrito: ' + JSON.stringify(error));
+    }
+  }
+  
+  public async getCartItems(): Promise<any[]> {
+    try {
+      const result = await this.dbInstance.executeSql('SELECT * FROM cart', []);
+      const cartItems = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        cartItems.push(result.rows.item(i));
+      }
+      return cartItems;
+    } catch (error) {
+      alert('Error al obtener los productos del carrito: ' + JSON.stringify(error));
+      return [];
+    }
+  }
+  
+  public async removeFromCart(productoId: number) {
+    try {
+      await this.dbInstance.executeSql('DELETE FROM cart WHERE productoId = ?', [productoId]);
+      alert('Producto eliminado del carrito');
+    } catch (error) {
+      alert('Error al eliminar el producto del carrito: ' + JSON.stringify(error));
+    }
+  }
+  
 }
 
