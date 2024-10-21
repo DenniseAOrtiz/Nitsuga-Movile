@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { DbService } from '../services/db.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrito',
@@ -11,7 +12,7 @@ export class CarritoPage implements OnInit {
   cartItems: any[] = [];
   total: number = 0;
 
-  constructor(private cartService: CartService, private dbService: DbService) { }
+  constructor(private cartService: CartService, private dbService: DbService, private router: Router) { }
 
   ngOnInit() {
     this.loadCart();

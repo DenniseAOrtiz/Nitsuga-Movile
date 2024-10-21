@@ -12,7 +12,8 @@ import { CartService } from '../services/cart.service';
 export class ProductosPage implements OnInit {
   productos: any[] = [];
   categoriaId: number | null = null;
-  imagenProducto: string | null = null;
+  imagenProducto: any | null = null;
+
 
   constructor(
     private loadingCtrl: LoadingController, 
