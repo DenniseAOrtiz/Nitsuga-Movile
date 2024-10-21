@@ -11,7 +11,7 @@ import { ModalController } from '@ionic/angular';
 export class DbService {
   private dbInstance!: SQLiteObject;
   private currentUsername: string | null = null;
-  private currentIsAdmin: boolean = false;
+  private currentIsAdmin: number = 0;
   
 
   constructor(private sqlite: SQLite, private platform: Platform, private router: Router, private modalController: ModalController) {
@@ -35,7 +35,7 @@ export class DbService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 0
+          isAdmin INTEGER DEFAULT 1
         )`,
         []
       );
@@ -80,7 +80,7 @@ export class DbService {
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string, isAdmin: boolean) {
+  public async register(username: string, password: string, isAdmin: number) {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
       alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
@@ -117,7 +117,7 @@ export class DbService {
         // alert(JSON.stringify(user));
         // alert(user.isAdmin);
         this.currentUsername = user.username;
-        this.currentIsAdmin = user.isAdmin === 1 ? true : false; // 1 es admin
+        this.currentIsAdmin = user.isAdmin; // 1 es admin
         // alert('Inicio de sesión exitoso');
         // alert(this.currentIsAdmin);
         if (this.currentIsAdmin) {
@@ -164,6 +164,18 @@ export class DbService {
     await this.dbInstance.executeSql(sql, [id]);
   }
 
+  public async getCurrentUser() {
+    const sql = 'SELECT * FROM users WHERE username = ?';
+    const result = await this.dbInstance.executeSql(sql, [this.currentUsername]);
+    return result.rows.item(0);
+  }
+
+  public async updateUserProfile(username: string, password: string) {
+    const sql = 'UPDATE users SET username = ?, password = ? WHERE username = ?';
+    await this.dbInstance.executeSql(sql, [username, password, this.currentUsername]);
+    this.currentUsername = username; 
+  }
+  
   // Gestionar categorías
   public async addCategoria(nombre: string, descripcion: string, imagen: string) {
     const sql = 'INSERT INTO categorias (nombre, descripcion, imagen) VALUES (?, ?, ?)';

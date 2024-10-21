@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 export class AddUserModalComponent {
   user: any = {};
   username: string = '';
-  isAdmin: boolean = false;
+  isAdmin: number = 0;
   password: string = '';
 
   constructor(
