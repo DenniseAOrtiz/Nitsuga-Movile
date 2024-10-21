@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-admin-prod',
   templateUrl: './admin-prod.page.html',
@@ -17,16 +18,17 @@ import { Router } from '@angular/router';
 export class AdminProdPage implements OnInit {
   productos: any[] = [];
   categoriaId: number | null = null;
-  edicionProducto: { id: number; nombre: string; descripcion: string; precio: number; imagen: string } | null = null;
+  edicionProducto: { id: number; nombre: string; descripcion: string; precio: number; imagen: any } | null = null;
   nombreUsuario: string | null = null;
+  
 
 
-  constructor(private route: ActivatedRoute, 
-    private dbService: DbService, 
+  constructor(private route: ActivatedRoute,
+    private dbService: DbService,
     private modalController: ModalController,
     private loadingCtrl: LoadingController,
     private authService: AuthService,
-    private router: Router) {}
+    private router: Router) { }
 
   async ngOnInit() {
     this.categoriaId = Number(this.route.snapshot.paramMap.get('id'));
@@ -40,7 +42,7 @@ export class AdminProdPage implements OnInit {
       if (this.categoriaId) {
         this.productos = await this.dbService.getProductosPorCategoria(this.categoriaId);
       } else {
-        this.productos = await this.dbService.getProductos(); 
+        this.productos = await this.dbService.getProductos();
       }
     } catch (error) {
       console.error('Error al cargar los productos', error);
@@ -52,16 +54,16 @@ export class AdminProdPage implements OnInit {
       component: AddProductModalComponent,
       componentProps: { categoriaId: this.categoriaId }
     });
-    
+
     modal.onDidDismiss().then(async (result) => {
       if (result.data && result.data.success) {
         const { nombre, descripcion, precio, imagen, categoriaId } = result.data;
         // alert('Añadiendo producto: ' + nombre + ' ' + descripcion + ' ' + precio + ' ' + imagen + ' ' + categoriaId);
 
-        await this.loadProductos(); 
+        await this.loadProductos();
       }
     });
-  
+
     await modal.present();
   }
 
@@ -104,12 +106,15 @@ export class AdminProdPage implements OnInit {
     loading.present();
   }
 
+
   logout() {
     this.authService.logout(); // Ejecuta la lógica de cierre de sesión
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
 
   volverAdmin() {
     this.router.navigate(['/admin']);
   }
+
+  
 }

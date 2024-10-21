@@ -14,7 +14,7 @@ export class LoginPage{
   username: string = '';
   password: string = '';
   errorMessage: string = '';
-  isAdmin: boolean = false;
+  isAdmin: number = 0;
   isLoading = false;
 
 

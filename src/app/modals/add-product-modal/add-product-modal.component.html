@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Agregar Producto</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Cerrar</ion-button>
+      <ion-button (click)="dismiss()" color="secondary">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -22,12 +22,16 @@
   <ion-item>
     <ion-label position="floating">Categoría</ion-label>
     <ion-select [(ngModel)]="categoriaId">
-      <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</ion-select-option>
+      <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre
+        }}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">URL Imagen</ion-label>
-    <ion-input [(ngModel)]="imagen"></ion-input>
+    <ion-button slot="start" (click)="selectImage()" (click)="showLoading()">Seleccionar imagen</ion-button>
   </ion-item>
-  <ion-button expand="full" (click)="addProduct()">Añadir</ion-button>
+  <div *ngIf="selectedImage">
+    <ion-img [src]="selectedImage"></ion-img>
+  </div>
+
+  <ion-button expand="full" (click)="addProduct()" (click)="showLoading()">Añadir</ion-button>
 </ion-content>

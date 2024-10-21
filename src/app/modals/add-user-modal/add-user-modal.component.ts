@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiUserService } from '../../services/api-user.service';
+import { DbService } from '../../services/db.service';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -9,16 +9,17 @@ import { ModalController } from '@ionic/angular';
 })
 export class AddUserModalComponent {
   user: any = {};
-  isAdmin: boolean = false;
+  username: string = '';
+  isAdmin: number = 0;
   password: string = '';
 
   constructor(
-    private apiUserService: ApiUserService,
+    private dbService: DbService,
     private modalController: ModalController
   ) {}
 
   addUser() {
-    this.apiUserService.addUser({...this.user, isAdmin: this.isAdmin, password: this.password}).subscribe(() => {
+    this.dbService.register(this.username, this.password, this.isAdmin).then(() => {
       alert('Usuario agregado correctamente');
       this.modalController.dismiss();
     }, error => {

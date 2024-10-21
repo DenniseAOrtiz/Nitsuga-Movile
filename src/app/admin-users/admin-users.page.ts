@@ -3,9 +3,9 @@ import { LoadingController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-import { ApiUserService } from '../services/api-user.service';
 import { Router } from '@angular/router';
 import { AddUserModalComponent } from '../modals/add-user-modal/add-user-modal.component';
+import { EditUserModalComponent } from '../modals/edit-user-modal/edit-user-modal.component';
 
 @Component({
   selector: 'app-admin-users',
@@ -19,7 +19,7 @@ export class AdminUsersPage implements OnInit {
   
 
   constructor(
-    private apiUserService: ApiUserService, 
+    private dbService: DbService, 
     private loadingCtrl: LoadingController, 
     private authService: AuthService, 
     private router: Router,
@@ -27,18 +27,43 @@ export class AdminUsersPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.apiUserService.getUsers().subscribe(users => {
-      this.nombreUsuario = users.length > 0 ? users[0].name : null; 
-    });
+    const username = this.dbService.getUsername();
+    
+    if (username) {
+      this.nombreUsuario = username;
+    } else {
+      alert('No se pudo obtener el nombre del usuario');
+    }
+  
     this.loadUsers();
   }
+  
 
   loadUsers() {
-    this.apiUserService.getUsers().subscribe(data => {
-      this.users = data;
+    this.dbService.getAllUsers().then(data => {
+      this.users = data.map(user => {
+        return {
+          ...user,
+          isAdminText: user.isAdmin === 1 ? 'Administrador' : 'Usuario'
+        };
+      });
     }, error => {
       alert('Error al cargar los usuarios: ' + JSON.stringify(error));
     });
+  }
+
+  deleteUser(id: number) {
+    this.dbService.deleteUser(id).then(() => {
+      alert('Usuario eliminado correctamente');
+      this.loadUsers();
+    });
+  }
+
+  openEditUserModal(user: any) {
+    this.modalController.create({
+      component: EditUserModalComponent,
+      componentProps: { user }
+    }).then(modal => modal.present());
   }
 
   openAddUserModal() {

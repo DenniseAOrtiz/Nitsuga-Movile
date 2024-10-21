@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Editar Producto</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">Cerrar</ion-button>
+      <ion-button (click)="dismiss()" color="secondary">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -27,8 +27,8 @@
     </ion-select>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked">Imagen URL</ion-label>
-    <ion-input [(ngModel)]="nuevaImagen"></ion-input>
+    <ion-label position="stacked">Imagen</ion-label>
+    
   </ion-item>
   <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
 </ion-content>

@@ -13,7 +13,7 @@ export class RegisterComponent {
   username: string = '';
   password: string = '';
   confirmPassword: string = '';
-  isAdmin: boolean = false;
+  isAdmin: number = 0;
   errorMessage: string = '';
 
   constructor(@Inject(DbService) private dbService: DbService, private router: Router, private loadingCtrl: LoadingController) {}
