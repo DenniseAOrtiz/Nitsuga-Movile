@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volverAdmin()">
+        <ion-icon color="secondary" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Gestión de Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Gestión de Pedidos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <!-- Encabezados de la tabla -->
+    <ion-row class="table-header">
+      <ion-col><strong>ID</strong></ion-col>
+      <ion-col><strong>Total</strong></ion-col>
+      <ion-col><strong>Detalles</strong></ion-col>
+      <ion-col><strong>Cliente</strong></ion-col>
+      <ion-col><strong>Fecha</strong></ion-col>
+      <ion-col><strong></strong></ion-col>
+    </ion-row>
+
+    <!-- Filas de pedidos -->
+    <ion-row *ngFor="let pedido of pedidos" class="table-row">
+      <ion-col>{{ pedido.id }}</ion-col>
+      <ion-col>{{ pedido.total | currency:'USD':'symbol' }}</ion-col>
+      <ion-col>
+        <ion-button fill="clear" color="primary" (click)="verDetalles(pedido.id)">
+          <ion-icon name="eye-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col>{{ pedido.username }}</ion-col>
+      <ion-col>{{ pedido.fecha | date: 'dd-MM-yyyy' }}</ion-col>
+      <ion-col>
+        <ion-button color="danger" (click)="deleteOrder(pedido.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

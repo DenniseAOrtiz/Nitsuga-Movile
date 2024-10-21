@@ -16,8 +16,10 @@
     <ion-input [(ngModel)]="descripcion"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Imagen</ion-label>
-    <ion-input [(ngModel)]="imagen"></ion-input>
+    <ion-button slot="start" (click)="selectImage()" (click)="showLoading()">Seleccionar imagen</ion-button>
   </ion-item>
+  <div *ngIf="selectedImage">
+    <ion-img [src]="selectedImage"></ion-img>
+  </div>
   <ion-button expand="full" (click)="addCategory()">Añadir</ion-button>
 </ion-content>

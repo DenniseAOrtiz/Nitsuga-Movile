@@ -5,6 +5,9 @@
         style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']" (click)="showLoading()">
       <ion-title>Bienvenido, {{ nombreUsuario }}</ion-title>
       <ion-buttons slot="end">
+        <ion-button [routerLink]="['/carrito']">
+          <ion-icon name="cart-outline" color="light"></ion-icon>
+        </ion-button>
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
     </div>

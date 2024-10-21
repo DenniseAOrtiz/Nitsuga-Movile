@@ -1,40 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Perfil Administrador</ion-title>
+    <ion-title>Mi Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goBack()">Volver</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="profile-container">
-    <!-- Icono de perfil genérico -->
-    <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
-
-    <!-- Nombre de usuario con opción de editar -->
-    <ion-item>
-      <ion-label position="stacked">Nombre de usuario</ion-label>
-      <ion-input [(ngModel)]="username" placeholder="Nombre de usuario"></ion-input>
-    </ion-item>
-
-    <!-- Contraseña con opción de editar -->
-    <ion-item>
-      <ion-label position="stacked">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" type="password" placeholder="Contraseña"></ion-input>
-    </ion-item>
-
-    <!-- Botón para guardar los cambios -->
-    <ion-button expand="block" (click)="updateProfile()">Guardar cambios</ion-button>
+    <ion-avatar class="profile-avatar">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </ion-avatar>
+    <h2>{{ username }}</h2>
+    <p>Contraseña: ******</p>
   </div>
+
+  <ion-button expand="full" (click)="openEditProfileModal()">Editar Perfil</ion-button>
 </ion-content>
-
-<!-- Estilos personalizados -->
-<style>
-  .profile-container {
-    text-align: center;
-    margin-top: 50px;
-  }
-
-  .profile-icon {
-    font-size: 100px;
-    color: var(--ion-color-primary);
-  }
-</style>

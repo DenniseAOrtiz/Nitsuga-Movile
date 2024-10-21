@@ -5,7 +5,6 @@ import { AddCategoryModalComponent } from '../modals/add-category-modal/add-cate
 import { AddProductModalComponent } from '../modals/add-product-modal/add-product-modal.component';
 import { Router } from '@angular/router';
 import { EditarCategoryModalComponent } from '../modals/editar-category-modal/editar-category-modal.component';
-import { async } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
@@ -19,6 +18,7 @@ export class AdminPage implements OnInit {
   productos: any[] = [];
   categoriaEdicion: { id: number; nombre: string; descripcion: string; imagen: string } | null = null;
   nombreUsuario: string | null = null;
+  pedidos: any[] = [];
 
 
   constructor(private dbService: DbService,
@@ -27,7 +27,8 @@ export class AdminPage implements OnInit {
     private router: Router,
     private loadingCtrl: LoadingController,
     private cd: ChangeDetectorRef,
-    private authService: AuthService) { }
+    private authService: AuthService,
+  ) { }
 
   async ngOnInit() {
     this.categorias = await this.dbService.getCategorias();
@@ -36,7 +37,13 @@ export class AdminPage implements OnInit {
     // Cargar las categorías y productos al iniciar la página
     await this.loadCategorias();
     await this.loadProductos();
+    this.pedidos = await this.dbService.getOrders();
   }
+
+  async loadPedidos() {
+    this.pedidos = await this.dbService.getOrders();
+  }
+
   // Función que recarga la lista de categorías
   async recargarCategorias() {
     await this.loadCategorias();
@@ -53,7 +60,6 @@ export class AdminPage implements OnInit {
     this.cd.detectChanges();
   }
 
-  // Refresca las categorías al regresar a la página
   ionViewWillEnter() {
     this.loadCategorias();
   }

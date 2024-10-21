@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService } from '../services/category.service';
+import { DbService } from '../services/db.service';
 import { LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-categorias',
@@ -9,8 +10,13 @@ import { LoadingController } from '@ionic/angular';
 })
 export class CategoriasPage implements OnInit {
   categorias: any[] = [];
+  productos: any[] = [];
 
-  constructor(private loadingCtrl: LoadingController, private categoryService: CategoryService) { }
+  constructor(
+    private loadingCtrl: LoadingController, 
+    private dbService: DbService, 
+    private router: Router
+  ) { }
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({
@@ -20,20 +26,29 @@ export class CategoriasPage implements OnInit {
     loading.present();
   }
 
-  ngOnInit() {
-    this.showLoading();
-    this.loadCategories();
+  async ngOnInit() {
+    this.categorias = await this.dbService.getCategorias();
+    this.productos = await this.dbService.getProductos();
+    await this.showLoading();
+    await this.loadCategories();
+    await this.loadProductos();
   }
 
-  loadCategories() {
-    this.categoryService.getCategorias().subscribe((data) => {
-      this.categorias = data;
-    }, 
-    (error) => {
-      console.error('Error al cargar las categorías', error);
-    });
+  async getProductosPorCategoria(categoriaId: number) {
+    return await this.dbService.getProductosPorCategoria(categoriaId);
   }
 
+  async loadCategories() {
+    this.categorias = await this.dbService.getCategorias();
+  }
 
+  async loadProductos() {
+    this.productos = await this.dbService.getProductos();
+  }
+
+  async verProductos(categoriaId: number) {
+    console.log(categoriaId);
+    this.router.navigate(['/productos', categoriaId]);
+  } 
 
 }

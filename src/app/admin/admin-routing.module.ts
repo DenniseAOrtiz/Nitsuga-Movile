@@ -19,7 +19,11 @@ const routes: Routes = [
   {
     path: 'admin-users',
     loadChildren: () => import('../admin-users/admin-users.module').then( m => m.AdminUsersPageModule)
-  }
+  },
+  {
+    path: 'admin-pedidos',
+    loadChildren: () => import('../admin-pedidos/admin-pedidos.module').then( m => m.AdminPedidosPageModule)
+  } 
 ];
 
 @NgModule({
