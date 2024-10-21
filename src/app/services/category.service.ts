@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
 import { DbService } from './db.service';
 
@@ -7,11 +6,16 @@ import { DbService } from './db.service';
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = 'https://Nitsuga-Movile/api'; 
 
-  constructor(private http: HttpClient, private dbService: DbService) {}
+  constructor( private dbService: DbService) {}
 
-  
+  getProductosPorCategoria(categoriaId: number): Observable<any[]> {
+    return from(this.dbService.getProductosPorCategoria(categoriaId));
+  }
+
+  getProductos(): Observable<any[]> {
+    return from(this.dbService.getProductos());
+  }
 
   getCategorias(): Observable<any[]> {
     return from(this.dbService.getCategorias());

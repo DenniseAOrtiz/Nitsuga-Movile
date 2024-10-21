@@ -259,9 +259,10 @@ export class DbService {
   }
 
   async getProductosPorCategoria(categoriaId: number): Promise<any[]> {
-    const productos = await this.getProductos(); // Supongamos que este método trae todos los productos
-    return productos.filter(producto => producto.categoriaId === categoriaId); // Filtra los productos por categoriaId
+    const productos = await this.getProductos(); 
+    return productos.filter(producto => producto.categoriaId === categoriaId); 
   }
+  
 
 
   async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {

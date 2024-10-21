@@ -12,9 +12,8 @@ export class ProductService {
   constructor(private http: HttpClient, private dbService: DbService) {}
 
   
-
-  getProductos(): Observable<any[]> {
-    return from(this.dbService.getProductos());
+  getProductosPorCategoria(categoriaId: number): Observable<any[]> {
+    return from(this.dbService.getProductosPorCategoria(categoriaId));
   }  
 
 }

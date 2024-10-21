@@ -12,12 +12,16 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let producto of productos">
-      {{ producto.nombre }} 
-      {{ producto.descripcion }}
-      {{ producto.precio | currency }}
-      <ion-img [src]="producto.imagen" alt="Imagen del producto"></ion-img>
-    </ion-item>
-  </ion-list>
+  <div class="grid-container">
+    <ion-card class="grid-item" *ngFor="let producto of productos">
+      <ion-img [src]="producto.imagen" alt="Imagen del producto" class="producto-img"></ion-img>
+      <ion-card-header>
+        <ion-title>{{ producto.nombre }}</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ producto.descripcion }}</p>
+        <p><strong>{{ producto.precio | currency }}</strong></p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

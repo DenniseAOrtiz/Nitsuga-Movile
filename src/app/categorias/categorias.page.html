@@ -3,23 +3,30 @@
     <div style="display: flex;">
       <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
         (click)="showLoading()">
-      <ion-title>Categorías </ion-title>
+      <ion-title>Categorías</ion-title>
       <ion-buttons slot="end">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
     </div>
   </ion-toolbar>
-</ion-header>
+</ion-header> 
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let categoria of categorias">
-      {{ categoria.nombre }} 
-      {{ categoria.descripcion }}
-      <ion-img [src]="categoria.imagen" alt="Imagen de la categoría"></ion-img>
-    </ion-item>
-  </ion-list>
+  <div class="grid-container">
+    <ion-card class="grid-item" *ngFor="let categoria of categorias">
+      <ion-img [src]="categoria.imagen" alt="Imagen de la categoría" class="categoria-img"></ion-img>
+      <ion-card-header>
+        <ion-button expand="block" fill="solid" color="primary" (click)="verProductos(categoria.id)">
+          {{ categoria.nombre }}
+        </ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ categoria.descripcion }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
 
 <!-- <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
