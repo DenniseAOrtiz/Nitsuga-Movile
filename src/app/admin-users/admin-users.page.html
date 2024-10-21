@@ -8,10 +8,10 @@
     <ion-title>Gestión de Usuarios</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title> 
+    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="openAddUserModal()" (click)="showLoading()">
-        <ion-icon color="secondary" name="add-circle-outline"></ion-icon>
+        <ion-icon color="secondary" name="person-add-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="logout()" (click)="showLoading()">
         <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
@@ -20,13 +20,25 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item *ngFor="let user of users" >
-      <h2>{{ user.username }}</h2><br>
-      <p>{{ user.isAdminText }}</p>
-      <ion-button color="warning" (click)="openEditUserModal(user)"><ion-icon slot="start" name="create-outline"></ion-icon></ion-button>
-      <ion-button color="danger" (click)="deleteUser(user.id)"><ion-icon slot="start" name="close-circle-outline"></ion-icon></ion-button>
-    </ion-item>
-  </ion-list>
-  <ion-button (click)="openAddUserModal()">Agregar Usuario</ion-button>
+  <ion-grid>
+    <ion-row class="tituloTablas">
+      <ion-col size="2"><strong>ID</strong></ion-col>
+      <ion-col size="3"><strong>Nombre</strong></ion-col>
+      <ion-col size="4"><strong>Tipo de Usuario</strong></ion-col>
+      <ion-col size="3"><strong>Opciones</strong></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let user of users">
+      <ion-col size="2">{{ user.id }}</ion-col>
+      <ion-col size="3">{{ user.username }}</ion-col>
+      <ion-col size="4">{{ user.isAdminText }}</ion-col>
+      <ion-col size="3">
+        <ion-button color="warning" (click)="openEditUserModal(user)"><ion-icon slot="start"
+            name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="deleteUser(user.id)"><ion-icon slot="start"
+            name="trash-bin-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

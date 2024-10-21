@@ -19,7 +19,12 @@ export class LoginPage{
 
 
 
-  constructor(private router: Router, private dbService: DbService, private authService: AuthService, private loadingCtrl: LoadingController) { }
+  constructor(
+    private router: Router, 
+    private dbService: DbService, 
+    private authService: AuthService, 
+    private loadingCtrl: LoadingController
+  ) { }
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({

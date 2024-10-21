@@ -18,6 +18,7 @@ import { EditProductModalComponent } from './modals/edit-product-modal/edit-prod
 import { EditarCategoryModalComponent } from './modals/editar-category-modal/editar-category-modal.component';
 import { EditUserModalComponent } from './modals/edit-user-modal/edit-user-modal.component';
 import { UpdateClientComponent } from './modals/update-client/update-client.component';
+import { UpdateAdminComponent } from './modals/update-admin/update-admin.component';
 import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
@@ -33,7 +34,8 @@ import { Camera } from '@awesome-cordova-plugins/camera/ngx';
     EditarCategoryModalComponent,
     AddUserModalComponent,
     EditUserModalComponent,
-    UpdateClientComponent
+    UpdateClientComponent,
+    UpdateAdminComponent
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],

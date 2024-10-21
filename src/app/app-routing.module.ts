@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 import { RegisterComponent } from './login/register/register.component';
-import { AdminProdPage } from './admin-prod/admin-prod.page';
-import { AdminGuard } from './guards/admin.guard';
+
 
 const routes: Routes = [
   {
@@ -22,6 +21,10 @@ const routes: Routes = [
   {
     path: 'client-profile',
     loadChildren: () => import('./login/profiles/client-profile/client-profile.module').then(m => m.ClientProfilePageModule)
+  },
+  {
+    path: 'admin-profile',
+    loadChildren: () => import('./login/profiles/admin-profile/admin-profile.module').then(m => m.AdminProfilePageModule)
   },
   {
     path: 'reset-password',

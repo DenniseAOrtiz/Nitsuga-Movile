@@ -1,9 +1,14 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/admin-profile']" (click)="showLoading()">
+        <ion-icon slot="icon-only" name="person-circle-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Administración</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title> <!-- Muestra el nombre de usuario -->
+    <ion-title size="small">Bienvenido, {{ nombreUsuario }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()" (click)="showLoading()">
         <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
@@ -11,7 +16,6 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 
 <ion-content class="full-screen">
   <ion-row class="ion-align-items-center ion-justify-content-center">
