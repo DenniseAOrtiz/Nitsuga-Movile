@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private isAuthenticated: boolean = false;
-  private isAdmin: boolean = false;
+  private isAdmin: number = 0;
 
   constructor(private router: Router) {}
 
-  setAuth(isAuthenticated: boolean, isAdmin: boolean) {
+  setAuth(isAuthenticated: boolean, isAdmin: number) {
     this.isAuthenticated = isAuthenticated;
     this.isAdmin = isAdmin;
   }
@@ -23,7 +23,7 @@ export class AuthService {
 
   logout() {
     this.isAuthenticated = false;
-    this.isAdmin = false;
+    this.isAdmin = 1;
 
     // Si tienes un almacenamiento local o cookies, puedes limpiar los datos aquí
     // Ejemplo con localStorage (si guardas alguna sesión)

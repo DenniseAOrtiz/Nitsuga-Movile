@@ -4,7 +4,7 @@
         "id": 1,
         "username": "admin",
         "password": "1234asdF",
-        "isAdmin": true
+        "isAdmin": 1
       }
     ],
 

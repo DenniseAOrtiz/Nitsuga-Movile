@@ -20,6 +20,10 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
+    path: 'client-profile',
+    loadChildren: () => import('./login/profiles/client-profile/client-profile.module').then(m => m.ClientProfilePageModule)
+  },
+  {
     path: 'reset-password',
     component: ResetPasswordComponent
   },
