@@ -97,6 +97,43 @@ export class DbService {
       alert('No se pudo crear la tabla de carrito: ' + JSON.stringify(error));
     }
 
+    // tabla de pedidos
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS orders (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT,
+          total REAL,
+          fecha TEXT,
+          productos TEXT
+        )`, 
+        []
+      );
+      //alert('Tabla de pedidos creada');
+    } catch (error) {
+      alert('No se pudo crear la tabla de pedidos: ' + JSON.stringify(error));
+    }
+
+    // tabla de productos por pedido
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS order_items (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          orderId INTEGER,
+          productoId INTEGER,
+          nombre TEXT,
+          cantidad INTEGER,
+          precio REAL,
+          FOREIGN KEY (orderId) REFERENCES orders(id),
+          FOREIGN KEY (productoId) REFERENCES productos(id)
+        )`, []
+      );
+      alert('Tabla de productos por pedido creada correctamente');
+    } catch (error) {
+      alert('Error al crear la tabla de productos por pedido: ' + JSON.stringify(error));
+    }
+
+
   }
 
   public getDBInstance(): Promise<SQLiteObject> {
@@ -359,6 +396,64 @@ export class DbService {
       alert('Error al eliminar el producto del carrito: ' + JSON.stringify(error));
     }
   }
+
+  public async createOrder(total: number, cartItems: any[]) {
+    try {
+      const date = new Date().toISOString();
+      
+      // Insertar el pedido en la tabla 'orders'
+      const orderResult = await this.dbInstance.executeSql(
+        `INSERT INTO orders (total, fecha, username) VALUES (?, ?, ?)`,
+        [total, date, this.currentUsername]
+      );
+      
+      const orderId = orderResult.insertId;
   
+      // Insertar cada producto del carrito en la tabla 'order_items'
+      for (const item of cartItems) {
+        await this.dbInstance.executeSql(
+          `INSERT INTO order_items (orderId, productoId, nombre, cantidad, precio) VALUES (?, ?, ?, ?, ?)`,
+          [orderId, item.productoId, item.nombre, item.cantidad, item.precio]
+        );
+      }
+  
+      alert('Pedido registrado correctamente');
+      return true;
+    } catch (error) {
+      alert('Error al crear el pedido: ' + JSON.stringify(error));
+      return false;
+    }
+  }
+  
+  public async getOrders() {
+    try {
+      const result = await this.dbInstance.executeSql('SELECT * FROM orders', []);
+      const orders = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        orders.push(result.rows.item(i));
+      }
+      return orders;
+    } catch (error) {
+      alert('Error al obtener los pedidos: ' + JSON.stringify(error));
+      return [];
+    }
+  }
+  
+  public async deleteOrder(id: number) {
+    const sql = 'DELETE FROM orders WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [id]);
+  }
+  
+  
+  public async getOrderDetails(orderId: number) {
+    const sql = 'SELECT * FROM order_items WHERE orderId = ?';
+    const result = await this.dbInstance.executeSql(sql, [orderId]);
+    const items = [];
+    for (let i = 0; i < result.rows.length; i++) {
+      items.push(result.rows.item(i));
+    }
+    const total = items.reduce((acc, item) => acc + item.precio, 0);
+    return { productos: items, total: total };
+  }
 }
 

@@ -57,6 +57,10 @@ const routes: Routes = [
     path: 'carrito',
     loadChildren: () => import('./carrito/carrito.module').then( m => m.CarritoPageModule)
   },
+  {
+    path: 'admin-pedidos',
+    loadChildren: () => import('./admin-pedidos/admin-pedidos.module').then( m => m.AdminPedidosPageModule)
+  },
 
 ];
 

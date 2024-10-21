@@ -18,6 +18,7 @@ export class AdminPage implements OnInit {
   productos: any[] = [];
   categoriaEdicion: { id: number; nombre: string; descripcion: string; imagen: string } | null = null;
   nombreUsuario: string | null = null;
+  pedidos: any[] = [];
 
 
   constructor(private dbService: DbService,
@@ -36,6 +37,11 @@ export class AdminPage implements OnInit {
     // Cargar las categorías y productos al iniciar la página
     await this.loadCategorias();
     await this.loadProductos();
+    this.pedidos = await this.dbService.getOrders();
+  }
+
+  async loadPedidos() {
+    this.pedidos = await this.dbService.getOrders();
   }
 
   // Función que recarga la lista de categorías
