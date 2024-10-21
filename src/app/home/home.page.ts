@@ -46,6 +46,10 @@ export class HomePage implements OnInit {
     loading.present();
   }
 
+  showCart() {
+    this.router.navigate(['/carrito']);
+  }
+
   logout() {
     this.authService.logout(); // Ejecuta la lógica de cierre de sesión
     this.router.navigate(['/login']); // Redirige al usuario a la página de login

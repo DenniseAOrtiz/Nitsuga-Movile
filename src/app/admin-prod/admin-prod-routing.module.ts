@@ -12,7 +12,7 @@ const routes: Routes = [
     path: 'admin-prod/:id', 
     component: AdminProdPage 
   },
-];
+]; 
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

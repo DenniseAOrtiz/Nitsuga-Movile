@@ -16,7 +16,7 @@ export class AddProductModalComponent implements OnInit {
   descripcion: string = '';
   precio: number = 0;
   categoriaId: number | null = null;
-  imagenCapturada: string = '';
+  imagenCapturada: any = '';
   selectedImage: string | null = null;
 
 
@@ -70,13 +70,7 @@ export class AddProductModalComponent implements OnInit {
     );
   }
 
-  async showLoading() {
-    const loading = await this.loadingCtrl.create({
-      duration: 500,
-    });
-
-    loading.present();
-  }
+ 
   chooseFromGallery() {
     const options: CameraOptions = {
       quality: 100,
@@ -127,7 +121,17 @@ export class AddProductModalComponent implements OnInit {
 
     await actionSheet.present();
   }
+
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      duration: 500,
+    });
+
+    loading.present();
+  }
 }
+
+
 
 
 

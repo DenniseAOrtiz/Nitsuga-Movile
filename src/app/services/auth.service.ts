@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,9 +15,18 @@ export class AuthService {
     this.isAuthenticated = isAuthenticated;
     this.isAdmin = isAdmin;
   }
+  
+  getCurrentUser() {
+    return { isAdmin: this.isAdmin };
+  }
 
   getAuthStatus() {
     return { isAuthenticated: this.isAuthenticated, isAdmin: this.isAdmin };
+  }
+
+  isUserAdmin(): boolean {
+    const user = this.getCurrentUser();
+    return user?.isAdmin === 1; 
   }
 
   logout() {

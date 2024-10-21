@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { UpdateAdminComponent } from 'src/app/modals/update-admin/update-admin.component';
 import { DbService } from 'src/app/services/db.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-admin-profile',
@@ -8,33 +11,27 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class AdminProfilePage implements OnInit {
   username: string = '';
-  password: string = '';
 
-  constructor(private dbService: DbService) {}
+  constructor(private modalController: ModalController, private dbService: DbService, private navCtrl: NavController) {}
 
   ngOnInit() {
-    this.loadAdminProfile();
+    this.loadUserProfile();
   }
 
-  loadAdminProfile() {
-    const user = this.dbService.getUsername();
-    if (user) {
-      this.username = user;
-    } else {
-      alert('No se pudo cargar el perfil del administrador');
-    }
+  async loadUserProfile() {
+    const user = await this.dbService.getCurrentUser();
+    this.username = user?.username || 'Usuario';
   }
 
-  updateProfile() {
-    if (this.username && this.password) {
-      // Actualizar el perfil en la base de datos
-      this.dbService.updateUserProfile(this.username, this.password).then(() => {
-        alert('Perfil actualizado correctamente');
-      }).catch(error => {
-        alert('Error al actualizar el perfil: ' + JSON.stringify(error));
-      });
-    } else {
-      alert('Por favor, ingrese un nombre de usuario y una contraseña');
-    }
+  async openEditProfileModal() {
+    const modal = await this.modalController.create({
+      component: UpdateAdminComponent,
+      componentProps: { username: this.username }
+    });
+    await modal.present();
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 }

@@ -14,6 +14,7 @@ export class DbService {
   private currentUsername: string | null = null;
   private currentIsAdmin: number = 0;
   private currentCategoria: string | null = null;
+  
 
 
   constructor(private sqlite: SQLite, private platform: Platform, private router: Router, private modalController: ModalController) {
@@ -79,6 +80,67 @@ export class DbService {
       alert('No se pudo crear la tabla de productos: ' + JSON.stringify(error));
     }
 
+    // tabla de carrito de compras
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS cart (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          productoId INTEGER,
+          nombre TEXT,
+          descripcion TEXT,
+          precio REAL,
+          cantidad INTEGER,
+          imagen TEXT,
+          FOREIGN KEY (productoId) REFERENCES productos(id)
+        )`,
+        []
+      );
+      //alert('Tabla de carrito de compras creada');
+    } catch (error) {
+      alert('No se pudo crear la tabla de carrito: ' + JSON.stringify(error));
+    }
+
+    // tabla de pedidos
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS orders (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT,
+          total REAL,
+          fecha TEXT,
+          productos TEXT
+        )`,
+        []
+      );
+      //alert('Tabla de pedidos creada');
+    } catch (error) {
+      alert('No se pudo crear la tabla de pedidos: ' + JSON.stringify(error));
+    }
+
+    // tabla de productos por pedido
+    try {
+      await this.dbInstance.executeSql(
+        `CREATE TABLE IF NOT EXISTS order_items (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          orderId INTEGER,
+          productoId INTEGER,
+          nombre TEXT,
+          cantidad INTEGER,
+          precio REAL,
+          FOREIGN KEY (orderId) REFERENCES orders(id),
+          FOREIGN KEY (productoId) REFERENCES productos(id)
+        )`, []
+      );
+      //alert('Tabla de productos por pedido creada correctamente');
+    } catch (error) {
+      alert('Error al crear la tabla de productos por pedido: ' + JSON.stringify(error));
+    }
+
+
+  }
+
+  public getDBInstance(): Promise<SQLiteObject> {
+    return Promise.resolve(this.dbInstance);
   }
 
   // Registro de un nuevo usuario
@@ -261,9 +323,10 @@ export class DbService {
   }
 
   async getProductosPorCategoria(categoriaId: number): Promise<any[]> {
-    const productos = await this.getProductos(); // Supongamos que este método trae todos los productos
-    return productos.filter(producto => producto.categoriaId === categoriaId); // Filtra los productos por categoriaId
+    const productos = await this.getProductos();
+    return productos.filter(producto => producto.categoriaId === categoriaId);
   }
+
 
 
   async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
@@ -282,6 +345,121 @@ export class DbService {
     const sql = 'DELETE FROM productos WHERE id = ?';
     await this.dbInstance.executeSql(sql, [id]);
   }
+
+  // Gestionar carrito de compras
+  public async addToCart(producto: any) {
+    try {
+      // Verificar si el producto ya está en el carrito
+      const result = await this.dbInstance.executeSql(
+        `SELECT * FROM cart WHERE productoId = ?`,
+        [producto.id]
+      );
+
+      if (result.rows.length > 0) {
+        // Si el producto ya está en el carrito, incrementar la cantidad
+        const currentItem = result.rows.item(0);
+        const nuevaCantidad = currentItem.cantidad + 1;
+        await this.dbInstance.executeSql(
+          `UPDATE cart SET cantidad = ? WHERE productoId = ?`,
+          [nuevaCantidad, producto.id]
+        );
+      } else {
+        // Si el producto no está en el carrito, agregarlo
+        await this.dbInstance.executeSql(
+          `INSERT INTO cart (productoId, nombre, descripcion, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?, ?)`,
+          [producto.id, producto.nombre, producto.descripcion, producto.precio, 1, producto.imagen]
+        );
+      }
+
+      alert('Producto agregado al carrito');
+    } catch (error) {
+      alert('Error al agregar producto al carrito: ' + JSON.stringify(error));
+    }
+  }
+
+  public async getCartItems(): Promise<any[]> {
+    try {
+      const result = await this.dbInstance.executeSql('SELECT * FROM cart', []);
+      const cartItems = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        cartItems.push(result.rows.item(i));
+      }
+      return cartItems;
+    } catch (error) {
+      alert('Error al obtener los productos del carrito: ' + JSON.stringify(error));
+      return [];
+    }
+  }
+
+  public async removeFromCart(productoId: number) {
+    try {
+      await this.dbInstance.executeSql('DELETE FROM cart WHERE productoId = ?', [productoId]);
+      alert('Producto eliminado del carrito');
+    } catch (error) {
+      alert('Error al eliminar el producto del carrito: ' + JSON.stringify(error));
+    }
+  }
+
+  public async createOrder(total: number, cartItems: any[]) {
+    try {
+      const date = new Date().toISOString();
+
+      // Insertar el pedido en la tabla 'orders'
+      const orderResult = await this.dbInstance.executeSql(
+        `INSERT INTO orders (total, fecha, username) VALUES (?, ?, ?)`,
+        [total, date, this.currentUsername]
+      );
+
+      const orderId = orderResult.insertId;
+
+      // Insertar cada producto del carrito en la tabla 'order_items'
+      for (const item of cartItems) {
+        await this.dbInstance.executeSql(
+          `INSERT INTO order_items (orderId, productoId, nombre, cantidad, precio) VALUES (?, ?, ?, ?, ?)`,
+          [orderId, item.productoId, item.nombre, item.cantidad, item.precio]
+        );
+      }
+
+      alert('Pedido registrado correctamente');
+      return true;
+    } catch (error) {
+      alert('Error al crear el pedido: ' + JSON.stringify(error));
+      return false;
+    }
+  }
+
+  public async getOrders() {
+    try {
+      const result = await this.dbInstance.executeSql('SELECT * FROM orders', []);
+      const orders = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        orders.push(result.rows.item(i));
+      }
+      return orders;
+    } catch (error) {
+      alert('Error al obtener los pedidos: ' + JSON.stringify(error));
+      return [];
+    }
+  }
+
+  public async deleteOrder(id: number) {
+    const sql = 'DELETE FROM orders WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [id]);
+  }
+
+
+  public async getOrderDetails(orderId: number) {
+    const sql = 'SELECT * FROM order_items WHERE orderId = ?';
+    const result = await this.dbInstance.executeSql(sql, [orderId]);
+    const items = [];
+    for (let i = 0; i < result.rows.length; i++) {
+      items.push(result.rows.item(i));
+    }
+    const total = items.reduce((acc, item) => acc + item.precio, 0);
+    return { productos: items, total: total };
+  }
+
+  
 
 
 
