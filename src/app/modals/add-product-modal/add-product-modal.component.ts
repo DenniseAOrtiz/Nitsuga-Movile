@@ -29,6 +29,10 @@ export class AddProductModalComponent implements OnInit {
 
   async addProduct() {
     if (this.nombre && this.descripcion && this.precio && this.categoriaId) {
+      if (this.precio <= 0) {
+        alert('El precio debe ser un valor positivo.');
+        return;
+      }
       const result = await this.dbService.addProducto(this.nombre, this.descripcion, this.precio, this.imagen, this.categoriaId);
       if (result.success) {
         this.modalController.dismiss({ success: true });
