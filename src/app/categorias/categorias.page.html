@@ -17,7 +17,7 @@
 <ion-content>
   <div class="grid-container">
     <ion-card class="grid-item" *ngFor="let categoria of categorias">
-      <ion-img [src]="categoria.imagen" alt="Imagen de la categoría" class="categoria-img"></ion-img>
+      <ion-img [src]="categoria.selectedImage" alt="Imagen de la categoría" class="categoria-img"></ion-img>
       <ion-card-header>
         <ion-button expand="block" fill="solid" color="primary" (click)="verProductos(categoria.id)">
           {{ categoria.nombre }}

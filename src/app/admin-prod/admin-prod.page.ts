@@ -112,8 +112,8 @@ export class AdminProdPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  volverAdmin() {
-    this.router.navigate(['/admin']);
+  volverCat() {
+    this.router.navigate(['/admin-cat']);
   }
 
   

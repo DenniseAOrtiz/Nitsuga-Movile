@@ -38,7 +38,8 @@ export class DbService {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 1
+          isAdmin INTEGER DEFAULT 0,
+          isBlocked INTEGER DEFAULT 0
         )`,
         []
       );
@@ -176,20 +177,24 @@ export class DbService {
         `SELECT * FROM users WHERE username = ? AND password = ?`,
         [username, password]
       );
-
+  
       if (result.rows.length > 0) {
         const user = result.rows.item(0);
-        // alert(JSON.stringify(user));
-        // alert(user.isAdmin);
+  
+        if (user.isBlocked === 1) {  // Verifica si el usuario está bloqueado
+          alert('Tu cuenta está bloqueada. Contacta con el administrador.');
+          return { success: false };
+        }
+  
         this.currentUsername = user.username;
         this.currentIsAdmin = user.isAdmin; // 1 es admin
-        // alert('Inicio de sesión exitoso');
-        // alert(this.currentIsAdmin);
+        
         if (this.currentIsAdmin) {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/home']);
         }
+        
         return { success: true };
       } else {
         alert('Credenciales inválidas');
@@ -204,6 +209,7 @@ export class DbService {
   public getUsername(): string | null {
     return this.currentUsername;
   }
+  
 
   public async getAllUsers() {
     try {
@@ -219,10 +225,10 @@ export class DbService {
     }
   }
 
-  public async updateUser(id: number, username: string, password: string, isAdmin: number) {
-    const sql = 'UPDATE users SET username = ?, password = ?, isAdmin = ? WHERE id = ?';
-    await this.dbInstance.executeSql(sql, [username, password, isAdmin ? 1 : 0, id]);
-  }
+  public async updateUser(id: number, username: string, isAdmin: number, isBlocked: number) {
+    const sql = 'UPDATE users SET username = ?, isAdmin = ?, isBlocked = ? WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [username, isAdmin ? 1 : 0, isBlocked ? 1 : 0, id]);
+}
 
   public async deleteUser(id: number) {
     const sql = 'DELETE FROM users WHERE id = ?';
