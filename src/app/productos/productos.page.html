@@ -25,7 +25,7 @@
         <p>{{ producto.descripcion }}</p>
         <p><strong>{{ producto.precio | currency }}</strong></p>
       </ion-card-content>
-      <ion-button expand="block" (click)="agregarAlCarrito(producto)">Agregar al carrito</ion-button>
+      <ion-button expand="full" (click)="agregarAlCarrito(producto)" style="margin: 0 auto; width: 80%;">Agregar al carrito</ion-button>
     </ion-card>
   </div>
 </ion-content>
