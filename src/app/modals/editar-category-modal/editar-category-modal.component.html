@@ -17,8 +17,9 @@
     <ion-input [(ngModel)]="nuevaDescripcion"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked">Imagen</ion-label>
-    <ion-input [(ngModel)]="nuevaImagen"></ion-input>
+    <ion-button expand="full" (click)="tomarFoto()">Tomar Foto</ion-button>
+    <!-- <ion-label position="stacked">Imagen</ion-label>
+    <ion-input [(ngModel)]="nuevaImagen"></ion-input> -->
   </ion-item>
   <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
 </ion-content>

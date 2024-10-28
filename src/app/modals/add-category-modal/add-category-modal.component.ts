@@ -9,6 +9,7 @@ import { DbService } from '../../services/db.service';
 })
 
 export class AddCategoryModalComponent {
+  id: number = 0;
   nombre: string = '';
   descripcion: string = '';
   imagen: string = '';
@@ -16,7 +17,7 @@ export class AddCategoryModalComponent {
   constructor(private modalController: ModalController, private dbService: DbService) {}
 
   addCategory() {
-    this.dbService.addCategoria(this.nombre, this.descripcion, this.imagen);
+    this.dbService.addCategoria(this.id, this.nombre, this.descripcion, this.imagen);
     this.modalController.dismiss({ data: { nombre: this.nombre, descripcion: this.descripcion, imagen: this.imagen } });
   }
   dismiss() {
