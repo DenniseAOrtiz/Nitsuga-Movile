@@ -12,10 +12,12 @@ import { ActionSheetController } from '@ionic/angular';
 })
 
 export class AddCategoryModalComponent {
+  id: number = 0;
   nombre: string = '';
   descripcion: string = '';
   imagenCapturada: any = '';
   selectedImage: string | null = null;
+  imagen: string = '';
 
 
   constructor(private modalController: ModalController, private dbService: DbService, private camera: Camera,
@@ -23,8 +25,8 @@ export class AddCategoryModalComponent {
     private actionSheetCtrl: ActionSheetController) {}
 
   addCategory() {
-    this.dbService.addCategoria(this.nombre, this.descripcion, this.imagenCapturada);
-    this.modalController.dismiss({ data: { nombre: this.nombre, descripcion: this.descripcion, imagen: this.imagenCapturada } });
+    this.dbService.addCategoria(this.id, this.nombre, this.descripcion, this.imagen);
+    this.modalController.dismiss({ data: { nombre: this.nombre, descripcion: this.descripcion, imagen: this.imagen } });
   }
   dismiss() {
     this.modalController.dismiss();

@@ -1,0 +1,10 @@
+{
+  "categorias": [
+    { "id": 1, "nombre": "Categoria 1", "descripcion": "Descripción 1", "imagen": "url_imagen" },
+    { "id": 2, "nombre": "Categoria 2", "descripcion": "Descripción 2", "imagen": "url_imagen" }
+  ],
+  "productos": [
+    { "id": 1, "nombre": "Producto 1", "descripcion": "Descripción 1", "precio": 10, "imagen": "url_imagen", "categoriaId": 1 },
+    { "id": 2, "nombre": "Producto 2", "descripcion": "Descripción 2", "precio": 20, "imagen": "url_imagen", "categoriaId": 2 }
+  ]
+}

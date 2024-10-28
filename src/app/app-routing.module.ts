@@ -2,6 +2,12 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 import { RegisterComponent } from './login/register/register.component';
+import { AdminGuard } from './guards/admin.guard'; // Asegúrate de importar el guard
+import { AdminPage } from './admin/admin.page';
+import { AdminCatPage } from './admin-cat/admin-cat.page';
+import { AdminProdPage } from './admin-prod/admin-prod.page';
+import { AdminUsersPage } from './admin-users/admin-users.page';
+import { AdminPedidosPage } from './admin-pedidos/admin-pedidos.page';
 
 
 const routes: Routes = [
@@ -9,6 +15,26 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
+  },
+  { path: 'admin', 
+    component: AdminPage, 
+    canActivate: [AdminGuard] 
+  },
+  { path: 'admin-cat', 
+    component: AdminCatPage, 
+    canActivate: [AdminGuard] 
+  },
+  { path: 'admin-prod', 
+    component: AdminProdPage, 
+    canActivate: [AdminGuard] 
+  },
+  { path: 'admin-users', 
+    component: AdminUsersPage, 
+    canActivate: [AdminGuard] 
+  },
+  { path: 'admin-pedidos', 
+    component: AdminPedidosPage, 
+    canActivate: [AdminGuard] 
   },
   {
     path: 'home',
@@ -53,7 +79,8 @@ const routes: Routes = [
   {
     path: 'admin-prod/:id',
     loadChildren: () => import('./admin-prod/admin-prod.module').then( m => m.AdminProdPageModule)
-  },  {
+  },
+  {
     path: 'carrito',
     loadChildren: () => import('./carrito/carrito.module').then( m => m.CarritoPageModule)
   },

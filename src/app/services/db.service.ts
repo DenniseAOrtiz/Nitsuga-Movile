@@ -55,8 +55,9 @@ export class DbService {
           nombre TEXT NOT NULL,
           descripcion TEXT,
           imagen TEXT
-        )`, []
-      );
+        )`, []).then(() => {
+          console.log('Tabla categorias creada');
+        }).catch(e => console.error(e));
       // alert('Base de datos creada y tabla de categorías lista');
     } catch (error) {
       alert('No se pudo crear la base de datos categorias ' + error);
@@ -241,10 +242,10 @@ export class DbService {
   }
 
   // Gestionar categorías
-  public async addCategoria(nombre: string, descripcion: string, imagen: string) {
-    const sql = 'INSERT INTO categorias (nombre, descripcion, imagen) VALUES (?, ?, ?)';
+  public async addCategoria(id: number, nombre: string, descripcion: string, imagen: string) {
+    const sql = 'INSERT INTO categorias (id, nombre, descripcion, imagen) VALUES (?, ?, ?, ?)';
     try {
-      await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen]);
+      await this.dbInstance.executeSql(sql, [id, nombre, descripcion, imagen]);
       alert('Categoría agregada correctamente');
       alert('Favor recargue la página');
       return { success: true };
