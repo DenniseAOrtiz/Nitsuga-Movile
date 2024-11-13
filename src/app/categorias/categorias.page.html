@@ -19,9 +19,9 @@
     <ion-card class="grid-item" *ngFor="let categoria of categorias">
       <ion-img [src]="categoria.selectedImage" alt="Imagen de la categoría" class="categoria-img"></ion-img>
       <ion-card-header>
-        <ion-button expand="block" fill="solid" color="primary" (click)="verProductos(categoria.id)">
+        <ion-button expand="full" fill="solid" (click)="verProductos(categoria.id)" style="margin: 0 auto; width: 80%;">
           {{ categoria.nombre }}
-        </ion-button>
+        </ion-button>        
       </ion-card-header>
       <ion-card-content>
         <p>{{ categoria.descripcion }}</p>

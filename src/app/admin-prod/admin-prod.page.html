@@ -24,40 +24,26 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row class="tituloTablas">
-      <ion-col size="4"><strong>Nombre</strong></ion-col>
-      <ion-col size="4"><strong>Precio</strong></ion-col>
-      <ion-col size="4"><strong>Opciones</strong></ion-col>
-    </ion-row>
-    <ion-row *ngFor="let producto of productos">
-      <ion-col size="4">{{ producto.nombre }}</ion-col>
-      <ion-col size="4">$ {{ producto.precio }}</ion-col>
-      <ion-col size="4">
-        <ion-button color="warning" (click)="editarProducto(producto)" (click)="showLoading()"><ion-icon slot="start"
-            name="create-outline"></ion-icon></ion-button>
-        <ion-button color="danger" (click)="eliminarProducto(producto.id)" (click)="showLoading()"><ion-icon slot="start"
-            name="close-circle-outline"></ion-icon></ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
 
-<!--
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="">
+    <ion-item *ngFor="let producto of productos" class="product-item">
+      <img [src]="producto.imagen" alt="{{ producto.nombre }}" class="product-image" />
+      
+      <div class="product-info">
+        <h2 class="product-name">{{ producto.nombre }}</h2>
+        <p class="product-description">{{ producto.descripcion }}</p>
+        <p class="product-price">{{ producto.precio | currency }}</p>
+      </div>
 
-      <img [src]="producto.imagen" alt="{{ producto.nombre }}" style="width: 50px; height: 50px;">
-      <h2>{{ producto.nombre }}</h2>
-      <p>{{ producto.descripcion }}</p>
-      <p>{{ producto.precio | currency }}</p>
-      <ion-button color="warning" (click)="editarProducto(producto)"><ion-icon slot="start"
-          name="create-outline"></ion-icon></ion-button>
-      <ion-button color="danger" (click)="eliminarProducto(producto.id)"><ion-icon slot="start"
-          name="close-circle-outline"></ion-icon></ion-button>
+      <div class="action-buttons">
+        <ion-button class="edit-button" (click)="editarProducto(producto)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button class="delete-button" (click)="eliminarProducto(producto.id)">
+          <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
     </ion-item>
   </ion-list>
 </ion-content>
--->

@@ -67,17 +67,6 @@ export class AdminProdPage implements OnInit {
     await modal.present();
   }
 
-  // async addProduct() {
-  //   const modal = await this.modalController.create({
-  //     component: AddProductModalComponent,
-  //     componentProps: { categoriaId: this.categoriaId }
-  //   });
-  //   modal.onDidDismiss().then(async () => {
-  //     await this.loadProductos();
-  //   });
-  //   await modal.present();
-  // }
-
   async editarProducto(producto: any) {
     const modal = await this.modalController.create({
       component: EditProductModalComponent,

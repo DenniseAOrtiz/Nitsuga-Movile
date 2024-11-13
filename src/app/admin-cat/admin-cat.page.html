@@ -28,16 +28,22 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let categoria of categorias">
-      {{ categoria.nombre }}
+      <img [src]="categoria.imagen" alt="{{ categoria.nombre }}" style="width: 50px; height: 50px; margin-right: 10px;">
+      <div>
+        <h2>{{ categoria.nombre }}</h2>
+      </div>
       <ion-buttons slot="end">
-        <ion-button color="warning" (click)="editarCategoria(categoria)"><ion-icon slot="start"
-            name="create-outline"></ion-icon></ion-button>
-        <ion-button color="danger" (click)="eliminarCategoria(categoria.id)"><ion-icon slot="start"
-            name="close-circle-outline"></ion-icon></ion-button>
+        <ion-button color="warning" (click)="editarCategoria(categoria)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="eliminarCategoria(categoria.id)">
+          <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+        </ion-button>
         <ion-button color="dark" *ngIf="categoria.id" (click)="verProductos(categoria.id)">
-          <ion-icon slot="start" name="search-circle-outline"></ion-icon>
+          <ion-icon slot="icon-only" name="search-circle-outline"></ion-icon>
         </ion-button>            
       </ion-buttons>
     </ion-item>
   </ion-list>
 </ion-content>
+
