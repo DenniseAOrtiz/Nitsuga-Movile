@@ -210,6 +210,16 @@ export class DbService {
     return this.currentUsername;
   }
   
+  public async updateUserBlockStatus(id: number, isBlocked: number) {
+    const sql = 'UPDATE users SET isBlocked = ? WHERE id = ?';
+    return this.dbInstance.executeSql(sql, [isBlocked, id]);
+  }
+  
+  public async updateUserAdminStatus(id: number, isAdmin: number) {
+    const sql = 'UPDATE users SET isAdmin = ? WHERE id = ?';
+    return this.dbInstance.executeSql(sql, [isAdmin, id]);
+  }
+  
 
   public async getAllUsers() {
     try {

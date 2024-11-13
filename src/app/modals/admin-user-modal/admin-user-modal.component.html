@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Asignar como Administrador</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item lines="none">
+    <ion-label>Estado de Administrador:</ion-label>
+    <ion-toggle [(ngModel)]="isAdmin" color="primary"></ion-toggle>
+  </ion-item>
+
+  <div class="ion-padding-top">
+    <ion-button expand="full" color="primary" (click)="toggleAdmin()">
+      {{ isAdmin ? 'Quitar Admin' : 'Hacer Admin' }}
+    </ion-button>
+  </div>
+</ion-content>

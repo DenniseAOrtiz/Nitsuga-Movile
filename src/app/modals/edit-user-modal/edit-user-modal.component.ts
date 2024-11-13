@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from '../../services/db.service';
 import { ModalController } from '@ionic/angular';
+import { AdminUserModalComponent } from '../admin-user-modal/admin-user-modal.component';
+import { BlockUserModalComponent } from '../block-user-modal/block-user-modal.component';
 
 @Component({
   selector: 'app-edit-user-modal',
@@ -20,6 +22,7 @@ export class EditUserModalComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log("User data on init:", this.user);
     this.username = this.user.username;
     this.password = this.user.password;
     this.isAdmin = this.user.isAdmin;
@@ -27,6 +30,7 @@ export class EditUserModalComponent  implements OnInit {
   }
 
   editUser() {
+    console.log("Valores antes de actualizar:", this.isAdmin, this.isBlocked);
     this.isAdmin = this.isAdmin === 1 ? 0 : 1; 
     this.isBlocked = this.isBlocked === 1 ? 0 : 1;
   
@@ -37,6 +41,23 @@ export class EditUserModalComponent  implements OnInit {
       alert('Error al actualizar el usuario: ' + error);
     });
   }
+
+  async openBlockUserModal(userId: number) {
+    const modal = await this.modalController.create({
+      component: BlockUserModalComponent,
+      componentProps: { userId }
+    });
+    return await modal.present();
+  }
+  
+  async openAdminUserModal(userId: number) {
+    const modal = await this.modalController.create({
+      component: AdminUserModalComponent,
+      componentProps: { userId }
+    });
+    return await modal.present();
+  }
+  
   
 
   dismiss() {
