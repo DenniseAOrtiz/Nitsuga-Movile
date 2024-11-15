@@ -5,7 +5,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
@@ -24,6 +23,8 @@ import { PedidoDetallesComponent } from './modals/pedido-detalles/pedido-detalle
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
+
 
 @NgModule({
   declarations: [AppComponent, 
@@ -41,7 +42,7 @@ import { Camera } from '@awesome-cordova-plugins/camera/ngx';
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Camera], 
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Camera, Network], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}
