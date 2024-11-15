@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { DbService } from '../../services/db.service';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { LoadingController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-add-product-modal',
@@ -20,16 +20,31 @@ export class AddProductModalComponent implements OnInit {
   selectedImage: string | null = null;
   imagen: string = '';
 
+  foto: any;
 
   constructor(private modalController: ModalController,
     private navParams: NavParams,
     private dbService: DbService,
-    private camera: Camera,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController) {
     this.categoriaId = this.navParams.get('categoriaId');
   }
 
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Uri
+    });
+
+    // image.webPath will contain a path that can be set as an image src.
+    // You can access the original file using image.path, which can be
+    // passed to the Filesystem API to read the raw data of the image,
+    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+    this.foto = image.webPath;
+
+
+  };
 
   async ngOnInit() {
     this.categorias = await this.dbService.getCategorias();
@@ -52,79 +67,6 @@ export class AddProductModalComponent implements OnInit {
     } else {
       alert('Por favor, complete todos los campos.');
     }
-  }
-
-  takePhoto() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.CAMERA // Tomar foto con la cámara
-    };
-
-    this.camera.getPicture(options).then(
-      (imageData) => {
-        // Convertir la imagen a base64
-        this.selectedImage = 'data:image/jpeg;base64,' + imageData;
-        console.log('Foto tomada:', this.selectedImage);
-      },
-      (err) => {
-        console.error('Error al tomar la foto', err);
-      }
-    );
-  }
-
- 
-  chooseFromGallery() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY // Elegir desde la galería
-    };
-
-    this.camera.getPicture(options).then(
-      (imageData) => {
-        // Convertir la imagen a base64
-        this.selectedImage = 'data:image/jpeg;base64,' + imageData;
-        console.log('Imagen seleccionada de la galería:', this.selectedImage);
-      },
-      (err) => {
-        console.error('Error al seleccionar la imagen', err);
-      }
-    );
-  }
-
-  // Función para mostrar opciones de tomar foto o elegir de galería
-  async selectImage() {
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Elige una opción',
-      buttons: [
-        {
-          text: 'Tomar una foto',
-          icon: 'camera',
-          handler: () => {
-            this.takePhoto(); // Llamar a la función para tomar una foto
-          }
-        },
-        {
-          text: 'Seleccionar de la galería',
-          icon: 'images',
-          handler: () => {
-            this.chooseFromGallery(); // Llamar a la función para seleccionar de la galería
-          }
-        },
-        {
-          text: 'Cancelar',
-          icon: 'close',
-          role: 'cancel'
-        }
-      ]
-    });
-
-    await actionSheet.present();
   }
 
   async showLoading() {
