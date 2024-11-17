@@ -42,10 +42,19 @@ export class EditUserModalComponent  implements OnInit {
     });
   }
 
+  loadUsers() {
+    this.dbService.getUser(this.user.id).then((user) => {
+      this.user = user;
+    });
+  }
+
   async openBlockUserModal(userId: number) {
     const modal = await this.modalController.create({
       component: BlockUserModalComponent,
       componentProps: { userId }
+    });
+    modal.onDidDismiss().then(() => {
+      this.loadUsers(); 
     });
     return await modal.present();
   }
@@ -55,11 +64,13 @@ export class EditUserModalComponent  implements OnInit {
       component: AdminUserModalComponent,
       componentProps: { userId }
     });
+    modal.onDidDismiss().then(() => {
+      this.loadUsers(); 
+    });
     return await modal.present();
   }
   
   
-
   dismiss() {
     this.modalController.dismiss();
   }

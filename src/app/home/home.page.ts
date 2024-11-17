@@ -7,6 +7,7 @@ import { APIService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
+
 // import { Producto } from '../models/producto.model'; // Asegúrate de tener un modelo para los productos
 
 @Component({

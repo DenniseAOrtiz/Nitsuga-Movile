@@ -20,6 +20,8 @@ import { UpdateClientComponent } from './modals/update-client/update-client.comp
 import { UpdateAdminComponent } from './modals/update-admin/update-admin.component';
 import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component';
 import { PedidoDetallesComponent } from './modals/pedido-detalles/pedido-detalles.component';
+import { BlockUserModalComponent } from './modals/block-user-modal/block-user-modal.component';
+import { AdminUserModalComponent } from './modals/admin-user-modal/admin-user-modal.component'; 
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
@@ -38,7 +40,9 @@ import { Network } from '@awesome-cordova-plugins/network/ngx';
     EditUserModalComponent,
     UpdateClientComponent,
     UpdateAdminComponent,
-    PedidoDetallesComponent
+    PedidoDetallesComponent,
+    BlockUserModalComponent,
+    AdminUserModalComponent
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],

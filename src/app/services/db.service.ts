@@ -36,6 +36,7 @@ export class DbService {
       await this.dbInstance.executeSql(
         `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          mail TEXT UNIQUE,
           username TEXT UNIQUE,
           password TEXT,
           isAdmin INTEGER DEFAULT 0,
@@ -138,36 +139,38 @@ export class DbService {
       alert('Error al crear la tabla de productos por pedido: ' + JSON.stringify(error));
     }
 
-
   }
+
+  // //////////////////////////////////////////////////////////////////////////
+// USUARIOS //////////////////////////////////////////////////////////////////
 
   public getDBInstance(): Promise<SQLiteObject> {
     return Promise.resolve(this.dbInstance);
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string, isAdmin: number) {
+  public async register(mail: string, username: string, password: string, isAdmin: number) {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
+    
     if (!passwordRegex.test(password)) {
-      alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
+      alert('La contraseña no cumple con los requisitos. Debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
       return false;
-    } else {
     }
-
+  
     try {
-      const data = [username, password, 0];
+      const data = [mail, username, password, 1];
       await this.dbInstance.executeSql(
-        `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
+        `INSERT INTO users (mail, username, password, isAdmin) VALUES (?, ?, ?, ?)`,
         data
       );
       alert('Usuario registrado correctamente');
       return true;
     } catch (error) {
-      alert('Error al registrar el usuario');
+      alert('Error al registrar el usuario: ' + JSON.stringify(error));
       return false;
     }
   }
-
+  
 
 
   // Iniciar sesión 
@@ -209,7 +212,13 @@ export class DbService {
   public getUsername(): string | null {
     return this.currentUsername;
   }
-  
+
+  public async getUser(id: number) {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [id]);
+    return result.rows.item(0);
+  }
+
   public async updateUserBlockStatus(id: number, isBlocked: number) {
     const sql = 'UPDATE users SET isBlocked = ? WHERE id = ?';
     return this.dbInstance.executeSql(sql, [isBlocked, id]);
@@ -257,7 +266,18 @@ export class DbService {
     this.currentUsername = username;
   }
 
-  // Gestionar categorías
+  public async getUserStatus(userId: number) {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [userId]);
+    return result.rows.item(0);
+  }
+
+
+
+
+  // //////////////////////////////////////////////////////////////////////////
+// CATEGORIAS ////////////////////////////////////////////////////////////////
+
   public async addCategoria(id: number, nombre: string, descripcion: string, imagen: string) {
     const sql = 'INSERT INTO categorias (id, nombre, descripcion, imagen) VALUES (?, ?, ?, ?)';
     try {
@@ -312,7 +332,9 @@ export class DbService {
   }
 
 
-  // Gestionar productos
+  // //////////////////////////////////////////////////////////////////////////
+// PRODUCTOS ////////////////////////////////////////////////////////////////
+
   public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
     const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
     try {
@@ -363,7 +385,9 @@ export class DbService {
     await this.dbInstance.executeSql(sql, [id]);
   }
 
-  // Gestionar carrito de compras
+  // //////////////////////////////////////////////////////////////////////////
+// CARRITO DE COMPRAS ////////////////////////////////////////////////////////
+
   public async addToCart(producto: any) {
     try {
       // Verificar si el producto ya está en el carrito
@@ -416,6 +440,9 @@ export class DbService {
       alert('Error al eliminar el producto del carrito: ' + JSON.stringify(error));
     }
   }
+
+  // //////////////////////////////////////////////////////////////////////////
+// PEDIDOS //////////////////////////////////////////////////////////////////
 
   public async createOrder(total: number, cartItems: any[]) {
     try {
@@ -475,6 +502,7 @@ export class DbService {
     const total = items.reduce((acc, item) => acc + item.precio, 0);
     return { productos: items, total: total };
   }
+
 
   
 

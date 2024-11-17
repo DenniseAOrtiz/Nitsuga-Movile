@@ -15,11 +15,17 @@
   </ion-item>
   <ion-item>
     <ion-label>Rol de Admin</ion-label>
-    <ion-toggle [(ngModel)]="isAdmin" [checked]="isAdmin === 1"></ion-toggle>
+    <ion-label>{{ user.isAdminText }}</ion-label>
+    <ion-button color="warning" (click)="openAdminUserModal(user.id)"><ion-icon slot="start"
+      name="create-outline"></ion-icon>
+    </ion-button>
   </ion-item>
   <ion-item>
     <ion-label>Usuario Bloqueado</ion-label>
-    <ion-toggle [(ngModel)]="isBlocked" [checked]="isBlocked === 1"></ion-toggle> <!-- Toggle para bloquear usuario -->
+    <ion-label>{{ user.isBlockedText }}</ion-label>
+    <ion-button color="warning" (click)="openBlockUserModal(user.id)"><ion-icon slot="start"
+      name="create-outline"></ion-icon>
+    </ion-button>
   </ion-item>
   <ion-button expand="full" (click)="editUser()">Guardar</ion-button>
 </ion-content>

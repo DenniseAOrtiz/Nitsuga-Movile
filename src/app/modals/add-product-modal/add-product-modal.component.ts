@@ -69,6 +69,11 @@ export class AddProductModalComponent implements OnInit {
     }
   }
 
+  selectImage() {
+    // Implementa aquí la lógica para seleccionar una imagen
+    console.log('Imagen seleccionada');
+  }
+
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       duration: 500,
