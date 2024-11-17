@@ -209,7 +209,13 @@ export class DbService {
   public getUsername(): string | null {
     return this.currentUsername;
   }
-  
+
+  public async getUser(id: number) {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [id]);
+    return result.rows.item(0);
+  }
+
   public async updateUserBlockStatus(id: number, isBlocked: number) {
     const sql = 'UPDATE users SET isBlocked = ? WHERE id = ?';
     return this.dbInstance.executeSql(sql, [isBlocked, id]);
@@ -474,6 +480,12 @@ export class DbService {
     }
     const total = items.reduce((acc, item) => acc + item.precio, 0);
     return { productos: items, total: total };
+  }
+
+  public async getUserStatus(userId: number) {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [userId]);
+    return result.rows.item(0);
   }
 
   

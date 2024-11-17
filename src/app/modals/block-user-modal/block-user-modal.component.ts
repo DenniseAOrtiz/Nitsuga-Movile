@@ -18,7 +18,9 @@ export class BlockUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isBlocked = this.userService.getUserStatus(this.userId).isBlocked;
+    this.dbService.getUserStatus(this.userId).then((user) => {
+      this.isBlocked = user.isBlocked;
+    });
   }
 
   toggleBlock() {
@@ -26,13 +28,14 @@ export class BlockUserModalComponent implements OnInit {
     this.dbService.updateUserBlockStatus(this.userId, this.isBlocked)
       .then(() => {
         alert('Estado de bloqueo actualizado');
-        this.modalController.dismiss();
+        this.modalController.dismiss({ updated: true }); // Indica que hubo cambios
       })
       .catch(error => alert('Error al actualizar bloqueo: ' + error));
   }
-
+  
   dismiss() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(); // Cierra sin indicar cambios
   }
+  
 }
 

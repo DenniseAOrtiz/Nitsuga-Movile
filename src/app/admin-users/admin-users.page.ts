@@ -62,14 +62,24 @@ export class AdminUsersPage implements OnInit {
   openEditUserModal(user: any) {
     this.modalController.create({
       component: EditUserModalComponent,
-      componentProps: { user }
-    }).then(modal => modal.present());
+      componentProps: { user },
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(() => {
+        this.loadUsers(); 
+      });
+    });
   }
-
+  
   openAddUserModal() {
     this.modalController.create({
-      component: AddUserModalComponent
-    }).then(modal => modal.present());
+      component: AddUserModalComponent,
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(() => {
+        this.loadUsers(); 
+      });
+    });
   }
 
   async showLoading() {

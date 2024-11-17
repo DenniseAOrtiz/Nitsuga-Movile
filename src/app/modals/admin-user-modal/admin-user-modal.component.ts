@@ -11,6 +11,7 @@ import { ModalController } from '@ionic/angular';
 export class AdminUserModalComponent implements OnInit {
   @Input() userId!: number;
   isAdmin: number = 0;
+  user: any[] = [];
 
   constructor(
     private dbService: DbService,
@@ -18,7 +19,9 @@ export class AdminUserModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isAdmin = this.userService.getUserStatus(this.userId).isBlocked;
+    this.dbService.getUserStatus(this.userId).then((user) => {
+      this.isAdmin = user.isAdmin;
+    });
   }
 
   toggleAdmin() {
@@ -26,13 +29,14 @@ export class AdminUserModalComponent implements OnInit {
     this.dbService.updateUserAdminStatus(this.userId, this.isAdmin)
       .then(() => {
         alert('Estado de administrador actualizado');
-        this.modalController.dismiss();
+        this.modalController.dismiss({ updated: true }); 
       })
       .catch(error => alert('Error al actualizar admin: ' + error));
   }
-
+  
   dismiss() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(); 
   }
+  
 }
 
