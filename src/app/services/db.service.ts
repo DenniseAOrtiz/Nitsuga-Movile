@@ -272,7 +272,21 @@ export class DbService {
     return result.rows.item(0);
   }
 
-
+  public async findUserByEmail(mail: string): Promise<any> {
+    try {
+      const query = 'SELECT * FROM users WHERE mail = ?';
+      const result = await this.dbInstance.executeSql(query, [mail]);
+  
+      if (result.rows.length > 0) {
+        return result.rows.item(0);
+      }
+      return null;
+    } catch (error) {
+      alert('Error en findUserByEmail: ' + JSON.stringify(error));
+      throw error; 
+    }
+  }
+  
 
 
   // //////////////////////////////////////////////////////////////////////////
