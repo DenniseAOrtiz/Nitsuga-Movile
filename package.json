@@ -23,8 +23,6 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
-    "@awesome-cordova-plugins/android-permissions": "^6.9.0",
-    "@awesome-cordova-plugins/camera": "^6.9.0",
     "@awesome-cordova-plugins/core": "^6.9.0",
     "@awesome-cordova-plugins/native-storage": "^6.9.0",
     "@awesome-cordova-plugins/network": "^6.11.0",
