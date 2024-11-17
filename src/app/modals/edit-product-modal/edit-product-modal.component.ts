@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { DbService } from '../../services/db.service'; 
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { LoadingController } from '@ionic/angular';
 
 @Component({
@@ -23,7 +22,6 @@ export class EditProductModalComponent implements OnInit {
     private modalController: ModalController,
     private navParams: NavParams,
     private dbService: DbService,
-    private camera: Camera,
     private loadingCtrl: LoadingController 
   ) {
     this.categoriaId = this.navParams.get('categoriaId');
@@ -48,24 +46,6 @@ export class EditProductModalComponent implements OnInit {
     await this.dbService.editarProducto(this.producto.id, this.nuevoNombre, this.nuevaDescripcion, precio, this.nuevaImagen, this.producto.categoriaId);
     this.modalController.dismiss({ updated: true });  
 
-  }
-  async tomarFoto() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-
-    try {
-      const imageData = await this.camera.getPicture(options);
-      // Convertir la imagen a base64
-      this.imagenCapturada = 'data:image/jpeg;base64,' + imageData;
-      console.log('Imagen capturada correctamente');
-    } catch (err) {
-      console.log('Error al tomar la foto', err);
-    }
   }
   async showLoading() {
     const loading = await this.loadingCtrl.create({

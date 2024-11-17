@@ -24,7 +24,6 @@ import { BlockUserModalComponent } from './modals/block-user-modal/block-user-mo
 import { AdminUserModalComponent } from './modals/admin-user-modal/admin-user-modal.component'; 
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
-import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
 
 
@@ -46,7 +45,7 @@ import { Network } from '@awesome-cordova-plugins/network/ngx';
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Camera, Network], 
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Network], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}
