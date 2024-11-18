@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DbService } from '../services/db.service';
 import { OrderDetailsComponent } from '../modals/order-details/order-details.component';
 import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-mis-pedidos',
   templateUrl: './mis-pedidos.page.html',
@@ -11,7 +13,7 @@ export class MisPedidosPage implements OnInit {
   pedidos: any[] = [];
   isLoading: boolean = true;
 
-  constructor(private dbService: DbService, private modalController: ModalController) {}
+  constructor(private dbService: DbService, private modalController: ModalController, private router: Router) {}
 
   async ngOnInit() {
     await this.loadPedidos();
@@ -40,5 +42,9 @@ export class MisPedidosPage implements OnInit {
       componentProps: { orderId },
     });
     await modal.present();
+  }
+
+  volverCliente() {
+    this.router.navigate(['/home']); 
   }
 }

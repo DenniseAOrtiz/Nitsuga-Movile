@@ -2,7 +2,13 @@
   <ion-toolbar>
     <ion-title>Mis Pedidos</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+      <ion-button (click)="volverCliente()">
+        <ion-icon slot="start" name="arrow-back-outline" color="secondary"></ion-icon>
+      </ion-button>
+  </ion-toolbar>
 </ion-header>
+
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="loadPedidos()">
