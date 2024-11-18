@@ -158,7 +158,7 @@ export class DbService {
     }
   
     try {
-      const data = [mail, username, password, 1];
+      const data = [mail, username, password, isAdmin];
       await this.dbInstance.executeSql(
         `INSERT INTO users (mail, username, password, isAdmin) VALUES (?, ?, ?, ?)`,
         data

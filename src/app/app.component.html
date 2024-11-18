@@ -20,6 +20,10 @@
             <ion-icon slot="start" name="person-circle-outline"></ion-icon>
             <ion-label>Mi perfil</ion-label>
           </ion-item>
+          <ion-item routerLink="/mis-pedidos" (click)="closeMenu()" (click)="showLoading()">
+            <ion-icon slot="start" name="cart-outline"></ion-icon>
+            <ion-label>Mis pedidos</ion-label>
+          </ion-item>
           <ion-item (click)="logout()" (click)="closeMenu()" (click)="showLoading()">
             <ion-icon slot="start" name="log-out-outline"></ion-icon>
             <ion-label>Cerrar Sesión</ion-label>
