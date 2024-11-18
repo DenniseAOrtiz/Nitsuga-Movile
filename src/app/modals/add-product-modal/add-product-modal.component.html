@@ -20,6 +20,10 @@
     <ion-input [(ngModel)]="precio" type="number"></ion-input>
   </ion-item>
   <ion-item>
+    <ion-label position="floating">Stock</ion-label>
+    <ion-input [(ngModel)]="stock" type="number"></ion-input>
+  </ion-item>
+  <ion-item>
     <ion-label position="floating">Categoría</ion-label>
     <ion-select [(ngModel)]="categoriaId">
       <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre
@@ -27,10 +31,10 @@
     </ion-select>
   </ion-item>
   <ion-item>
-    <ion-button slot="start" (click)="selectImage()" (click)="showLoading()">Seleccionar imagen</ion-button>
+    <ion-button slot="start" (click)="openEditPhotoModal()" (click)="showLoading()">Seleccionar imagen</ion-button>
   </ion-item>
-  <div *ngIf="selectedImage">
-    <ion-img [src]="selectedImage"></ion-img>
+  <div *ngIf="imagen">
+    <ion-img [src]="imagen"></ion-img>
   </div>
 
   <ion-button expand="full" (click)="addProduct()" (click)="showLoading()">Añadir</ion-button>

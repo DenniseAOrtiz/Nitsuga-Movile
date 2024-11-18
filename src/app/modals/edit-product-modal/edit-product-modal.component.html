@@ -27,8 +27,12 @@
     </ion-select>
   </ion-item>
   <ion-item>
+    <ion-label position="stacked">Stock</ion-label>
+    <ion-input [(ngModel)]="nuevoStock" type="number"></ion-input>
+  </ion-item>
+  <ion-item>
     <ion-label position="stacked">Imagen</ion-label>
-    
+    <ion-button slot="end" (click)="openEditPhotoModal()">Editar</ion-button>
   </ion-item>
   <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
 </ion-content>

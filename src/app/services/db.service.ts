@@ -74,10 +74,11 @@ export class DbService {
           nombre TEXT NOT NULL,
           descripcion TEXT,
           precio REAL NOT NULL,
-          imagen BLOB,
+          imagen TEXT,
           categoriaId INTEGER,
+          stock INTEGER NOT NULL DEFAULT 0,
           FOREIGN KEY (categoriaId) REFERENCES categorias(id)
-      )`, []
+        )`, []
       );
       //alert('Base de datos creada y tabla de productos lista');
     } catch (error) {
@@ -404,10 +405,10 @@ export class DbService {
   // //////////////////////////////////////////////////////////////////////////
 // PRODUCTOS ////////////////////////////////////////////////////////////////
 
-  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
+  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, stock: number, categoriaId: number) {
+    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, stock, categoriaId) VALUES (?, ?, ?, ?, ?, ?)';
     try {
-      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId]);
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, stock, categoriaId]);
       alert('Producto agregado correctamente');
       return { success: true };
     } catch (error) {
@@ -437,10 +438,10 @@ export class DbService {
 
 
 
-  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const sql = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, categoriaId = ? WHERE id = ?';
+  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, stock: number, categoriaId: number) {
+    const sql = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, stock = ?, categoriaId = ? WHERE id = ?';
     try {
-      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId, id]);
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, stock, categoriaId, id]);
       alert('Producto editado correctamente');
       return { success: true };
     } catch (error) {
@@ -453,6 +454,32 @@ export class DbService {
     const sql = 'DELETE FROM productos WHERE id = ?';
     await this.dbInstance.executeSql(sql, [id]);
   }
+
+  public async updateStock(productId: number, newStock: number): Promise<{ success: boolean }> {
+    const sql = 'UPDATE productos SET stock = ? WHERE id = ?';
+    try {
+      await this.dbInstance.executeSql(sql, [newStock, productId]);
+      return { success: true };
+    } catch (error) {
+      console.error('Error al actualizar el stock', error);
+      return { success: false };
+    }
+  }
+  
+  public async getStock(productId: number): Promise<number> {
+    const sql = 'SELECT stock FROM productos WHERE id = ?';
+    try {
+      const result = await this.dbInstance.executeSql(sql, [productId]);
+      if (result.rows.length > 0) {
+        return result.rows.item(0).stock;
+      }
+      return 0;
+    } catch (error) {
+      console.error('Error al obtener el stock', error);
+      return 0;
+    }
+  }
+  
 
   // //////////////////////////////////////////////////////////////////////////
 // CARRITO DE COMPRAS ////////////////////////////////////////////////////////
