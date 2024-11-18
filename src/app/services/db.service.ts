@@ -40,7 +40,8 @@ export class DbService {
           username TEXT UNIQUE,
           password TEXT,
           isAdmin INTEGER DEFAULT 0,
-          isBlocked INTEGER DEFAULT 0
+          isBlocked INTEGER DEFAULT 0,
+          profilePhoto TEXT
         )`,
         []
       );
@@ -317,6 +318,27 @@ export class DbService {
       `UPDATE users SET password = ? WHERE id = ?`,
       [newPassword, userId]
     );
+  }
+  
+  async updateProfilePhoto(photo: string) {
+    const userId = await this.getCurrentUserId();
+    if (userId) {
+      const sql = 'UPDATE users SET profilePhoto = ? WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [photo, userId]);
+    }
+  }
+  
+  async getCurrentProfilePhoto(): Promise<string | null> {
+    const user = await this.getCurrentUser();
+    return user?.profilePhoto || null;
+  }
+
+  async deleteProfilePhoto() {
+    const userId = await this.getCurrentUserId();
+    if (userId) {
+      const sql = 'UPDATE users SET profilePhoto = NULL WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [userId]);
+    }
   }
   
   

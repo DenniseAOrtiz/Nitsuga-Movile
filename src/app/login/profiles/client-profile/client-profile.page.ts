@@ -5,6 +5,7 @@ import { DbService } from 'src/app/services/db.service';
 import { NavController } from '@ionic/angular';
 import { UpdateUsernameClientComponent } from 'src/app/modals/update-username-client/update-username-client.component';
 import { UpdatePasswordClientComponent } from 'src/app/modals/update-password-client/update-password-client.component';
+import { UpdateProfilePhotoComponent } from 'src/app/modals/update-profile-photo/update-profile-photo.component';
 
 @Component({
   selector: 'app-client-profile',
@@ -13,6 +14,7 @@ import { UpdatePasswordClientComponent } from 'src/app/modals/update-password-cl
 })
 export class ClientProfilePage implements OnInit {
   username: string = '';
+  profilePhoto: string | null = null;
 
   constructor(private modalController: ModalController, private dbService: DbService, private navCtrl: NavController) {}
 
@@ -23,6 +25,7 @@ export class ClientProfilePage implements OnInit {
   async loadUserProfile() {
     const user = await this.dbService.getCurrentUser();
     this.username = user?.username || 'Usuario';
+    this.profilePhoto = user?.profilePhoto || null;
   }
 
   async openEditProfileModal() {
@@ -51,6 +54,28 @@ export class ClientProfilePage implements OnInit {
       component: UpdatePasswordClientComponent 
     });
     await modal.present();
+  }
+
+  async openEditPhotoModal() {
+    const modal = await this.modalController.create({
+      component: UpdateProfilePhotoComponent,
+      componentProps: { profilePhoto: this.profilePhoto }
+    });
+  
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      this.profilePhoto = data;
+    }
+  }
+
+  async deleteProfilePhoto() {
+    const confirm = window.confirm('¿Estás seguro de que deseas eliminar tu foto de perfil?');
+    if (confirm) {
+      await this.dbService.deleteProfilePhoto();
+      this.profilePhoto = null; // Actualiza la interfaz para reflejar la eliminación
+      alert('Foto de perfil eliminada correctamente.');
+    }
   }
   
 
