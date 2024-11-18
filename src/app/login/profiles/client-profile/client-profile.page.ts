@@ -73,7 +73,7 @@ export class ClientProfilePage implements OnInit {
     const confirm = window.confirm('¿Estás seguro de que deseas eliminar tu foto de perfil?');
     if (confirm) {
       await this.dbService.deleteProfilePhoto();
-      this.profilePhoto = null; // Actualiza la interfaz para reflejar la eliminación
+      this.profilePhoto = null; 
       alert('Foto de perfil eliminada correctamente.');
     }
   }
