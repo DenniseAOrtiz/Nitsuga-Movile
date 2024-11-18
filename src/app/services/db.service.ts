@@ -286,6 +286,39 @@ export class DbService {
       throw error; 
     }
   }
+
+  private async getCurrentUserId(): Promise<number | null> {
+    if (!this.currentUsername) {
+      return null;
+    }
+    const result = await this.dbInstance.executeSql(
+      'SELECT id FROM users WHERE username = ?',
+      [this.currentUsername]
+    );
+    return result.rows.length > 0 ? result.rows.item(0).id : null;
+  }
+
+  async updateUsername(newUsername: string) {
+    const userId = await this.getCurrentUserId(); // Método que obtiene el ID del usuario actual
+    return this.dbInstance.executeSql(
+      `UPDATE users SET username = ? WHERE id = ?`,
+      [newUsername, userId]
+    );
+  }
+
+  async validateCurrentPassword(currentPassword: string): Promise<boolean> {
+    const currentUser = await this.getCurrentUser();
+    return currentUser?.password === currentPassword; // Compara la contraseña actual con la almacenada
+  }
+  
+  async updatePassword(newPassword: string) {
+    const userId = await this.getCurrentUserId(); // Método que obtiene el ID del usuario actual
+    return this.dbInstance.executeSql(
+      `UPDATE users SET password = ? WHERE id = ?`,
+      [newPassword, userId]
+    );
+  }
+  
   
 
 

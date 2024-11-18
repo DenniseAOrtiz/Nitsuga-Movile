@@ -3,6 +3,8 @@ import { ModalController } from '@ionic/angular';
 import { UpdateClientComponent } from 'src/app/modals/update-client/update-client.component';
 import { DbService } from 'src/app/services/db.service';
 import { NavController } from '@ionic/angular';
+import { UpdateUsernameClientComponent } from 'src/app/modals/update-username-client/update-username-client.component';
+import { UpdatePasswordClientComponent } from 'src/app/modals/update-password-client/update-password-client.component';
 
 @Component({
   selector: 'app-client-profile',
@@ -30,6 +32,27 @@ export class ClientProfilePage implements OnInit {
     });
     await modal.present();
   }
+
+  async openEditUsernameModal() {
+    const modal = await this.modalController.create({
+      component: UpdateUsernameClientComponent, 
+      componentProps: { currentUsername: this.username }
+    });
+    await modal.present();
+  
+    const { data } = await modal.onWillDismiss();
+    if (data?.updatedUsername) {
+      this.username = data.updatedUsername;
+    }
+  }
+  
+  async openEditPasswordModal() {
+    const modal = await this.modalController.create({
+      component: UpdatePasswordClientComponent 
+    });
+    await modal.present();
+  }
+  
 
   goBack() {
     this.navCtrl.back();

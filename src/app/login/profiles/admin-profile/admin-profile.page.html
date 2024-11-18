@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Mi Perfil</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goBack()">Volver</ion-button>
+      <ion-button (click)="goBack()" color="secondary">Volver</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,5 +16,6 @@
     <p>Contraseña: ******</p>
   </div>
 
-  <ion-button expand="full" (click)="openEditProfileModal()">Editar Perfil</ion-button>
+  <ion-button expand="full" (click)="openEditUsernameModal()">Cambiar Nombre de Usuario</ion-button>
+  <ion-button expand="full" color="secondary" (click)="openEditPasswordModal()">Cambiar Contraseña</ion-button>
 </ion-content>
