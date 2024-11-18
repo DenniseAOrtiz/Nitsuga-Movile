@@ -74,16 +74,20 @@ export class AdminCatPage implements OnInit {
   async addCategory() {
     const modal = await this.modalController.create({
       component: AddCategoryModalComponent,
+      componentProps: {
+        categorias: this.categorias
+      }
     });
 
     modal.onDidDismiss().then(async (result) => {
-      if (result.data && result.data.nombre) {
+      if (result.data && result.data.updated) {
         this.categorias = await this.dbService.getCategorias();
       }
     });
 
     return await modal.present();
   }
+
 
   async eliminarCategoria(id: number) {
     const alert = await this.alertController.create({

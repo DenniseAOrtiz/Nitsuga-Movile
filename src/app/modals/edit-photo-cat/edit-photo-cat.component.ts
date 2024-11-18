@@ -4,11 +4,11 @@ import { DbService } from 'src/app/services/db.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
-  selector: 'app-edit-photo-prod',
-  templateUrl: './edit-photo-prod.component.html',
-  styleUrls: ['./edit-photo-prod.component.scss'],
+  selector: 'app-edit-photo-cat',
+  templateUrl: './edit-photo-cat.component.html',
+  styleUrls: ['./edit-photo-cat.component.scss'],
 })
-export class EditPhotoProdComponent {
+export class EditPhotoCatComponent {
   imagen: string | null = null;
 
   constructor(private modalCtrl: ModalController, private dbService: DbService) { }
@@ -25,7 +25,7 @@ export class EditPhotoProdComponent {
 
   async savePhoto() {
     if (this.imagen) {
-      await this.dbService.updateProductoPhoto(this.imagen);
+      await this.dbService.updateCategoriaPhoto(this.imagen);
       this.dismiss(this.imagen);
     }
   }

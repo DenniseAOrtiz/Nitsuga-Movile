@@ -348,12 +348,11 @@ export class DbService {
   // //////////////////////////////////////////////////////////////////////////
 // CATEGORIAS ////////////////////////////////////////////////////////////////
 
-  public async addCategoria(id: number, nombre: string, descripcion: string, imagen: string) {
-    const sql = 'INSERT INTO categorias (id, nombre, descripcion, imagen) VALUES (?, ?, ?, ?)';
+  public async addCategoria(nombre: string, descripcion: string, imagen: string) {
+    const sql = 'INSERT INTO categorias (nombre, descripcion, imagen) VALUES (?, ?, ?)';
     try {
-      await this.dbInstance.executeSql(sql, [id, nombre, descripcion, imagen]);
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen]);
       alert('Categoría agregada correctamente');
-      alert('Favor recargue la página');
       return { success: true };
     } catch (error) {
       alert('Error al agregar la categoría: ' + JSON.stringify(error));
@@ -398,6 +397,22 @@ export class DbService {
     } catch (error) {
       alert('Error al eliminar la categoría');
       return { success: false };
+    }
+  }
+
+  private async getCurrentCategoriaId(): Promise<number | null> {
+    if (!this.currentUsername) {
+      return null;
+    }
+    const result = await this.dbInstance.executeSql('SELECT id FROM categorias WHERE nombre = ?', [this.currentUsername]);
+    return result.rows.length > 0 ? result.rows.item(0).id : null;
+  }
+
+  async updateCategoriaPhoto(photo: string) {
+    const categoriaId = await this.getCurrentCategoriaId();
+    if (categoriaId) {
+      const sql = 'UPDATE categorias SET imagen = ? WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [photo, categoriaId]);
     }
   }
 
@@ -447,6 +462,22 @@ export class DbService {
     } catch (error) {
       alert('Error al editar el producto');
       return { success: false };
+    }
+  }
+
+  private async getCurrentProductoId(): Promise<number | null> {
+    if (!this.currentUsername) {
+      return null;
+    }
+    const result = await this.dbInstance.executeSql('SELECT id FROM productos WHERE nombre = ?', [this.currentUsername]);
+    return result.rows.length > 0 ? result.rows.item(0).id : null;
+  }
+
+  async updateProductoPhoto(photo: string) {
+    const productoId = await this.getCurrentProductoId();
+    if (productoId) {
+      const sql = 'UPDATE productos SET imagen = ? WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [photo, productoId]);
     }
   }
 

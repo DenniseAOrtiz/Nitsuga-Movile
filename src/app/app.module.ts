@@ -27,6 +27,7 @@ import { UpdateUsernameClientComponent } from './modals/update-username-client/u
 import { UpdatePasswordClientComponent } from './modals/update-password-client/update-password-client.component';
 import { UpdateProfilePhotoComponent } from './modals/update-profile-photo/update-profile-photo.component';
 import { EditPhotoProdComponent } from './modals/edit-photo-prod/edit-photo-prod.component';
+import { EditPhotoCatComponent } from './modals/edit-photo-cat/edit-photo-cat.component';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
@@ -52,7 +53,8 @@ import { Network } from '@awesome-cordova-plugins/network/ngx';
     UpdateUsernameClientComponent,
     UpdatePasswordClientComponent,
     UpdateProfilePhotoComponent,
-    EditPhotoProdComponent
+    EditPhotoProdComponent,
+    EditPhotoCatComponent
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
