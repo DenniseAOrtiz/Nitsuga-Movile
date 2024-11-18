@@ -20,14 +20,15 @@
     </ion-item>
 
     <ion-list-header>Productos</ion-list-header>
-    <ion-item *ngFor="let item of orderDetails.productos">
-      <ion-label>
-        <h3>{{ item.nombre }}</h3>
-        <p>Cantidad: {{ item.cantidad }}</p>
-        <p>Precio: ${{ item.precio | number: '1.2-2' }}</p>
-        <p>Subtotal: ${{ item.precio * item.cantidad | number: '1.2-2' }}</p>
-      </ion-label>
-    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let product of orderDetails.productos">
+        <ion-label>
+          <h3>{{ product.nombre }}</h3>
+          <p>Cantidad: {{ product.cantidad }}</p>
+          <p>Precio: ${{ product.precio | number: '1.2-2' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </ion-list>
 
   <ion-text *ngIf="!isLoading && !orderDetails" color="danger">

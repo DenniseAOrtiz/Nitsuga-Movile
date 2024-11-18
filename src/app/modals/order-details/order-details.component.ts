@@ -21,10 +21,16 @@ export class OrderDetailsComponent implements OnInit {
   async loadOrderDetails() {
     try {
       this.isLoading = true;
-      const allOrders = await this.dbService.getOrders(); // Obtiene todos los pedidos
+  
+      // Obtener detalles básicos del pedido por ID
+      const allOrders = await this.dbService.getOrders(); // Cambia si es necesario para obtener pedidos desde la BD
       this.orderDetails = allOrders.find((order: any) => order.id === this.orderId);
-
-      if (!this.orderDetails) {
+  
+      if (this.orderDetails) {
+        // Obtener los productos asociados al pedido
+        const products = await this.dbService.getOrderDetails(this.orderId);
+        this.orderDetails.productos = products; // Añade los productos al pedido
+      } else {
         console.error('Pedido no encontrado');
       }
     } catch (error) {
@@ -33,6 +39,7 @@ export class OrderDetailsComponent implements OnInit {
       this.isLoading = false;
     }
   }
+  
 
   closeModal() {
     this.modalController.dismiss();

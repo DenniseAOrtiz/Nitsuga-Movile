@@ -507,15 +507,67 @@ export class DbService {
 
 
   public async getOrderDetails(orderId: number) {
-    const sql = 'SELECT * FROM order_items WHERE orderId = ?';
-    const result = await this.dbInstance.executeSql(sql, [orderId]);
-    const items = [];
-    for (let i = 0; i < result.rows.length; i++) {
-      items.push(result.rows.item(i));
+    try {
+      const result = await this.dbInstance.executeSql(
+        `SELECT oi.productoId, oi.nombre, oi.cantidad, oi.precio 
+         FROM order_items AS oi
+         WHERE oi.orderId = ?`,
+        [orderId]
+      );
+  
+      const orderDetails = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        orderDetails.push(result.rows.item(i));
+      }
+  
+      return orderDetails;
+    } catch (error) {
+      alert('Error al obtener los detalles del pedido: ' + JSON.stringify(error));
+      return [];
     }
-    const total = items.reduce((acc, item) => acc + item.precio, 0);
-    return { productos: items, total: total };
   }
+
+  public async getOrdersByUser() {
+    try {
+      const result = await this.dbInstance.executeSql(
+        `SELECT * FROM orders WHERE username = ?`,
+        [this.currentUsername]
+      );
+  
+      const orders = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        const order = result.rows.item(i);
+  
+        // Obtener productos asociados a este pedido
+        const products = await this.getOrderDetails(order.id);
+        orders.push({
+          id: order.id,
+          total: order.total,
+          fecha: order.fecha,
+          productos: products,
+        });
+      }
+  
+      return orders;
+    } catch (error) {
+      alert('Error al obtener los pedidos: ' + JSON.stringify(error));
+      return [];
+    }
+  }
+  
+  
+  
+
+  // public async getOrderDetails(orderId: number) {
+  //   const sql = 'SELECT * FROM order_items WHERE orderId = ?';
+  //   const result = await this.dbInstance.executeSql(sql, [orderId]);
+  //   const items = [];
+  //   for (let i = 0; i < result.rows.length; i++) {
+  //     items.push(result.rows.item(i));
+  //   }
+  //   const total = items.reduce((acc, item) => acc + item.precio, 0);
+  //   return { productos: items, total: total };
+  // }
 
 
   

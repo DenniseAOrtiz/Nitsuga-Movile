@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class MisPedidosPage implements OnInit {
   pedidos: any[] = [];
   isLoading: boolean = true;
+  
 
   constructor(private dbService: DbService, private modalController: ModalController, private router: Router) {}
 
