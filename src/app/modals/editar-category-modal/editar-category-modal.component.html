@@ -18,7 +18,7 @@
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Imagen</ion-label>
-    <ion-input [(ngModel)]="nuevaImagen"></ion-input>
+    <ion-button slot="end" (click)="openEditPhotoModal()">Editar</ion-button>
   </ion-item>
   <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
 </ion-content>

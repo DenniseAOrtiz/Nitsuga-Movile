@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="volverCat()">
+      <ion-button (click)="goBack()">
         <ion-icon color="secondary" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -25,25 +25,25 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let producto of productos" class="product-item">
-      <img [src]="producto.imagen" alt="{{ producto.nombre }}" class="product-image" />
-      
-      <div class="product-info">
-        <h2 class="product-name">{{ producto.nombre }}</h2>
-        <p class="product-description">{{ producto.descripcion }}</p>
-        <p class="product-price">{{ producto.precio | currency }}</p>
-      </div>
+<ion-item *ngFor="let producto of productos" class="product-item">
+  <img [src]="producto.imagen" alt="{{ producto.nombre }}" class="product-image" />
+  
+  <div class="product-info">
+    <h2 class="product-name">{{ producto.nombre }}</h2>
+    <p class="product-description">{{ producto.descripcion }}</p>
+    <p class="product-price">{{ producto.precio | currency }}</p>
+    <p class="product-stock">Stock: {{ producto.stock }}</p>
+  </div>
 
-      <div class="action-buttons">
-        <ion-button class="edit-button" (click)="editarProducto(producto)">
-          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-        </ion-button>
-        <ion-button class="delete-button" (click)="eliminarProducto(producto.id)">
-          <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </ion-item>
-  </ion-list>
-</ion-content>
+  <div class="action-buttons">
+    <ion-button class="edit-stock-button" (click)="editarStock(producto)">
+      <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="edit-button" (click)="editarProducto(producto)">
+      <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="delete-button" (click)="eliminarProducto(producto.id)">
+      <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+    </ion-button>
+  </div>
+</ion-item>

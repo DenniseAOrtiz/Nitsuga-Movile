@@ -3,6 +3,7 @@ import { ModalController, NavParams } from '@ionic/angular';
 import { DbService } from '../../services/db.service';
 import { LoadingController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
+import { EditPhotoProdComponent } from '../edit-photo-prod/edit-photo-prod.component';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
@@ -16,11 +17,8 @@ export class AddProductModalComponent implements OnInit {
   descripcion: string = '';
   precio: number = 0;
   categoriaId: number | null = null;
-  imagenCapturada: any = '';
-  selectedImage: string | null = null;
-  imagen: string = '';
-
-  foto: any;
+  foto: any | null = null;
+  stock: number = 0;
 
   constructor(private modalController: ModalController,
     private navParams: NavParams,
@@ -55,12 +53,12 @@ export class AddProductModalComponent implements OnInit {
   }
 
   async addProduct() {
-    if (this.nombre && this.descripcion && this.precio && this.categoriaId) {
+    if (this.nombre && this.descripcion && this.precio && this.foto && this.stock && this.categoriaId) {
       if (this.precio <= 0) {
         alert('El precio debe ser un valor positivo.');
         return;
       }
-      const result = await this.dbService.addProducto(this.nombre, this.descripcion, this.precio, this.imagen, this.categoriaId);
+      const result = await this.dbService.addProducto(this.nombre, this.descripcion, this.precio, this.foto, this.stock, this.categoriaId);
       if (result.success) {
         this.modalController.dismiss({ success: true });
       }
@@ -69,9 +67,16 @@ export class AddProductModalComponent implements OnInit {
     }
   }
 
-  selectImage() {
-    // Implementa aquí la lógica para seleccionar una imagen
-    console.log('Imagen seleccionada');
+  async openEditPhotoModal() {
+    const modal = await this.modalController.create({
+      component: EditPhotoProdComponent,
+      componentProps: { imagen: this.foto }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      this.foto = data;
+    }
   }
 
   async showLoading() {

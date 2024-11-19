@@ -22,9 +22,15 @@ import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.co
 import { PedidoDetallesComponent } from './modals/pedido-detalles/pedido-detalles.component';
 import { BlockUserModalComponent } from './modals/block-user-modal/block-user-modal.component';
 import { AdminUserModalComponent } from './modals/admin-user-modal/admin-user-modal.component'; 
+import { OrderDetailsComponent } from './modals/order-details/order-details.component';
+import { UpdateUsernameClientComponent } from './modals/update-username-client/update-username-client.component';
+import { UpdatePasswordClientComponent } from './modals/update-password-client/update-password-client.component';
+import { UpdateProfilePhotoComponent } from './modals/update-profile-photo/update-profile-photo.component';
+import { EditPhotoProdComponent } from './modals/edit-photo-prod/edit-photo-prod.component';
+import { EditPhotoCatComponent } from './modals/edit-photo-cat/edit-photo-cat.component';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
-import { Network } from '@awesome-cordova-plugins/network/ngx';
+import { Network } from '@capacitor/network';
 
 
 @NgModule({
@@ -41,11 +47,17 @@ import { Network } from '@awesome-cordova-plugins/network/ngx';
     UpdateAdminComponent,
     PedidoDetallesComponent,
     BlockUserModalComponent,
-    AdminUserModalComponent
+    AdminUserModalComponent,
+    OrderDetailsComponent,
+    UpdateUsernameClientComponent,
+    UpdatePasswordClientComponent,
+    UpdateProfilePhotoComponent,
+    EditPhotoProdComponent,
+    EditPhotoCatComponent
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Network], 
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}
