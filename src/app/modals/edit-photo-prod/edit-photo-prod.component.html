@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Foto del Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="photo-preview" *ngIf="imagen">
+    <img [src]="imagen" alt="Foto del producto">
+  </div>
+  <ion-button expand="full" (click)="selectPhoto()">Seleccionar Foto</ion-button>
+  <ion-button expand="full" color="primary" (click)="savePhoto()">Guardar</ion-button>
+</ion-content>

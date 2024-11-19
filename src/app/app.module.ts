@@ -5,7 +5,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
@@ -21,9 +20,19 @@ import { UpdateClientComponent } from './modals/update-client/update-client.comp
 import { UpdateAdminComponent } from './modals/update-admin/update-admin.component';
 import { AddUserModalComponent } from './modals/add-user-modal/add-user-modal.component';
 import { PedidoDetallesComponent } from './modals/pedido-detalles/pedido-detalles.component';
+import { BlockUserModalComponent } from './modals/block-user-modal/block-user-modal.component';
+import { AdminUserModalComponent } from './modals/admin-user-modal/admin-user-modal.component'; 
+import { OrderDetailsComponent } from './modals/order-details/order-details.component';
+import { UpdateUsernameClientComponent } from './modals/update-username-client/update-username-client.component';
+import { UpdatePasswordClientComponent } from './modals/update-password-client/update-password-client.component';
+import { UpdateProfilePhotoComponent } from './modals/update-profile-photo/update-profile-photo.component';
+import { EditPhotoProdComponent } from './modals/edit-photo-prod/edit-photo-prod.component';
+import { EditPhotoCatComponent } from './modals/edit-photo-cat/edit-photo-cat.component';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AuthService } from './services/auth.service';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
+
 
 @NgModule({
   declarations: [AppComponent, 
@@ -37,11 +46,19 @@ import { Camera } from '@awesome-cordova-plugins/camera/ngx';
     EditUserModalComponent,
     UpdateClientComponent,
     UpdateAdminComponent,
-    PedidoDetallesComponent
+    PedidoDetallesComponent,
+    BlockUserModalComponent,
+    AdminUserModalComponent,
+    OrderDetailsComponent,
+    UpdateUsernameClientComponent,
+    UpdatePasswordClientComponent,
+    UpdateProfilePhotoComponent,
+    EditPhotoProdComponent,
+    EditPhotoCatComponent
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, MatButtonModule, HttpClientModule],
   exports: [MatButtonModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Camera], 
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite, DbService, NativeStorage, AuthService, Camera, Network], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}

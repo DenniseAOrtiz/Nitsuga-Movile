@@ -1,0 +1,49 @@
+ion-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  
+    h2 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+  
+    ion-button {
+      --border-radius: 50%;
+      margin: 0 5px;
+    }
+  }
+  
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  
+    ion-button {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      --background: none; 
+      --border-radius: 50%;
+    }
+  
+    .edit-button {
+      background-color: #f0ad4e; // Color amarillo para editar
+      color: white;
+    }
+  
+    .delete-button {
+      background-color: #d9534f; // Color rojo para eliminar
+      color: white;
+    }
+  
+    .view-products-button {
+      background-color: #5bc0de; // Color azul para ver productos
+      color: white;
+    }
+  }
+  

@@ -41,12 +41,14 @@ export class AdminUsersPage implements OnInit {
 
   loadUsers() {
     this.dbService.getAllUsers().then(data => {
-      this.users = data.map(user => {
-        return {
-          ...user,
-          isAdminText: user.isAdmin === 1 ? 'Administrador' : 'Usuario'
-        };
-      });
+      this.users = data
+        .filter(user => user.username !== this.nombreUsuario)  
+        .map(user => {
+          return {
+            ...user,
+            isAdminText: user.isAdmin === 1 ? 'Administrador' : 'Usuario'
+          };
+        });
     }, error => {
       alert('Error al cargar los usuarios: ' + JSON.stringify(error));
     });
@@ -62,14 +64,24 @@ export class AdminUsersPage implements OnInit {
   openEditUserModal(user: any) {
     this.modalController.create({
       component: EditUserModalComponent,
-      componentProps: { user }
-    }).then(modal => modal.present());
+      componentProps: { user },
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(() => {
+        this.loadUsers(); 
+      });
+    });
   }
-
+  
   openAddUserModal() {
     this.modalController.create({
-      component: AddUserModalComponent
-    }).then(modal => modal.present());
+      component: AddUserModalComponent,
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(() => {
+        this.loadUsers(); 
+      });
+    });
   }
 
   async showLoading() {
@@ -81,7 +93,7 @@ export class AdminUsersPage implements OnInit {
   }
 
   logout() {
-    this.authService.logout(); // Ejecuta la lógica de cierre de sesión
+    this.authService.logout(); 
     this.router.navigate(['/login']); 
   }
 

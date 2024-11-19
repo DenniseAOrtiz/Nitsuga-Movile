@@ -34,28 +34,23 @@ export class AdminCatPage implements OnInit {
     this.categorias = await this.dbService.getCategorias();
     this.productos = await this.dbService.getProductos();
     this.nombreUsuario = this.dbService.getUsername();
-    // Cargar las categorías y productos al iniciar la página
     await this.loadCategorias();
     await this.loadProductos();
   }
 
-  // Función que recarga la lista de categorías
   async recargarCategorias() {
     await this.loadCategorias();
   }
-  // Método para cargar categorías
   async loadCategorias() {
     this.categorias = await this.dbService.getCategorias();
-    this.cd.detectChanges(); // Forzar la detección de cambios
+    this.cd.detectChanges(); 
   }
 
-  // Método para cargar productos
   async loadProductos() {
     this.productos = await this.dbService.getProductos();
     this.cd.detectChanges();
   }
 
-  // Refresca las categorías al regresar a la página
   ionViewWillEnter() {
     this.loadCategorias();
   }
@@ -79,16 +74,20 @@ export class AdminCatPage implements OnInit {
   async addCategory() {
     const modal = await this.modalController.create({
       component: AddCategoryModalComponent,
+      componentProps: {
+        categorias: this.categorias
+      }
     });
 
     modal.onDidDismiss().then(async (result) => {
-      if (result.data && result.data.nombre) {
+      if (result.data && result.data.updated) {
         this.categorias = await this.dbService.getCategorias();
       }
     });
 
     return await modal.present();
   }
+
 
   async eliminarCategoria(id: number) {
     const alert = await this.alertController.create({
@@ -140,7 +139,7 @@ export class AdminCatPage implements OnInit {
   }
 
   logout() {
-    this.authService.logout(); // Ejecuta la lógica de cierre de sesión
+    this.authService.logout(); 
     this.router.navigate(['/login']); 
   }
 

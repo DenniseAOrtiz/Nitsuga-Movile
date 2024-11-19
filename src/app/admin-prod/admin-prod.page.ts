@@ -7,7 +7,7 @@ import { EditProductModalComponent } from '../modals/edit-product-modal/edit-pro
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -28,7 +28,8 @@ export class AdminProdPage implements OnInit {
     private modalController: ModalController,
     private loadingCtrl: LoadingController,
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private navCtrl: NavController) { }
 
   async ngOnInit() {
     this.categoriaId = Number(this.route.snapshot.paramMap.get('id'));
@@ -67,17 +68,6 @@ export class AdminProdPage implements OnInit {
     await modal.present();
   }
 
-  // async addProduct() {
-  //   const modal = await this.modalController.create({
-  //     component: AddProductModalComponent,
-  //     componentProps: { categoriaId: this.categoriaId }
-  //   });
-  //   modal.onDidDismiss().then(async () => {
-  //     await this.loadProductos();
-  //   });
-  //   await modal.present();
-  // }
-
   async editarProducto(producto: any) {
     const modal = await this.modalController.create({
       component: EditProductModalComponent,
@@ -98,6 +88,25 @@ export class AdminProdPage implements OnInit {
     await this.loadProductos();
   }
 
+  async editarStock(producto: any) {
+    const newStock = prompt('Ingrese la nueva cantidad en stock:', producto.stock);
+    if (newStock !== null) {
+      const updatedStock = parseInt(newStock, 10);
+      if (!isNaN(updatedStock)) {
+        const result = await this.dbService.updateStock(producto.id, updatedStock);
+        if (result.success) {
+          alert('Stock actualizado correctamente');
+          this.loadProductos();
+        } else {
+          alert('Error al actualizar el stock');
+        }
+      } else {
+        alert('Por favor, ingrese un número válido');
+      }
+    }
+  }
+  
+
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       duration: 500,
@@ -112,8 +121,8 @@ export class AdminProdPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  volverAdmin() {
-    this.router.navigate(['/admin']);
+  goBack() {
+    this.navCtrl.back();
   }
 
   

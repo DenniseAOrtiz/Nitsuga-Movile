@@ -36,9 +36,12 @@ export class DbService {
       await this.dbInstance.executeSql(
         `CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          mail TEXT UNIQUE,
           username TEXT UNIQUE,
           password TEXT,
-          isAdmin INTEGER DEFAULT 1
+          isAdmin INTEGER DEFAULT 0,
+          isBlocked INTEGER DEFAULT 0,
+          profilePhoto TEXT
         )`,
         []
       );
@@ -55,8 +58,9 @@ export class DbService {
           nombre TEXT NOT NULL,
           descripcion TEXT,
           imagen TEXT
-        )`, []
-      );
+        )`, []).then(() => {
+          console.log('Tabla categorias creada');
+        }).catch(e => console.error(e));
       // alert('Base de datos creada y tabla de categorías lista');
     } catch (error) {
       alert('No se pudo crear la base de datos categorias ' + error);
@@ -70,10 +74,11 @@ export class DbService {
           nombre TEXT NOT NULL,
           descripcion TEXT,
           precio REAL NOT NULL,
-          imagen BLOB,
+          imagen TEXT,
           categoriaId INTEGER,
+          stock INTEGER NOT NULL DEFAULT 0,
           FOREIGN KEY (categoriaId) REFERENCES categorias(id)
-      )`, []
+        )`, []
       );
       //alert('Base de datos creada y tabla de productos lista');
     } catch (error) {
@@ -136,36 +141,38 @@ export class DbService {
       alert('Error al crear la tabla de productos por pedido: ' + JSON.stringify(error));
     }
 
-
   }
+
+  // //////////////////////////////////////////////////////////////////////////
+// USUARIOS //////////////////////////////////////////////////////////////////
 
   public getDBInstance(): Promise<SQLiteObject> {
     return Promise.resolve(this.dbInstance);
   }
 
   // Registro de un nuevo usuario
-  public async register(username: string, password: string, isAdmin: number) {
+  public async register(mail: string, username: string, password: string, isAdmin: number) {
     const passwordRegex = /^(?=(?:.*\d){4})(?=(?:.*[a-zA-Z]){3})(?=.*[A-Z]).{8,}$/;
+    
     if (!passwordRegex.test(password)) {
-      alert('La contraseña no cumple con los requisitos. La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
+      alert('La contraseña no cumple con los requisitos. Debe tener al menos 8 caracteres, una letra mayúscula y 4 números.');
       return false;
-    } else {
     }
-
+  
     try {
-      const data = [username, password, 0];
+      const data = [mail, username, password, isAdmin];
       await this.dbInstance.executeSql(
-        `INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)`,
+        `INSERT INTO users (mail, username, password, isAdmin) VALUES (?, ?, ?, ?)`,
         data
       );
       alert('Usuario registrado correctamente');
       return true;
     } catch (error) {
-      alert('Error al registrar el usuario');
+      alert('Error al registrar el usuario: ' + JSON.stringify(error));
       return false;
     }
   }
-
+  
 
 
   // Iniciar sesión 
@@ -175,20 +182,24 @@ export class DbService {
         `SELECT * FROM users WHERE username = ? AND password = ?`,
         [username, password]
       );
-
+  
       if (result.rows.length > 0) {
         const user = result.rows.item(0);
-        // alert(JSON.stringify(user));
-        // alert(user.isAdmin);
+  
+        if (user.isBlocked === 1) {  // Verifica si el usuario está bloqueado
+          alert('Tu cuenta está bloqueada. Contacta con el administrador.');
+          return { success: false };
+        }
+  
         this.currentUsername = user.username;
         this.currentIsAdmin = user.isAdmin; // 1 es admin
-        // alert('Inicio de sesión exitoso');
-        // alert(this.currentIsAdmin);
+        
         if (this.currentIsAdmin) {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/home']);
         }
+        
         return { success: true };
       } else {
         alert('Credenciales inválidas');
@@ -204,6 +215,23 @@ export class DbService {
     return this.currentUsername;
   }
 
+  public async getUser(id: number) {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [id]);
+    return result.rows.item(0);
+  }
+
+  public async updateUserBlockStatus(id: number, isBlocked: number) {
+    const sql = 'UPDATE users SET isBlocked = ? WHERE id = ?';
+    return this.dbInstance.executeSql(sql, [isBlocked, id]);
+  }
+  
+  public async updateUserAdminStatus(id: number, isAdmin: number) {
+    const sql = 'UPDATE users SET isAdmin = ? WHERE id = ?';
+    return this.dbInstance.executeSql(sql, [isAdmin, id]);
+  }
+  
+
   public async getAllUsers() {
     try {
       const result = await this.dbInstance.executeSql(`SELECT * FROM users`, []);
@@ -218,10 +246,10 @@ export class DbService {
     }
   }
 
-  public async updateUser(id: number, username: string, password: string, isAdmin: number) {
-    const sql = 'UPDATE users SET username = ?, password = ?, isAdmin = ? WHERE id = ?';
-    await this.dbInstance.executeSql(sql, [username, password, isAdmin ? 1 : 0, id]);
-  }
+  public async updateUser(id: number, username: string, isAdmin: number, isBlocked: number) {
+    const sql = 'UPDATE users SET username = ?, isAdmin = ?, isBlocked = ? WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [username, isAdmin ? 1 : 0, isBlocked ? 1 : 0, id]);
+}
 
   public async deleteUser(id: number) {
     const sql = 'DELETE FROM users WHERE id = ?';
@@ -240,13 +268,91 @@ export class DbService {
     this.currentUsername = username;
   }
 
-  // Gestionar categorías
+  public async getUserStatus(userId: number) {
+    const sql = 'SELECT * FROM users WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [userId]);
+    return result.rows.item(0);
+  }
+
+  public async findUserByEmail(mail: string): Promise<any> {
+    try {
+      const query = 'SELECT * FROM users WHERE mail = ?';
+      const result = await this.dbInstance.executeSql(query, [mail]);
+  
+      if (result.rows.length > 0) {
+        return result.rows.item(0);
+      }
+      return null;
+    } catch (error) {
+      alert('Error en findUserByEmail: ' + JSON.stringify(error));
+      throw error; 
+    }
+  }
+
+  private async getCurrentUserId(): Promise<number | null> {
+    if (!this.currentUsername) {
+      return null;
+    }
+    const result = await this.dbInstance.executeSql(
+      'SELECT id FROM users WHERE username = ?',
+      [this.currentUsername]
+    );
+    return result.rows.length > 0 ? result.rows.item(0).id : null;
+  }
+
+  async updateUsername(newUsername: string) {
+    const userId = await this.getCurrentUserId(); // Método que obtiene el ID del usuario actual
+    return this.dbInstance.executeSql(
+      `UPDATE users SET username = ? WHERE id = ?`,
+      [newUsername, userId]
+    );
+  }
+
+  async validateCurrentPassword(currentPassword: string): Promise<boolean> {
+    const currentUser = await this.getCurrentUser();
+    return currentUser?.password === currentPassword; // Compara la contraseña actual con la almacenada
+  }
+  
+  async updatePassword(newPassword: string) {
+    const userId = await this.getCurrentUserId(); // Método que obtiene el ID del usuario actual
+    return this.dbInstance.executeSql(
+      `UPDATE users SET password = ? WHERE id = ?`,
+      [newPassword, userId]
+    );
+  }
+  
+  async updateProfilePhoto(photo: string) {
+    const userId = await this.getCurrentUserId();
+    if (userId) {
+      const sql = 'UPDATE users SET profilePhoto = ? WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [photo, userId]);
+    }
+  }
+  
+  async getCurrentProfilePhoto(): Promise<string | null> {
+    const user = await this.getCurrentUser();
+    return user?.profilePhoto || null;
+  }
+
+  async deleteProfilePhoto() {
+    const userId = await this.getCurrentUserId();
+    if (userId) {
+      const sql = 'UPDATE users SET profilePhoto = NULL WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [userId]);
+    }
+  }
+  
+  
+
+
+  // //////////////////////////////////////////////////////////////////////////
+// CATEGORIAS ////////////////////////////////////////////////////////////////
+
   public async addCategoria(nombre: string, descripcion: string, imagen: string) {
     const sql = 'INSERT INTO categorias (nombre, descripcion, imagen) VALUES (?, ?, ?)';
     try {
       await this.dbInstance.executeSql(sql, [nombre, descripcion, imagen]);
       alert('Categoría agregada correctamente');
-      alert('Favor recargue la página');
       return { success: true };
     } catch (error) {
       alert('Error al agregar la categoría: ' + JSON.stringify(error));
@@ -294,12 +400,30 @@ export class DbService {
     }
   }
 
+  private async getCurrentCategoriaId(): Promise<number | null> {
+    if (!this.currentUsername) {
+      return null;
+    }
+    const result = await this.dbInstance.executeSql('SELECT id FROM categorias WHERE nombre = ?', [this.currentUsername]);
+    return result.rows.length > 0 ? result.rows.item(0).id : null;
+  }
 
-  // Gestionar productos
-  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, categoriaId) VALUES (?, ?, ?, ?, ?)';
+  async updateCategoriaPhoto(photo: string) {
+    const categoriaId = await this.getCurrentCategoriaId();
+    if (categoriaId) {
+      const sql = 'UPDATE categorias SET imagen = ? WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [photo, categoriaId]);
+    }
+  }
+
+
+  // //////////////////////////////////////////////////////////////////////////
+// PRODUCTOS ////////////////////////////////////////////////////////////////
+
+  public async addProducto(nombre: string, descripcion: string, precio: number, imagen: string, stock: number, categoriaId: number) {
+    const sql = 'INSERT INTO productos (nombre, descripcion, precio, imagen, stock, categoriaId) VALUES (?, ?, ?, ?, ?, ?)';
     try {
-      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId]);
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, stock, categoriaId]);
       alert('Producto agregado correctamente');
       return { success: true };
     } catch (error) {
@@ -329,10 +453,10 @@ export class DbService {
 
 
 
-  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, categoriaId: number) {
-    const sql = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, categoriaId = ? WHERE id = ?';
+  async editarProducto(id: number, nombre: string, descripcion: string, precio: number, imagen: string, stock: number, categoriaId: number) {
+    const sql = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, stock = ?, categoriaId = ? WHERE id = ?';
     try {
-      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, categoriaId, id]);
+      await this.dbInstance.executeSql(sql, [nombre, descripcion, precio, imagen, stock, categoriaId, id]);
       alert('Producto editado correctamente');
       return { success: true };
     } catch (error) {
@@ -341,12 +465,56 @@ export class DbService {
     }
   }
 
+  private async getCurrentProductoId(): Promise<number | null> {
+    if (!this.currentUsername) {
+      return null;
+    }
+    const result = await this.dbInstance.executeSql('SELECT id FROM productos WHERE nombre = ?', [this.currentUsername]);
+    return result.rows.length > 0 ? result.rows.item(0).id : null;
+  }
+
+  async updateProductoPhoto(photo: string) {
+    const productoId = await this.getCurrentProductoId();
+    if (productoId) {
+      const sql = 'UPDATE productos SET imagen = ? WHERE id = ?';
+      await this.dbInstance.executeSql(sql, [photo, productoId]);
+    }
+  }
+
   public async deleteProducto(id: number) {
     const sql = 'DELETE FROM productos WHERE id = ?';
     await this.dbInstance.executeSql(sql, [id]);
   }
 
-  // Gestionar carrito de compras
+  public async updateStock(productId: number, newStock: number): Promise<{ success: boolean }> {
+    const sql = 'UPDATE productos SET stock = ? WHERE id = ?';
+    try {
+      await this.dbInstance.executeSql(sql, [newStock, productId]);
+      return { success: true };
+    } catch (error) {
+      console.error('Error al actualizar el stock', error);
+      return { success: false };
+    }
+  }
+  
+  public async getStock(productId: number): Promise<number> {
+    const sql = 'SELECT stock FROM productos WHERE id = ?';
+    try {
+      const result = await this.dbInstance.executeSql(sql, [productId]);
+      if (result.rows.length > 0) {
+        return result.rows.item(0).stock;
+      }
+      return 0;
+    } catch (error) {
+      console.error('Error al obtener el stock', error);
+      return 0;
+    }
+  }
+  
+
+  // //////////////////////////////////////////////////////////////////////////
+// CARRITO DE COMPRAS ////////////////////////////////////////////////////////
+
   public async addToCart(producto: any) {
     try {
       // Verificar si el producto ya está en el carrito
@@ -400,6 +568,9 @@ export class DbService {
     }
   }
 
+  // //////////////////////////////////////////////////////////////////////////
+// PEDIDOS //////////////////////////////////////////////////////////////////
+
   public async createOrder(total: number, cartItems: any[]) {
     try {
       const date = new Date().toISOString();
@@ -449,15 +620,68 @@ export class DbService {
 
 
   public async getOrderDetails(orderId: number) {
-    const sql = 'SELECT * FROM order_items WHERE orderId = ?';
-    const result = await this.dbInstance.executeSql(sql, [orderId]);
-    const items = [];
-    for (let i = 0; i < result.rows.length; i++) {
-      items.push(result.rows.item(i));
+    try {
+      const result = await this.dbInstance.executeSql(
+        `SELECT oi.productoId, oi.nombre, oi.cantidad, oi.precio 
+         FROM order_items AS oi
+         WHERE oi.orderId = ?`,
+        [orderId]
+      );
+  
+      const orderDetails = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        orderDetails.push(result.rows.item(i));
+      }
+  
+      return orderDetails;
+    } catch (error) {
+      alert('Error al obtener los detalles del pedido: ' + JSON.stringify(error));
+      return [];
     }
-    const total = items.reduce((acc, item) => acc + item.precio, 0);
-    return { productos: items, total: total };
   }
+
+  public async getOrdersByUser() {
+    try {
+      const result = await this.dbInstance.executeSql(
+        `SELECT * FROM orders WHERE username = ?`,
+        [this.currentUsername]
+      );
+  
+      const orders = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        const order = result.rows.item(i);
+  
+        // Obtener productos asociados a este pedido
+        const products = await this.getOrderDetails(order.id);
+        orders.push({
+          id: order.id,
+          total: order.total,
+          fecha: order.fecha,
+          productos: products,
+        });
+      }
+  
+      return orders;
+    } catch (error) {
+      alert('Error al obtener los pedidos: ' + JSON.stringify(error));
+      return [];
+    }
+  }
+  
+  
+  
+
+  // public async getOrderDetails(orderId: number) {
+  //   const sql = 'SELECT * FROM order_items WHERE orderId = ?';
+  //   const result = await this.dbInstance.executeSql(sql, [orderId]);
+  //   const items = [];
+  //   for (let i = 0; i < result.rows.length; i++) {
+  //     items.push(result.rows.item(i));
+  //   }
+  //   const total = items.reduce((acc, item) => acc + item.precio, 0);
+  //   return { productos: items, total: total };
+  // }
+
 
   
 

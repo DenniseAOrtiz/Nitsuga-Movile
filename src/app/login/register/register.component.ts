@@ -10,6 +10,7 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  mail: string = '';
   username: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -18,25 +19,31 @@ export class RegisterComponent {
 
   constructor(@Inject(DbService) private dbService: DbService, private router: Router, private loadingCtrl: LoadingController) {}
 
+  
+
   async register() {
-    // Valida que las contraseñas coincidan
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden';
-      return;
-    }
-
-    // Llama al servicio de autenticación para registrar al usuario
-    const success = await this.dbService.register(this.username, this.password, this.isAdmin);
+    try {
+      if (!this.mail || !this.username || !this.password || !this.confirmPassword) {
+        this.errorMessage = 'Todos los campos son obligatorios';
+        return;
+      }
     
-    console.log(success);
-
-    if (success) {
-      console.log('Usuario registrado correctamente');
-      this.router.navigate(['/login']); 
-    } else {
-      this.errorMessage = 'Registro fallido.';
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = 'Las contraseñas no coinciden';
+        return;
+      }
+    
+      const isRegistered = await this.dbService.register(this.mail, this.username, this.password, this.isAdmin);
+      if (isRegistered) {
+        this.router.navigate(['/login']);
+      } else {
+        alert('Error al registrar el usuario');
+      }
+    } catch (error) {
+      alert('Error al registrar el usuario: ' + JSON.stringify(error));
     }
   }
+  
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({

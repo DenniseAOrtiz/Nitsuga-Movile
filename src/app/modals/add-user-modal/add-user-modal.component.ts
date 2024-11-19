@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class AddUserModalComponent {
   user: any = {};
+  mail: string = '';
   username: string = '';
   isAdmin: number = 0;
   password: string = '';
@@ -19,7 +20,7 @@ export class AddUserModalComponent {
   ) {}
 
   addUser() {
-    this.dbService.register(this.username, this.password, this.isAdmin).then(() => {
+    this.dbService.register(this.mail, this.username, this.password, this.isAdmin).then(() => {
       alert('Usuario agregado correctamente');
       this.modalController.dismiss();
     }, error => {
