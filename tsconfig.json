@@ -3,6 +3,10 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["node", "cordova", "bonjour", "wrap-ansi", "sockjs"],
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
