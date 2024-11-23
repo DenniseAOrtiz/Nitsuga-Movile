@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DbService } from '../../services/db.service';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { LoadingController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { EditPhotoCatComponent } from '../edit-photo-cat/edit-photo-cat.component';
+import { Camera, CameraResultType } from '@capacitor/camera';
+
 
 @Component({
   selector: 'app-add-category-modal',
@@ -20,7 +21,7 @@ export class AddCategoryModalComponent {
   selectedImage: string | null = null;
   imagen: string | null = null; 
 
-  constructor(private modalController: ModalController, private dbService: DbService, private camera: Camera,
+  constructor(private modalController: ModalController, private dbService: DbService,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController) {}
 

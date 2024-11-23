@@ -8,6 +8,12 @@
     </ion-card-header>
 
     <ion-card-content>
+      <div class="status">
+        <p style="color:black">Estado de conexión: </p>
+        <!--{{ status ? 'En línea' : 'Fuera de línea'}}-->
+        <ion-text *ngIf="status" color="success">En línea</ion-text>
+        <ion-text *ngIf="status === false" color="danger">Fuera de línea</ion-text>
+      </div>
       <form (submit)="login()">
         <ion-item>
           <ion-label position="floating">Nombre de Usuario</ion-label>
@@ -44,4 +50,3 @@
     <img src="../assets/gif/pikachucorre.gif" alt="pikachu" class="pikachu">
   </div>
 </footer>
-
