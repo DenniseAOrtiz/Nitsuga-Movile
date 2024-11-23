@@ -1,3 +1,10 @@
+:host {
+  ion-toolbar {
+    background-color: #8e44ad; // Fondo morado oscuro en el header.
+    color: #fff;
+  }
+}
+
 ion-col {
     text-align: center;
     border-radius: 20px;
