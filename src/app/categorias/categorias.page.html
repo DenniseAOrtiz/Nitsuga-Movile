@@ -3,6 +3,9 @@
     <div style="display: flex;">
       <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
         (click)="showLoading()">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline" color="light"></ion-icon>
+      </ion-button>
       <ion-title>Categorías</ion-title>
       <ion-buttons slot="end">
         <ion-button [routerLink]="['/carrito']">
@@ -17,7 +20,7 @@
 <ion-content>
   <div class="grid-container">
     <ion-card class="grid-item" *ngFor="let categoria of categorias">
-      <ion-img [src]="categoria.selectedImage" alt="Imagen de la categoría" class="categoria-img"></ion-img>
+      <ion-img [src]="categoria.imagen" alt="Imagen de la categoría" class="categoria-img"></ion-img>
       <ion-card-header>
         <ion-button expand="full" fill="solid" (click)="verProductos(categoria.id)" style="margin: 0 auto; width: 80%;">
           {{ categoria.nombre }}
@@ -31,80 +34,3 @@
 </ion-content>
 
 
-<!-- <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Categorias</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/art _escolares.JPEG" />
-    <ion-card-header>
-      <ion-card-title>Artículos Escolares</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Artículos esenciales para estudiantes de todas las edades.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/bolsos_mochilas.jpg" />
-    <ion-card-header>
-      <ion-card-title>Bolsos y mochilas</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Descubre mochilas y bolsos para cada estilo y necesidad. Perfectos para la escuela, actividades extracurriculares y más.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/libretas_cuadernoss.jpg" />
-    <ion-card-header>
-      <ion-card-title>Libretas y cuadernos</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Encuentra la libreta o cuaderno perfecto para tus clases. Diseños variados para todos los gustos.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/minilamparas.JPEG" />
-    <ion-card-header>
-      <ion-card-title>Lámparas</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Ilumina tu espacio de estudio con nuestras lámparas. Diseños funcionales y decorativos.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/peluches.JPEG" />
-    <ion-card-header>
-      <ion-card-title>Peluches</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Descubre nuestra colección de peluches suaves y adorables. ¡El regalo perfecto para cualquier ocasión!
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <img alt="Artículos escolares" class="card-image" src="../assets/img/img_categorias/art_varios.JPEG" />
-    <ion-card-header>
-      <ion-card-title>Zona Random</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Explora artículos únicos y divertidos que no encontrarás en ningún otro lugar. ¡Siempre hay algo nuevo!
-    </ion-card-content>
-  </ion-card>
-
-  
-
-
-</ion-content> -->

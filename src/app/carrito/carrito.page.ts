@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { DbService } from '../services/db.service';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-carrito',
@@ -12,7 +13,7 @@ export class CarritoPage implements OnInit {
   cartItems: any[] = [];
   total: number = 0;
 
-  constructor(private cartService: CartService, private dbService: DbService, private router: Router) { }
+  constructor(private cartService: CartService, private dbService: DbService, private navCtrl: NavController) { }
 
   ngOnInit() {
     this.loadCart();
@@ -47,6 +48,9 @@ export class CarritoPage implements OnInit {
     }
   }
   
+  goBack() {
+    this.navCtrl.back();
+  }
 
   // Función para vaciar todo el carrito
   async clearCart() {
