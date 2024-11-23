@@ -23,7 +23,7 @@ export class RegisterComponent {
 
   async register() {
     try {
-      if (!this.mail || !this.username || !this.password || !this.confirmPassword) {
+      if (!this.mail || !this.username || !this.password.trim() || !this.confirmPassword.trim()) {
         this.errorMessage = 'Todos los campos son obligatorios';
         return;
       }

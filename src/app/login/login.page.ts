@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
 import { AuthService } from '../services/auth.service';
 import { LoadingController } from '@ionic/angular';
-import { ConnectionStatus, Network } from '@capacitor/network';
 import { PluginListenerHandle } from '@capacitor/core';
+import { ConnectionStatus, Network } from '@capacitor/network';
+
 
 @Component({
   selector: 'app-login',
@@ -41,12 +42,12 @@ export class LoginPage  implements OnInit, OnDestroy{
     console.log('Estado de conexión: ', this.status);
   }
 
-  changeStatus(status: ConnectionStatus){
-    this.status=status?.connected;
+  changeStatus(status: ConnectionStatus) {
+    this.status = status?.connected;
   }
 
   ngOnDestroy(): void {
-      if(this.networkListener) this.networkListener.remove();
+    if (this.networkListener) this.networkListener.remove();
   }
 
   async showLoading() {
@@ -70,12 +71,15 @@ export class LoginPage  implements OnInit, OnDestroy{
   async login() {
     this.showLoading();
     const result = await this.dbService.login(this.username, this.password);
-
+  
     if (!result.success) {
       this.errorMessage = 'Credenciales inválidas';
+    } else {
+      alert('Redirección completada correctamente.');
     }
     this.isLoading = false;
   }
+  
 
 
   public onResetPassword() {
@@ -88,7 +92,9 @@ export class LoginPage  implements OnInit, OnDestroy{
   }
 
   
-  
+
+
+
 }
 
 
