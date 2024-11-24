@@ -47,6 +47,6 @@ export class MisPedidosPage implements OnInit {
   }
 
   volverCliente() {
-    this.navCtrl.navigateBack(''); 
+    this.navCtrl.navigateBack('/homes'); 
   }
 }
