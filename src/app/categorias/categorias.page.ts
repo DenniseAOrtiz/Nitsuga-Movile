@@ -8,7 +8,7 @@ import { NavController } from '@ionic/angular';
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
-})
+})  
 export class CategoriasPage implements OnInit {
   categorias: any[] = [];
   productos: any[] = [];

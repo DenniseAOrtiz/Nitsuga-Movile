@@ -194,12 +194,11 @@ export class DbService {
         this.currentUsername = user.username;
         this.currentIsAdmin = user.isAdmin;
   
-        // Usar setTimeout como prueba para depuración
         setTimeout(() => {
           if (this.currentIsAdmin) {
             this.router.navigate(['/admin']);
           } else {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/homes']);
           }
         }, 0);
   

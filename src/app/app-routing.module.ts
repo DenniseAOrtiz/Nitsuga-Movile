@@ -37,10 +37,6 @@ const routes: Routes = [
     canActivate: [AdminGuard] 
   },
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
@@ -92,6 +88,11 @@ const routes: Routes = [
     path: 'mis-pedidos',
     loadChildren: () => import('./mis-pedidos/mis-pedidos.module').then( m => m.MisPedidosPageModule)
   },
+  {
+    path: 'homes',
+    loadChildren: () => import('./homes/homes.module').then( m => m.HomesPageModule)
+  },
+
 
 
 ];
