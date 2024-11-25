@@ -163,4 +163,13 @@ ion-button {
         visibility: hidden;
         /* Permanece oculto hasta la próxima animación */
     }
+
+    
 }
+
+.status {
+    text-align: center;
+    margin: 20px;
+    font-size: 18px;
+    color: var(--ion-color-primary);
+  }

@@ -65,6 +65,7 @@ export class DbService {
     } catch (error) {
       alert('No se pudo crear la base de datos categorias ' + error);
     }
+    
 
     // tabla de productos
     try {
@@ -186,20 +187,22 @@ export class DbService {
       if (result.rows.length > 0) {
         const user = result.rows.item(0);
   
-        if (user.isBlocked === 1) {  // Verifica si el usuario está bloqueado
+        if (user.isBlocked === 1) {
           alert('Tu cuenta está bloqueada. Contacta con el administrador.');
           return { success: false };
         }
   
         this.currentUsername = user.username;
-        this.currentIsAdmin = user.isAdmin; // 1 es admin
-        
-        if (this.currentIsAdmin) {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/home']);
-        }
-        
+        this.currentIsAdmin = user.isAdmin;
+  
+        setTimeout(() => {
+          if (this.currentIsAdmin) {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/homes']);
+          }
+        }, 0);
+  
         return { success: true };
       } else {
         alert('Credenciales inválidas');
@@ -210,6 +213,7 @@ export class DbService {
       return { success: false };
     }
   }
+  
 
   public getUsername(): string | null {
     return this.currentUsername;

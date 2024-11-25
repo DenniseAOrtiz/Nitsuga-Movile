@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { DbService } from '../services/db.service';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
-})
+})  
 export class CategoriasPage implements OnInit {
   categorias: any[] = [];
   productos: any[] = [];
@@ -15,7 +16,8 @@ export class CategoriasPage implements OnInit {
   constructor(
     private loadingCtrl: LoadingController, 
     private dbService: DbService, 
-    private router: Router
+    private router: Router,
+    private navCtrl: NavController
   ) { }
 
   async showLoading() {
@@ -50,5 +52,9 @@ export class CategoriasPage implements OnInit {
     console.log(categoriaId);
     this.router.navigate(['/productos', categoriaId]);
   } 
+
+  goBack() {
+    this.navCtrl.back();
+  }
 
 }

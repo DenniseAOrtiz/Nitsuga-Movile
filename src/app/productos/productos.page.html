@@ -3,6 +3,9 @@
     <div style="display: flex;">
       <img src="../assets/img/Logo/logonitsuga.png" alt="Logo" style="height: 50px; margin-right: 10px; margin-left: 5px;" [routerLink]="['/home']"
         (click)="showLoading()">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline" color="light"></ion-icon>
+      </ion-button>
       <ion-title>Productos</ion-title>
       <ion-buttons slot="end">
         <ion-button [routerLink]="['/carrito']">
@@ -17,7 +20,7 @@
 <ion-content>
   <div class="grid-container">
     <ion-card class="grid-item" *ngFor="let producto of productos">
-      <ion-img [src]="producto.selectedImage" alt="Imagen del producto" class="producto-img"></ion-img>
+      <ion-img [src]="producto.imagen" alt="Imagen del producto" class="producto-img"></ion-img>
       <ion-card-header>
         <ion-title>{{ producto.nombre }}</ion-title>
       </ion-card-header>

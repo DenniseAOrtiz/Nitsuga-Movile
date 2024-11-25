@@ -3,6 +3,7 @@ import { DbService } from '../services/db.service';
 import { OrderDetailsComponent } from '../modals/order-details/order-details.component';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-mis-pedidos',
@@ -14,7 +15,7 @@ export class MisPedidosPage implements OnInit {
   isLoading: boolean = true;
   
 
-  constructor(private dbService: DbService, private modalController: ModalController, private router: Router) {}
+  constructor(private dbService: DbService, private modalController: ModalController, private router: Router, private navCtrl: NavController) {}
 
   async ngOnInit() {
     await this.loadPedidos();
@@ -46,6 +47,6 @@ export class MisPedidosPage implements OnInit {
   }
 
   volverCliente() {
-    this.router.navigate(['/home']); 
+    this.navCtrl.navigateBack('/homes'); 
   }
 }

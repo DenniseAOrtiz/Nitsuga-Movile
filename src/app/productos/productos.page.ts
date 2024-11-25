@@ -3,6 +3,7 @@ import { DbService } from '../services/db.service';
 import { LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router'; 
 import { CartService } from '../services/cart.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-productos',
@@ -19,7 +20,9 @@ export class ProductosPage implements OnInit {
     private loadingCtrl: LoadingController, 
     private dbService: DbService, 
     private cartService: CartService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private navCtrl: NavController
+  ) { }
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({
@@ -55,5 +58,9 @@ export class ProductosPage implements OnInit {
         alert('Error al agregar producto al carrito');
       }
     });
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 }
