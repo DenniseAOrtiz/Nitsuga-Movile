@@ -53,8 +53,24 @@ export class OrderDetailsComponent implements OnInit {
     }
   }
 
+  async cancelOrder() {
+    try {
+      this.orderDetails.estado = 2; 
+      await this.dbService.updateOrderStatus(this.orderId, this.orderDetails.estado); 
+  
+      this.modalController.dismiss({
+        orderId: this.orderId,
+        newEstado: this.orderDetails.estado,
+      });
+    } catch (error) {
+      console.error('Error al cancelar el pedido:', error);
+    }
+  }
+  
+
 
   closeModal() {
     this.modalController.dismiss();
+    this.dbService.emitOrderStateChange(this.orderId, this.orderDetails.estado);
   }
 }

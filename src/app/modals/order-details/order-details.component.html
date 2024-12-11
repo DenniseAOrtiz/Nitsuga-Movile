@@ -31,6 +31,12 @@
       </ion-item>
     </ion-list>
   </ion-list>
+  <ion-button
+  expand="full"
+  color="danger"
+  *ngIf="orderDetails.estado === 0"
+  (click)="cancelOrder()">Cancelar Pedido</ion-button>
+
 
   <ion-text *ngIf="!isLoading && !orderDetails" color="danger">
     <p class="ion-text-center">Error al cargar los detalles del pedido.</p>

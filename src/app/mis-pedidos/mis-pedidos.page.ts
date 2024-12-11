@@ -52,8 +52,19 @@ export class MisPedidosPage implements OnInit {
       component: OrderDetailsComponent,
       componentProps: { orderId },
     });
+  
+    modal.onDidDismiss().then((result) => {
+      if (result.data && result.data.orderId) {
+        const pedidoIndex = this.pedidos.findIndex((pedido) => pedido.id === result.data.orderId);
+        if (pedidoIndex !== -1) {
+          this.pedidos[pedidoIndex].estado = result.data.newEstado; 
+        }
+      }
+    });
+  
     await modal.present();
   }
+  
 
   volverCliente() {
     this.navCtrl.navigateBack('/homes'); 
