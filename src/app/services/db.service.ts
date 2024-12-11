@@ -65,6 +65,7 @@ export class DbService {
     } catch (error) {
       alert('No se pudo crear la base de datos categorias ' + error);
     }
+    
 
     // tabla de productos
     try {

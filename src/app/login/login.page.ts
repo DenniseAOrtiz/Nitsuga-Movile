@@ -70,14 +70,23 @@ export class LoginPage implements OnInit, OnDestroy{
 
 
   async login() {
+    // Validación de campo username vacío
+    if (!this.username || this.username.trim() === '') {
+      this.errorMessage = 'El nombre de usuario es obligatorio';
+      this.isLoading = false;
+      return;
+    }
+  
+    // Mostrar loading y continuar con el proceso de login
     this.showLoading();
     const result = await this.dbService.login(this.username, this.password);
-
+  
     if (!result.success) {
       this.errorMessage = 'Credenciales inválidas';
     }
     this.isLoading = false;
   }
+  
 
 
   public onResetPassword() {
@@ -88,6 +97,9 @@ export class LoginPage implements OnInit, OnDestroy{
     console.log('Navegando a registro');
     this.router.navigate(['/register']);
   }
+
+
+  
 
 }
 
