@@ -21,6 +21,7 @@
         <h2>Pedido #{{ pedido.id }}</h2>
         <p>Fecha: {{ pedido.fecha | date: 'short' }}</p>
         <p>Total: ${{ pedido.total | number: '1.2-2' }}</p>
+        <p>Estado: {{ getEstadoTexto(pedido.estado) }}</p>
       </ion-label>
       <ion-button slot="end" (click)="viewDetails(pedido.id)">Ver Detalles</ion-button>
     </ion-item>

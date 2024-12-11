@@ -24,9 +24,9 @@ export class MisPedidosPage implements OnInit {
   async loadPedidos() {
     this.isLoading = true;
     try {
-      const username = this.dbService.getUsername(); // Obtén el usuario actual
+      const username = this.dbService.getUsername(); 
       if (username) {
-        this.pedidos = await this.dbService.getOrders(); // Obtiene los pedidos
+        this.pedidos = await this.dbService.getOrders(); 
         this.pedidos = this.pedidos.filter((pedido) => pedido.username === username);
       } else {
         alert('No se pudo cargar la información del usuario. Por favor, inicia sesión nuevamente.');
@@ -35,6 +35,15 @@ export class MisPedidosPage implements OnInit {
       console.error('Error al cargar pedidos:', error);
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  getEstadoTexto(estado: number): string {
+    switch (estado) {
+      case 0: return 'En preparación';
+      case 1: return 'Entregado';
+      case 2: return 'Cancelado';
+      default: return 'Desconocido';
     }
   }
 

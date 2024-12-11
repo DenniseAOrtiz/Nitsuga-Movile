@@ -3,7 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -114,7 +114,8 @@ export class DbService {
           username TEXT,
           total REAL,
           fecha TEXT,
-          productos TEXT
+          productos TEXT,
+          estado INTEGER DEFAULT 0
         )`,
         []
       );
@@ -581,8 +582,8 @@ export class DbService {
 
       // Insertar el pedido en la tabla 'orders'
       const orderResult = await this.dbInstance.executeSql(
-        `INSERT INTO orders (total, fecha, username) VALUES (?, ?, ?)`,
-        [total, date, this.currentUsername]
+        `INSERT INTO orders (total, fecha, username, estado) VALUES (?, ?, ?, ?)`,
+        [total, date, this.currentUsername, 0]
       );
 
       const orderId = orderResult.insertId;
@@ -662,6 +663,7 @@ export class DbService {
           total: order.total,
           fecha: order.fecha,
           productos: products,
+          estado: order.estado,
         });
       }
   
@@ -672,20 +674,28 @@ export class DbService {
     }
   }
   
-  
-  
+  public async getCurrentOrderStatus(orderId: number) {
+    const sql = 'SELECT estado FROM orders WHERE id = ?';
+    const result = await this.dbInstance.executeSql(sql, [orderId]);
+    return result.rows.item(0).estado;
+  }
 
-  // public async getOrderDetails(orderId: number) {
-  //   const sql = 'SELECT * FROM order_items WHERE orderId = ?';
-  //   const result = await this.dbInstance.executeSql(sql, [orderId]);
-  //   const items = [];
-  //   for (let i = 0; i < result.rows.length; i++) {
-  //     items.push(result.rows.item(i));
-  //   }
-  //   const total = items.reduce((acc, item) => acc + item.precio, 0);
-  //   return { productos: items, total: total };
-  // }
+  private orderStateChange = new BehaviorSubject<{ orderId: number; newState: number } | null>(null);
 
+  orderStateChange$ = this.orderStateChange.asObservable();
+
+  emitOrderStateChange(orderId: number, newState: number) {
+    this.orderStateChange.next({ orderId, newState });
+  }
+
+  
+  public async updateOrderStatus(orderId: number, newStatus: number) {
+    const sql = 'UPDATE orders SET estado = ? WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [newStatus, orderId]);
+    
+    this.emitOrderStateChange(orderId, newStatus);
+  }
+  
 
   
 

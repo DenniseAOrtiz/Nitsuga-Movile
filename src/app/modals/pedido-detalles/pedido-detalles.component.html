@@ -2,30 +2,38 @@
   <ion-toolbar>
     <ion-title>Detalles del Pedido</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cerrarModal()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Productos</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let producto of pedido.productos">
-          <ion-label>{{ producto.nombre }}</ion-label>
-          <ion-badge slot="end">{{ producto.precio | currency:'USD':'symbol' }}</ion-badge>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+  <ion-spinner *ngIf="isLoading" slot="center"></ion-spinner>
 
-  <ion-item>
-    <ion-label><strong>Total:</strong></ion-label>
-    <ion-badge color="success" slot="end">{{ pedido.total | currency:'USD':'symbol' }}</ion-badge>
-  </ion-item>
+  <ion-list *ngIf="!isLoading && orderDetails">
+    <ion-item>
+      <ion-label>
+        <h2>Pedido #{{ orderDetails.id }}</h2>
+        <p>Fecha: {{ orderDetails.fecha | date: 'short' }}</p>
+        <p>Total: ${{ orderDetails.total | number: '1.2-2' }}</p>
+        <h3>Estado: {{ getEstadoTexto(orderDetails.estado) }}</h3>
+        <ion-button (click)="openUpdateEstadoModal()">Actualizar Estado</ion-button>
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header>Productos</ion-list-header>
+    <ion-list>
+      <ion-item *ngFor="let product of orderDetails.productos">
+        <ion-label>
+          <h3>{{ product.nombre }}</h3>
+          <p>Cantidad: {{ product.cantidad }}</p>
+          <p>Precio: ${{ product.precio | number: '1.2-2' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+
+  <ion-text *ngIf="!isLoading && !orderDetails" color="danger">
+    <p class="ion-text-center">Error al cargar los detalles del pedido.</p>
+  </ion-text>
 </ion-content>

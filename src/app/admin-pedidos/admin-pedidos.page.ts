@@ -11,6 +11,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class AdminPedidosPage implements OnInit {
   pedidos: any[] = [];
+  estado: number = 0; 
 
   constructor(
     private dbService: DbService, 
@@ -26,6 +27,15 @@ export class AdminPedidosPage implements OnInit {
     this.pedidos = await this.dbService.getOrders();
   }
 
+  getEstadoTexto(estado: number): string {
+    switch (estado) {
+      case 0: return 'En preparación';
+      case 1: return 'Entregado';
+      case 2: return 'Cancelado';
+      default: return 'Desconocido';
+    }
+  }
+
   volverAdmin() {
     this.router.navigate(['admin']);
   }
@@ -35,15 +45,23 @@ export class AdminPedidosPage implements OnInit {
     this.loadPedidos();
   }
 
-  async verDetalles(pedidoId: number) {
-    const pedidoDetalles = await this.dbService.getOrderDetails(pedidoId);
-
+  async verDetalles(orderId: number) {
     const modal = await this.modalCtrl.create({
       component: PedidoDetallesComponent,
-      componentProps: { pedido: pedidoDetalles }
+      componentProps: { orderId: orderId },
     });
-
+  
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        const pedidoIndex = this.pedidos.findIndex((pedido) => pedido.id === orderId);
+        if (pedidoIndex !== -1) {
+          this.pedidos[pedidoIndex].estado = result.data.newEstado;
+        }
+      }
+    });
+  
     return await modal.present();
   }
+  
 
 }
