@@ -24,9 +24,9 @@ export class MisPedidosPage implements OnInit {
   async loadPedidos() {
     this.isLoading = true;
     try {
-      const username = this.dbService.getUsername(); // Obtén el usuario actual
+      const username = this.dbService.getUsername(); 
       if (username) {
-        this.pedidos = await this.dbService.getOrders(); // Obtiene los pedidos
+        this.pedidos = await this.dbService.getOrders(); 
         this.pedidos = this.pedidos.filter((pedido) => pedido.username === username);
       } else {
         alert('No se pudo cargar la información del usuario. Por favor, inicia sesión nuevamente.');
@@ -38,13 +38,33 @@ export class MisPedidosPage implements OnInit {
     }
   }
 
+  getEstadoTexto(estado: number): string {
+    switch (estado) {
+      case 0: return 'En preparación';
+      case 1: return 'Entregado';
+      case 2: return 'Cancelado';
+      default: return 'Desconocido';
+    }
+  }
+
   async viewDetails(orderId: number) {
     const modal = await this.modalController.create({
       component: OrderDetailsComponent,
       componentProps: { orderId },
     });
+  
+    modal.onDidDismiss().then((result) => {
+      if (result.data && result.data.orderId) {
+        const pedidoIndex = this.pedidos.findIndex((pedido) => pedido.id === result.data.orderId);
+        if (pedidoIndex !== -1) {
+          this.pedidos[pedidoIndex].estado = result.data.newEstado; 
+        }
+      }
+    });
+  
     await modal.present();
   }
+  
 
   volverCliente() {
     this.navCtrl.navigateBack('/homes'); 

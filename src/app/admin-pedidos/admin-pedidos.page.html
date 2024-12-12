@@ -9,6 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -20,9 +21,8 @@
     <!-- Encabezados de la tabla -->
     <ion-row class="table-header">
       <ion-col><strong>ID</strong></ion-col>
-      <ion-col><strong>Total</strong></ion-col>
       <ion-col><strong>Detalles</strong></ion-col>
-      <ion-col><strong>Cliente</strong></ion-col>
+      <ion-col><strong>Estado</strong></ion-col>
       <ion-col><strong>Fecha</strong></ion-col>
       <ion-col><strong></strong></ion-col>
     </ion-row>
@@ -30,13 +30,12 @@
     <!-- Filas de pedidos -->
     <ion-row *ngFor="let pedido of pedidos" class="table-row">
       <ion-col>{{ pedido.id }}</ion-col>
-      <ion-col>{{ pedido.total | currency:'USD':'symbol' }}</ion-col>
       <ion-col>
         <ion-button fill="clear" color="primary" (click)="verDetalles(pedido.id)">
           <ion-icon name="eye-outline"></ion-icon>
         </ion-button>
       </ion-col>
-      <ion-col>{{ pedido.username }}</ion-col>
+      <ion-col>{{ getEstadoTexto(pedido.estado) }}</ion-col>
       <ion-col>{{ pedido.fecha | date: 'dd-MM-yyyy' }}</ion-col>
       <ion-col>
         <ion-button color="danger" (click)="deleteOrder(pedido.id)">
